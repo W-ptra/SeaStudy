@@ -1,5 +1,9 @@
 const apiController = require('./controller/apiController');
 const authController = require('./controller/authController');
+const courseController = require('./controller/courseController');
+const topicController = require('./controller/topicController');
+const materialController = require('./controller/materialController');
+
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -15,6 +19,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/api/auth',authController);
+app.use('/api/course',courseController);
+app.use('/api/topic',topicController);
+app.use('/api/material',materialController);
 app.use('/api',apiController);
 
 app.get('/',(req,res)=>{

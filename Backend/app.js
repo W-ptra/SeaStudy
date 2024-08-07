@@ -1,12 +1,20 @@
+const apiController = require('./controller/apiController');
+const authController = require('./controller/authController');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
-const apiController = require('./controller/apiController');
-require("dotenv").config()
-const app = express()
+const cors = require('cors');
+require('dotenv').config();
+const app = express();
 
+app.use(cors({origin:"*"}))
 app.use(morgan('combined'));
-app.use(express.json())
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(cookieParser());
 
+app.use('/api/auth',authController);
 app.use('/api',apiController);
 
 app.get('/',(req,res)=>{

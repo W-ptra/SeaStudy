@@ -8,4 +8,8 @@ test("hash passworld 123 and compare with 123",async ()=>{
     expect(isMatch).toBe(true)
 })
 
+test("add 1 + 2 should be 3",()=>{
+    expect(1+2).toBe(3)
+})
+
 //tets("Login with 'test@yahoo' & password '123' ")

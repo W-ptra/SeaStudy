@@ -3,6 +3,7 @@ const authController = require('./controller/authController');
 const courseController = require('./controller/courseController');
 const topicController = require('./controller/topicController');
 const materialController = require('./controller/materialController');
+const sanitize = require('./middleware/sanitize');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.use(sanitize);
 app.use('/api/auth',authController);
 app.use('/api/course',courseController);
 app.use('/api/topic',topicController);

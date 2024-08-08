@@ -23,7 +23,7 @@ async function login(email,password){
     if(!isPasswordMatch)
         return { operation: false,status:401, message:"password incorrect"};
 
-    return { operation: true,status:200, message:"login sucessfully"};
+    return { operation: true, status: 200, message:"login sucessfully", user: user.data};
 }
 
 module.exports = {register,login};

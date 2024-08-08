@@ -25,12 +25,10 @@ router.post('/login',async (req,res)=>{
     const respond = await login(email,password);
     if(!respond.operation)
         return res.status(respond.status).json({message:respond.message});
-
-    const test = "my test"
     
-    const token = jwt.sign({test},process.env.KEY,{expiresIn:"1h"});
+    const token = jwt.sign({id: respond.user.id, role: respond.user.role}, process.env.KEY, {expiresIn:"1h"});
     res.cookie('token',token,{httpOnly:true,secure:true})
-    return res.status(respond.status).json({message:respond.message});
+    return res.status(respond.status).json({message:respond.message, token: token});
 });
 
 router.get('/logout',(req,res)=>{

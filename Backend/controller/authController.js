@@ -1,6 +1,5 @@
 const { login, register } = require("../service/authentication");
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const { createJSONToken } = require("../helper/jwt");
 const router = express.Router();
 require("dotenv").config();
@@ -10,6 +9,7 @@ router.post("/register", async (req, res) => {
         email: req.body.email,
         name: req.body.name,
         password: req.body.password,
+        role: req.body.role,
     };
 
     const respond = await register(newUser);

@@ -12,7 +12,7 @@ async function uploadMaterialToBlobStorage(filePath,extension){
     const blobName = `${uuidv4()}.${extension}`; // generate random string using uuidv4 for file name
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     await blockBlobClient.uploadFile(filePath);
-    return blockBlobClient.url; // return url of file 
+    return `https://seastudy.blob.core.windows.net/materials/seastudyMaterialContainer/${blobName}`
 }   
 
 module.exports = {uploadMaterialToBlobStorage}

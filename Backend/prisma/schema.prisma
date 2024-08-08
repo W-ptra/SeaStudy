@@ -55,7 +55,7 @@ model Users {
   name       String
   password   String
   role       userRole
-  credit     Int
+  credit     BigInt
   course     Course[]
   enrollment Enrollment[]
   review     Review[]
@@ -71,7 +71,7 @@ model Course {
   description String
   category    category
   level       courseLevel
-  price       Int
+  price       BigInt
   creator     Users        @relation(fields: [userId], references: [id])
   userId      Int
   enrollment  Enrollment[]

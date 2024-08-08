@@ -28,7 +28,7 @@ router.post('/login',async (req,res)=>{
     
     const token = jwt.sign({id: respond.user.id, role: respond.user.role}, process.env.KEY, {expiresIn:"1h"});
     res.cookie('token',token,{httpOnly:true,secure:true})
-    return res.status(respond.status).json({message:respond.message});
+    return res.status(respond.status).json({message:respond.message, token: token});
 });
 
 router.get('/logout',(req,res)=>{

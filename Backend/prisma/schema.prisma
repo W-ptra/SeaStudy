@@ -27,119 +27,132 @@ enum courseLevel {
 enum materialType {
   document
   video
-  ppr
+  ppt
 }
 
 model Users {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
-  name          String
-  password      String
-  role          userRole
-  credit        Int
-  course        Course[]
-  enrollment    Enrollment[]
-  review        Review[]
-  post          Post[]
-  completion    Completion[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String
+  password   String
+  role       userRole
+  credit     Int
+  course     Course[]
+  enrollment Enrollment[]
+  review     Review[]
+  post       Post[]
+  completion Completion[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 model Course {
-  id            Int       @id @default(autoincrement())
-  name          String
-  description   String
-  category      String
-  level         courseLevel
-  price         Int
-  creator       Users     @relation(fields: [userId], references: [id])    
-  userId        Int       @unique
-  enrollment    Enrollment[]
-  review        Review[]
-  post          Post[]
-  topic         Topic[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  category    String
+  level       courseLevel
+  price       Int
+  creator     Users        @relation(fields: [userId], references: [id])
+  userId      Int
+  enrollment  Enrollment[]
+  review      Review[]
+  post        Post[]
+  topic       Topic[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Enrollment {
-  user          Users     @relation(fields: [userId], references: [id])
-  course        Course    @relation(fields: [courseId], references: [id])    
-  userId        Int       @unique
-  courseId      Int       @unique
+  user      Users    @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  userId    Int
+  courseId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
 }
 
 model Review {
-  comment       String
-  rating        Int
-  user          Users     @relation(fields: [userId], references: [id])
-  course        Course    @relation(fields: [courseId], references: [id])    
-  userId        Int       @unique
-  courseId      Int       @unique
+  comment   String
+  rating    Int
+  user      Users    @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  userId    Int
+  courseId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
 }
 
 model Post {
-  message       String
-  user          Users     @relation(fields: [userId], references: [id])
-  course        Course    @relation(fields: [courseId], references: [id])    
-  userId        Int       @unique
-  courseId      Int       @unique
+  id        Int      @id @default(autoincrement())
+  message   String
+  user      Users    @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  userId    Int
+  courseId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Topic {
-  id            Int       @id @default(autoincrement())
-  title         String
-  description   String
-  course        Course    @relation(fields: [courseId], references: [id])
-  courseId      Int       @unique
-  material      Material[]
-  completion    Completion[]
-  assignment    Assigment[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  course      Course       @relation(fields: [courseId], references: [id])
+  courseId    Int
+  material    Material[]
+  completion  Completion[]
+  assignment  Assigment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Material {
-  name          String
-  type          materialType
-  link          String
-  topic         Topic     @relation(fields: [topicId], references: [id])
-  topicId       Int       @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int          @id @default(autoincrement())
+  name      String
+  type      materialType
+  link      String
+  topic     Topic        @relation(fields: [topicId], references: [id])
+  topicId   Int
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 model Completion {
-  topic         Topic     @relation(fields: [topicId], references: [id])
-  user          Users     @relation(fields: [userId], references: [id])
-  topicId       Int       @unique
-  userId        Int       @unique
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  user      Users    @relation(fields: [userId], references: [id])
+  topicId   Int
+  userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([topicId, userId])
 }
 
+// SUGGESTION: Assignment dan Submission seharusnya bisa digabungkan
+// yang dikomen adalah perubahan yang menurut aku benar
+// jadi ga perlu ada Submission Schema karena tinggal cari Assignment yang sudah diassign ke user
 model Assigment {
-  id            Int       @id @default(autoincrement())
-  name          String
-  description   String
-  topic         Topic     @relation(fields: [topicId], references: [id])
-  topicId       Int       @unique
-  submission    Submission[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  // score       Float     @default(0)
+  // isGraded      Boolean
+  topic       Topic        @relation(fields: [topicId], references: [id])
+  topicId     Int          @unique
+  submission  Submission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Submission {
-  score       Float
-  assignment  Assigment     @relation(fields: [assignmentId], references: [id])
-  assignmentId Int          @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  score        Float
+  assignment   Assigment @relation(fields: [assignmentId], references: [id])
+  assignmentId Int       @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }

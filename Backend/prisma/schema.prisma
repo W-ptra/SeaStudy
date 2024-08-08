@@ -54,8 +54,8 @@ model Users {
   email      String       @unique
   name       String
   password   String
-  role       userRole
-  credit     BigInt
+  role       userRole     @default(User)
+  credit     BigInt       @default(0)
   course     Course[]
   enrollment Enrollment[]
   review     Review[]

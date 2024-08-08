@@ -66,13 +66,54 @@ async function getTopicById(topicId){
     }
 }
 
-async function test(){
-    const payload = {
-        title:  "Chapter 2",
-        description:    "chapter 2 description",
-        courseId: 2
+async function updateTopicById(updatedTopic){
+    try{
+        const where = { id:updatedTopic.id }
+        const data = {
+            title:          updatedTopic.title,
+            description:    updatedTopic.description,
+            courseId:         updatedTopic.courseId
+        }
+        const updating = await prisma.topic.update({where,data})
+        return {
+            operation:  true,
+            message:    `Sucessfully updated topic with id: ${updating.id}`
+        }
     }
-    const result = await createNewTopic(payload);
-    console.log(result);
+    catch (err){
+        return {
+            operation:  false,
+            message:    err
+        }
+    }
+    finally {
+        await prisma.$disconnect();
+    }
 }
-test();
+
+async function deleteTopicById(id){
+    try{
+        await prisma.topic.delete({where:{id}})
+        return {
+            operation:  true,
+            message:    `Sucessfully delete topic with id: ${updating.id}`
+        }
+    }
+    catch (err){
+        return {
+            operation:  false,
+            message:    err
+        }
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
+module.exports = {
+    createNewTopic,
+    getAllTopicByCourseId,
+    getTopicById,
+    updateTopicById,
+    deleteTopicById
+}

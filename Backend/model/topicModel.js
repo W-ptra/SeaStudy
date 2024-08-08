@@ -12,7 +12,7 @@ async function createNewTopic(newTopic){
         const topic = await prisma.topic.create({ data });
         return {
             operation:  true,
-            message:    `Sucessfully created new topic with id: ${topic.id}`
+            message:    `Sucessfully created new Topic with id: ${topic.id}`
         }
     }
     catch (err){
@@ -46,9 +46,9 @@ async function getAllTopicByCourseId(courseId){
     }
 }
 
-async function getTopicById(topicId){
+async function getTopicById(id){
     try{
-        const where = { id:topicId }
+        const where = { id }
         const topic = await prisma.topic.findUnique({where})
         return {
             operation:  true,
@@ -77,7 +77,7 @@ async function updateTopicById(updatedTopic){
         const updating = await prisma.topic.update({where,data})
         return {
             operation:  true,
-            message:    `Sucessfully updated topic with id: ${updating.id}`
+            message:    `Sucessfully updated Topic with id: ${updating.id}`
         }
     }
     catch (err){
@@ -96,7 +96,7 @@ async function deleteTopicById(id){
         await prisma.topic.delete({where:{id}})
         return {
             operation:  true,
-            message:    `Sucessfully delete topic with id: ${updating.id}`
+            message:    `Sucessfully delete Topic with id: ${updating.id}`
         }
     }
     catch (err){

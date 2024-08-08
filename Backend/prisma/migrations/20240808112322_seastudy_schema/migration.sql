@@ -5,7 +5,10 @@ CREATE TYPE "userRole" AS ENUM ('User', 'Instructor');
 CREATE TYPE "courseLevel" AS ENUM ('easy', 'medium', 'hard');
 
 -- CreateEnum
-CREATE TYPE "materialType" AS ENUM ('document', 'video', 'ppr');
+CREATE TYPE "materialType" AS ENUM ('document', 'video', 'ppt');
+
+-- CreateEnum
+CREATE TYPE "category" AS ENUM ('programming', 'design', 'business', 'marketing', 'music', 'cooking', 'photography', 'health', 'fitness', 'lifestyle', 'personalDevelopment', 'academics', 'language', 'testPrep', 'teaching', 'other');
 
 -- CreateTable
 CREATE TABLE "Users" (
@@ -14,7 +17,7 @@ CREATE TABLE "Users" (
     "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" "userRole" NOT NULL,
-    "credit" INTEGER NOT NULL,
+    "credit" BIGINT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -26,9 +29,9 @@ CREATE TABLE "Course" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
+    "category" "category" NOT NULL,
     "level" "courseLevel" NOT NULL,
-    "price" INTEGER NOT NULL,
+    "price" BIGINT NOT NULL,
     "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -38,29 +41,38 @@ CREATE TABLE "Course" (
 
 -- CreateTable
 CREATE TABLE "Enrollment" (
+    "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "courseId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Enrollment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Review" (
+    "id" SERIAL NOT NULL,
     "comment" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
     "courseId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Post" (
+    "id" SERIAL NOT NULL,
     "message" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
     "courseId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -77,20 +89,26 @@ CREATE TABLE "Topic" (
 
 -- CreateTable
 CREATE TABLE "Material" (
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "type" "materialType" NOT NULL,
     "link" TEXT NOT NULL,
     "topicId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Material_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Completion" (
+    "id" SERIAL NOT NULL,
     "topicId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Completion_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -107,53 +125,19 @@ CREATE TABLE "Assigment" (
 
 -- CreateTable
 CREATE TABLE "Submission" (
-    "score" DOUBLE PRECISION NOT NULL,
+    "id" SERIAL NOT NULL,
+    "score" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "isGraded" BOOLEAN NOT NULL,
+    "content" TEXT NOT NULL,
     "assignmentId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Submission_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Course_userId_key" ON "Course"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Enrollment_userId_key" ON "Enrollment"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Enrollment_courseId_key" ON "Enrollment"("courseId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Review_userId_key" ON "Review"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Review_courseId_key" ON "Review"("courseId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Post_userId_key" ON "Post"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Post_courseId_key" ON "Post"("courseId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Topic_courseId_key" ON "Topic"("courseId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Material_topicId_key" ON "Material"("topicId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Completion_topicId_key" ON "Completion"("topicId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Completion_userId_key" ON "Completion"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Assigment_topicId_key" ON "Assigment"("topicId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Submission_assignmentId_key" ON "Submission"("assignmentId");
 
 -- AddForeignKey
 ALTER TABLE "Course" ADD CONSTRAINT "Course_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

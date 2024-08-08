@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE "Course" ALTER COLUMN "price" SET DATA TYPE BIGINT;
-
--- AlterTable
-ALTER TABLE "Users" ALTER COLUMN "credit" SET DATA TYPE BIGINT;

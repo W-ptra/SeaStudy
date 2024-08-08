@@ -30,6 +30,25 @@ enum materialType {
   ppt
 }
 
+enum category {
+  programming
+  design
+  business
+  marketing
+  music
+  cooking
+  photography
+  health
+  fitness
+  lifestyle
+  personalDevelopment
+  academics
+  language
+  testPrep
+  teaching
+  other
+}
+
 model Users {
   id         Int          @id @default(autoincrement())
   email      String       @unique
@@ -50,7 +69,7 @@ model Course {
   id          Int          @id @default(autoincrement())
   name        String
   description String
-  category    String
+  category    category
   level       courseLevel
   price       Int
   creator     Users        @relation(fields: [userId], references: [id])

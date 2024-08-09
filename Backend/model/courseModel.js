@@ -1,5 +1,68 @@
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient;
+const prisma = new PrismaClient();
+
+async function getAllCourses() {
+    try {
+        const courses = await prisma.course.findMany();
+
+        const coursesWithBigIntAsString = courses.map((course) => {
+            return {
+                ...course,
+                price: course.price.toString(),
+            };
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            payload: coursesWithBigIntAsString,
+        };
+    } catch (err) {
+        return {
+            operation: false,
+            message: err,
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+async function getCourseById(courseId) {
+    try {
+        const course = await prisma.course.findUnique({
+            where: {
+                id: courseId,
+            },
+        });
+
+        if (!course) {
+            return {
+                operation: false,
+                status: 404,
+                message: `Course with id: ${courseId} not found`,
+            };
+        }
+
+        const courseWithBigIntAsString = {
+            ...course,
+            price: course.price.toString(),
+        };
+        console.log(courseWithBigIntAsString);
+
+        return {
+            operation: true,
+            status: 200,
+            payload: courseWithBigIntAsString,
+        };
+    } catch (err) {
+        return {
+            operation: false,
+            message: err,
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
 
 async function createNewCourse(newCourse) {
     try {
@@ -9,12 +72,11 @@ async function createNewCourse(newCourse) {
             price: newCourse.price,
             category: newCourse.category,
             level: newCourse.level,
-            instructor: newCourse.instructor,
-			userId: newCourse.userId
+            userId: newCourse.userId,
         };
-        
+
         const course = await prisma.course.create({ data });
-        
+
         return {
             operation: true,
             status: 201,
@@ -31,4 +93,4 @@ async function createNewCourse(newCourse) {
     }
 }
 
-module.exports = { createNewCourse };
+module.exports = { createNewCourse, getAllCourses, getCourseById };

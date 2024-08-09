@@ -77,7 +77,7 @@ async function updateTopicById(updatedTopic){
         const updating = await prisma.topic.update({where,data})
         return {
             operation:  true,
-            message:    `Sucessfully updated Topic with id: ${updating.id}`
+            message:    `Sucessfully update Topic with id: ${updating.id}`
         }
     }
     catch (err){

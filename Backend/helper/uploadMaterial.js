@@ -15,4 +15,4 @@ async function uploadMaterialToBlobStorage(filePath,extension){
     return `https://seastudy.blob.core.windows.net/materials/seastudyMaterialContainer/${blobName}`
 }   
 
-module.exports = {uploadMaterialToBlobStorage}
+module.exports = { uploadMaterialToBlobStorage }

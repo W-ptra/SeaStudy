@@ -13,7 +13,7 @@ async function createNewMaterial(newMaterial){
         const topic = await prisma.material.create({ data });
         return {
             operation:  true,
-            message:    `Sucessfully created new material with id: ${topic.id}`
+            message:    `Sucessfully created new Material with id: ${topic.id}`
         }
     }
     catch (err){
@@ -79,7 +79,7 @@ async function updateMaterialById(updatedMaterial){
         const updating = await prisma.material.update({where,data})
         return {
             operation:  true,
-            message:    `Sucessfully updated material with id: ${updating.id}`
+            message:    `Sucessfully updated Material with id: ${updating.id}`
         }
     }
     catch (err){
@@ -98,7 +98,7 @@ async function deleteMaterialById(id){
         await prisma.material.delete({where:{id}})
         return {
             operation:  true,
-            message:    `Sucessfully delete material with id: ${id}`
+            message:    `Sucessfully delete Material with id: ${id}`
         }
     }
     catch (err){

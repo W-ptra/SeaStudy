@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authenticateJWT } = require("../middleware/auth");
-const { createNewCourse } = require("../model/courseModel");
+const { getCourses, postCourse } = require("../service/course");
 
 router.get('/',(req,res)=>{
   
@@ -24,7 +24,7 @@ router.post('/post', async (req,res)=>{
     userId: req.user.id,
   };
 
-    const respond = await createNewCourse(newCourse);
+    const respond = await postCourse(newCourse);
 
     if(!respond.operation)
       return res.status(400).json({respond});

@@ -72,6 +72,7 @@ model Course {
   category    category
   level       courseLevel
   price       BigInt
+  avgRating   Float        @default(0)
   creator     Users        @relation(fields: [userId], references: [id])
   userId      Int
   enrollment  Enrollment[]

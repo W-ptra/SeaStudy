@@ -3,8 +3,13 @@ const router = express.Router();
 const { authenticateJWT } = require("../middleware/auth");
 const { getCourses, postCourse } = require("../service/course");
 
-router.get('/',(req,res)=>{
-  
+router.get('/', async (req,res)=>{
+  const respond = await getCourses();
+
+  if(!respond.operation)
+    return res.status(400).json({respond});
+
+  return res.status(respond.status).json({courses: respond.payload});
 });
 
 router.get('/:courseId',(req,res)=>{

@@ -1,6 +1,33 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
+async function getAllCourses() {
+    try {
+        const courses = await prisma.course.findMany();
+        console.log(courses);
+
+        const coursesWithBigIntAsString = courses.map(course => {
+            return {
+                ...course,
+                price: course.price.toString(),
+            };
+        });
+        
+        return {
+            operation: true,
+            status: 200,
+            payload: coursesWithBigIntAsString,
+        };
+    } catch (err) {
+        return {
+            operation: false,
+            message: err,
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function createNewCourse(newCourse) {
     try {
         const data = {
@@ -9,7 +36,6 @@ async function createNewCourse(newCourse) {
             price: newCourse.price,
             category: newCourse.category,
             level: newCourse.level,
-            instructor: newCourse.instructor,
 			userId: newCourse.userId
         };
         
@@ -31,4 +57,4 @@ async function createNewCourse(newCourse) {
     }
 }
 
-module.exports = { createNewCourse };
+module.exports = { createNewCourse, getAllCourses };

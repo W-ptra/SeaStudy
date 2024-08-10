@@ -70,3 +70,21 @@ export const popularCourses = [
     "ctaButton": "View Course"
   } 
 ]
+
+export const testimonialsData = [
+  {
+    "testimonial": "Sea Study helped me advance my career in data science. The courses were comprehensive, and the instructors were incredibly knowledgeable.",
+    "name": "Sarah L.",
+    "position": "Data Scientist at XYZ Corp."
+  },
+  {
+    "testimonial": "Thanks to Sea Study, I was able to learn graphic design on my own schedule, and now I’m freelancing full-time!",
+    "name": "John D.",
+    "position": "Freelance Graphic Designer"
+  },
+  {
+    "testimonial": "The community support on Sea Study is amazing. I’ve connected with so many people who’ve helped me through tough topics.",
+    "name": "Alex P.",
+    "position": "Marketing Professional"
+  }
+]

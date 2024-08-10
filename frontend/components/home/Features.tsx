@@ -9,7 +9,7 @@ const Features = () => {
   return (
     <div className='wrapper space-y-8'>
       <h3 className='text-3xl font-bold text-center md:text-start'>Why Choose SeaStudy?</h3>
-      <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+      <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {featureItems.map(item => (
           <FeatureCard key={item.label} label={item.label} description={item.description} image={item.image} />
         ))}
@@ -31,7 +31,7 @@ const FeatureCard = ({
 }) => {
   return (
     <CardContainer>
-      <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black w-auto rounded-lg p-6 border h-full">
+      <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black w-auto rounded-lg p-6 border-2 h-full">
         <CardItem
           translateZ="50"
           className="text-xl font-bold text-black dark:text-white"

@@ -7,7 +7,7 @@ const PopularCourses = () => {
   return (
     <div className='wrapper space-y-8'>
       <h3 className='text-3xl font-bold text-center'>Our Most Popular Courses</h3>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {popularCourses.map((item, index) => {
           return (
             <PopularCoursesCard
@@ -42,7 +42,7 @@ const PopularCoursesCard = ({
   ctaButton: string
 }) => {
   return (
-    <div className='p-4 border border-black flex flex-col justify-between rounded-lg space-y-4'>
+    <div className='p-4 border-2 border-black flex flex-col justify-between rounded-lg space-y-4 shadow-custom'>
       <div>
         <p className='text-[18px] font-bold'>{courseName}</p>
         <p className='text-[14px] text-black/70'>{instructor}</p>

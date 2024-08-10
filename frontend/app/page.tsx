@@ -1,6 +1,7 @@
 import Features from "@/components/home/Features";
 import Hero from "@/components/home/Hero";
 import PopularCourses from "@/components/home/PopularCourses";
+import Testimonials from "@/components/home/Testimonials";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <Features />
       <PopularCourses />
+      <Testimonials />
     </main>
   );
 }

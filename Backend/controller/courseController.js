@@ -40,7 +40,7 @@ router.get("/:courseId", async (req, res) => {
     if (!respond.operation) 
         return res.status(400).json({ respond });
 
-    return res.status(respond.status).json({ course: respond.payload });
+    return res.status(respond.status).json({ course: respond.course, topics: respond.topics });
 });
 
 // Instructor role operations

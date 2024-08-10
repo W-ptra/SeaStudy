@@ -15,7 +15,7 @@ async function getAllCourses() {
         return {
             operation: true,
             status: 200,
-            payload: coursesWithBigIntAsString,
+            data: coursesWithBigIntAsString,
         };
     } catch (err) {
         return {
@@ -47,12 +47,11 @@ async function getCourseById(courseId) {
             ...course,
             price: course.price.toString(),
         };
-        console.log(courseWithBigIntAsString);
 
         return {
             operation: true,
             status: 200,
-            payload: courseWithBigIntAsString,
+            data: courseWithBigIntAsString,
         };
     } catch (err) {
         return {
@@ -106,7 +105,7 @@ async function filterCourses({ category, level, minRating, maxRating }) {
         return {
             operation: true,
             status: 200,
-            payload: coursesWithBigIntAsString,
+            data: coursesWithBigIntAsString,
         };
     } catch (err) {
         console.error(err); 
@@ -136,7 +135,7 @@ async function createNewCourse(newCourse) {
             operation: true,
             status: 201,
             message: `Sucessfully created new Course with id: ${course.id}`,
-            payload: course,
+            data: course,
         };
     } catch (err) {
         return {

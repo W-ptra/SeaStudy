@@ -1,18 +1,25 @@
 const { getAllCourses, getCourseById, createNewCourse, filterCourses } = require("../model/courseModel");
+const { getTopicsByCourseId } = require("../model/topicModel");
 
 async function getCourses() {
     return getAllCourses();
 }
 
 async function getCourseDetails(courseId) {
-    console.log("Course id: " + courseId);
-    
     if (isNaN(courseId))
         return res.status(400).json({ message: "Invalid courseId" });
 
-    // TODO: get topics for the course
+    const course = await getCourseById(courseId);
+    const topics = await getTopicsByCourseId(courseId);
+    console.log({course, topics});
+    
+    const operation = course.operation && topics.operation;
 
-    return getCourseById(courseId);
+    if(operation)
+        return { operation, status: 200, course: course.data, topics: topics.data };
+        
+
+    return { operation, status: 400, message: course.message || topics.message };
 }
 
 async function getFilteredCourses(filter) {

@@ -9,4 +9,4 @@ async function comparePassword(plainPassword,hashedPassword){
     return await compare(plainPassword,hashedPassword);
 }
 
-module.exports = {hashPassword,comparePassword}
+module.exports = { hashPassword,comparePassword }

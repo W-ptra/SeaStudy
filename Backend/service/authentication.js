@@ -26,4 +26,4 @@ async function login(email,password){
     return { operation: true, status: 200, message:"login sucessfully", user: user.data};
 }
 
-module.exports = {register,login};
+module.exports = { register,login };

@@ -84,17 +84,17 @@ model Course {
 }
 
 model Enrollment {
+  id        Int      @id @default(autoincrement())     
   user      Users    @relation(fields: [userId], references: [id])
   course    Course   @relation(fields: [courseId], references: [id])
   userId    Int
   courseId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([userId, courseId])
 }
 
 model Review {
+  id        Int      @id @default(autoincrement())   
   comment   String
   rating    Int
   user      Users    @relation(fields: [userId], references: [id])
@@ -103,8 +103,6 @@ model Review {
   courseId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([userId, courseId])
 }
 
 model Post {
@@ -123,7 +121,7 @@ model Topic {
   title       String
   description String
   course      Course       @relation(fields: [courseId], references: [id])
-  courseId    Int
+  courseId    Int          
   material    Material[]
   completion  Completion[]
   assignment  Assigment[]
@@ -143,14 +141,13 @@ model Material {
 }
 
 model Completion {
+  id        Int      @id @default(autoincrement())   
   topic     Topic    @relation(fields: [topicId], references: [id])
   user      Users    @relation(fields: [userId], references: [id])
   topicId   Int
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([topicId, userId])
 }
 
 model Assigment {
@@ -158,18 +155,19 @@ model Assigment {
   name        String
   description String
   topic       Topic        @relation(fields: [topicId], references: [id])
-  topicId     Int          @unique
+  topicId     Int          
   submission  Submission[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
 
 model Submission {
+  id           Int       @id @default(autoincrement())   
   score        Float     @default(0)
   isGraded     Boolean
   content      String
   assignment   Assigment @relation(fields: [assignmentId], references: [id])
-  assignmentId Int       @unique
+  assignmentId Int       
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }

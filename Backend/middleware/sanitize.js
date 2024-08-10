@@ -16,4 +16,4 @@ function sanitize(req,res,next){
     next();
 }
 
-module.exports = {sanitize}
+module.exports = { sanitize }

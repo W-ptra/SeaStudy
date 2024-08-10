@@ -47,4 +47,4 @@ async function getUserByEmail(email){
     }
 }
 
-module.exports = {createNewUser,getUserByEmail}
+module.exports = { createNewUser,getUserByEmail }

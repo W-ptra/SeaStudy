@@ -114,7 +114,7 @@ async function updateTopicById(updatedTopic){
         const data = {
             title:          updatedTopic.title,
             description:    updatedTopic.description,
-            courseId:         updatedTopic.courseId
+            courseId:       updatedTopic.courseId
         }
         const updating = await prisma.topic.update({where,data})
         return {
@@ -142,7 +142,7 @@ async function deleteTopicById(id){
         await prisma.topic.delete({where:{id}})
         return {
             operation:  true,
-            message:    `Successfully delete Topic with id: ${updating.id}`
+            message:    `Successfully delete Topic with id: ${id}`
         }
     }
     catch (err){

@@ -10,10 +10,10 @@ async function createNewMaterial(newMaterial){
             topic:         { connect:{id: newMaterial.topicId} },
             
         }
-        const topic = await prisma.material.create({ data });
+        const material = await prisma.material.create({ data });
         return {
             operation:  true,
-            message:    `Successfully created new Material with id: ${topic.id}`
+            message:    `Successfully created new Material with id: ${material.id}`
         }
     }
     catch (err){

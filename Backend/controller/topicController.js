@@ -1,11 +1,73 @@
+const topic = require("../service/topic");
 const express = require("express");
 const router = express.Router();
 
-// router.get('/',(req,res)=>{ .... })
+router.get('/course/:courseid',async (req,res)=>{
+    let courseId = req.params.courseid;
+    courseId = parseInt(courseId,10);
 
-// router.post('/',(req,res)=>{ .... })
+    const respond = await topic.getAllTopicByCourseId(courseId);
 
-// router.put('/',(req,res)=>{ .... })
+    if (!respond.operation)
+        return res.status(500).json({ message: respond.message });
+
+    return res.status(200).json(respond);
+})
+
+router.get('/:topicid',async (req,res)=>{
+    let topicid = req.params.topicid;
+    topicid = parseInt(topicid,10);
+
+    const respond = await topic.getAllTopicById(topicid);
+
+    if (!respond.operation)
+        return res.status(500).json({ message: respond.message });
+
+    return res.status(200).json(respond);
+})
+
+router.post('/',async (req,res)=>{
+    const newTopic = {
+        title: req.body.title,
+        description: req.body.description,
+        courseId: parseInt(req.body.courseId,10)
+    }
+
+    const respond = await topic.createNewTopic(newTopic);
+
+    if (!respond.operation)
+        return res.status(500).json({ message: respond.message });
+
+    return res.status(200).json(respond);
+})
+
+router.put('/:id',async (req,res)=>{
+    const updateTopic = {
+        id: parseInt(req.params.id,10),
+        title: req.body.title,
+        description: req.body.description,
+        courseId: parseInt(req.body.courseId,10)
+    }
+
+    const respond = await topic.updateTopicById(updateTopic);
+
+    if (!respond.operation)
+        return res.status(500).json({ message: respond.message });
+
+    return res.status(200).json(respond);
+})
+
+router.delete('/:id',async (req,res)=>{
+    let id = req.params.id;
+    id = parseInt(id,10);
+
+    const respond = await topic.deleteTopicById(id);
+
+    if (!respond.operation)
+        return res.status(500).json({ message: respond.message });
+
+    return res.status(200).json(respond);
+})
 
 // etc...
 

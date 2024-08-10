@@ -7,11 +7,11 @@ import { featureItems } from '@/lib/constants';
 
 const Features = () => {
   return (
-    <div className='wrapper space-y-12'>
-      <h3 className='text-2xl font-bold'>Why Choose SeaStudy?</h3>
+    <div className='wrapper space-y-8'>
+      <h3 className='text-3xl font-bold'>Why Choose SeaStudy?</h3>
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         {featureItems.map(item => (
-          <FeatureCard label={item.label} description={item.description} image={item.image} />
+          <FeatureCard key={item.label} label={item.label} description={item.description} image={item.image} />
         ))}
       </div>
     </div>
@@ -31,7 +31,7 @@ const FeatureCard = ({
 }) => {
   return (
     <CardContainer>
-      <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black w-auto rounded-xl p-6 border h-full">
+      <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black w-auto rounded-[24px] p-6 border h-full">
         <CardItem
           translateZ="50"
           className="text-xl font-bold text-black dark:text-white"
@@ -41,7 +41,7 @@ const FeatureCard = ({
         <CardItem
           as="p"
           translateZ="60"
-          className="text-black text-sm max-w-sm mt-2 dark:text-neutral-300"
+          className="text-black/70 text-sm max-w-sm mt-2 dark:text-neutral-300"
         >
           {description}
         </CardItem>

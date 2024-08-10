@@ -69,6 +69,6 @@
     @apply bg-background text-foreground;
   }
   .wrapper {
-    @apply mx-auto max-w-7xl p-4
+    @apply w-full mx-auto max-w-7xl p-4
   }
 }

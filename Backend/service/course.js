@@ -1,4 +1,10 @@
-const { getAllCourses, getCourseById, createNewCourse, filterCourses } = require("../model/courseModel");
+const {
+    getAllCourses,
+    getCourseById,
+    createNewCourse,
+    filterCourses,
+    updateCourse,
+} = require("../model/courseModel");
 const { getTopicsByCourseId } = require("../model/topicModel");
 
 async function getCourses() {
@@ -11,35 +17,75 @@ async function getCourseDetails(courseId) {
 
     const course = await getCourseById(courseId);
     const topics = await getTopicsByCourseId(courseId);
-    console.log({course, topics});
-    
+
     const operation = course.operation && topics.operation;
 
-    if(operation)
-        return { operation, status: 200, course: course.data, topics: topics.data };
-        
+    if (operation)
+        return {
+            operation,
+            status: 200,
+            course: course.data,
+            topics: topics.data,
+        };
 
-    return { operation, status: 400, message: course.message || topics.message };
+    return {
+        operation,
+        status: 400,
+        message: course.message || topics.message,
+    };
 }
 
 async function getFilteredCourses(filter) {
-    if(filter.minRating < 0 || filter.minRating > 5 || filter.maxRating < 0 || filter.maxRating > 5) {
-        return { status: 400, operation: false, message:"minRating and maxRating must be between 0 and 5" };
+    if (
+        filter.minRating < 0 ||
+        filter.minRating > 5 ||
+        filter.maxRating < 0 ||
+        filter.maxRating > 5
+    ) {
+        return {
+            status: 400,
+            operation: false,
+            message: "minRating and maxRating must be between 0 and 5",
+        };
     }
 
-    console.log({filter});
+    console.log({ filter });
 
     return filterCourses(filter);
 }
 
 async function postCourse(course) {
-    if(course.userId == null)
-        return { status: 400, operation: false, message:"userId is required"};
+    if (course.userId == null)
+        return { status: 400, operation: false, message: "userId is required" };
 
-    if(course.name.length > 150)
-        return { status: 400, operation: false, message:"name must be less than 150 characters"}; 
+    if (course.name.length > 150)
+        return {
+            status: 400,
+            operation: false,
+            message: "name must be less than 150 characters",
+        };
 
     return await createNewCourse(course);
 }
 
-module.exports = { postCourse, getCourses, getCourseDetails, getFilteredCourses };
+async function updateCourseDetails(course) {
+    if (course.userId == null)
+        return { status: 400, operation: false, message: "userId is required" };
+
+    if (course.name.length > 150)
+        return {
+            status: 400,
+            operation: false,
+            message: "name must be less than 150 characters",
+        };
+
+    return await updateCourse(course);
+}
+
+module.exports = {
+    updateCourseDetails,
+    postCourse,
+    getCourses,
+    getCourseDetails,
+    getFilteredCourses,
+};

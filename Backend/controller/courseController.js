@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authenticateJWT } = require("../middleware/auth");
-const { getCourses, getCourseDetails, getFilteredCourses, postCourse } = require("../service/course");
+const { getCourses, getCourseDetails, getFilteredCourses, postCourse, updateCourseDetails } = require("../service/course");
 
 router.get("/filter", async (req, res) => {
     const category = req.query.category;
@@ -63,7 +63,24 @@ router.post("/post", async (req, res) => {
     return res.status(respond.status).json({ message: respond.message });
 });
 
-router.put("/update", (req, res) => {});
+router.put("/update/:courseId", async (req, res) => {
+    const updatedCourse = {
+        id: parseInt(req.params.courseId),
+        name: req.body.name,
+        description: req.body.description,
+        category: req.body.category,
+        level: req.body.level,
+        price: req.body.price,
+        userId: req.user.id,
+    };
+
+    const respond = await updateCourseDetails(updatedCourse);
+
+    if(!respond.operation) 
+        return res.status(400).json({ message: "Bad request" });
+
+    return res.status(respond.status).json({ message: respond.message });
+});
 
 router.delete("/delete", (req, res) => {});
 

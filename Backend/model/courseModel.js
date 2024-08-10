@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+// TODO: hide stack trace in production
 async function getAllCourses() {
     try {
         const courses = await prisma.course.findMany();
@@ -89,7 +90,7 @@ async function filterCourses({ category, level, minRating, maxRating }) {
                 lte: maxRating,
             };
         }
-        console.log({whereClause});
+        console.log({ whereClause });
 
         const courses = await prisma.course.findMany({
             where: whereClause,
@@ -108,7 +109,7 @@ async function filterCourses({ category, level, minRating, maxRating }) {
             data: coursesWithBigIntAsString,
         };
     } catch (err) {
-        console.error(err); 
+        console.error(err);
         return {
             operation: false,
             message: err,
@@ -147,4 +148,45 @@ async function createNewCourse(newCourse) {
     }
 }
 
-module.exports = { createNewCourse, getAllCourses, getCourseById, filterCourses };
+async function updateCourse(updatedCourse) {
+    try {
+        const existingCourse = await getCourseById(updatedCourse.id);
+
+        const data = {
+            name: updatedCourse.name ?? existingCourse.data.name,
+            description: updatedCourse.description ?? existingCourse.data.description,
+            price: updatedCourse.price ?? existingCourse.data.price,
+            category: updatedCourse.category ?? existingCourse.data.category,
+            level: updatedCourse.level ?? existingCourse.data.level
+        };
+
+        const course = await prisma.course.update({
+            where: {
+                id: updatedCourse.id,
+            },
+            data,
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            message: `Sucessfully updated Course with id: ${course.id}`,
+            data: course,
+        };
+    } catch (err) {
+        return {
+            operation: false,
+            message: err,
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+module.exports = {
+    createNewCourse,
+    updateCourse,
+    getAllCourses,
+    getCourseById,
+    filterCourses,
+};

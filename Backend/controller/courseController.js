@@ -1,7 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { authenticateJWT } = require("../middleware/auth");
-const { getCourses, getCourseDetails, getFilteredCourses, postCourse, updateCourseDetails } = require("../service/course");
+const {
+    getCourses,
+    getCourseDetails,
+    getFilteredCourses,
+    postCourse,
+    updateCourseDetails,
+    deleteCourse,
+} = require("../service/course");
 
 router.get("/filter", async (req, res) => {
     const category = req.query.category;
@@ -9,19 +16,24 @@ router.get("/filter", async (req, res) => {
     let minRating = req.query.minRating;
     let maxRating = req.query.maxRating;
 
-    if(minRating !== undefined) {
+    if (minRating !== undefined) {
         minRating = parseFloat(minRating);
     }
 
-    if(maxRating !== undefined) {
+    if (maxRating !== undefined) {
         maxRating = parseFloat(maxRating);
     }
 
-    const respond = await getFilteredCourses({ category, level, minRating, maxRating });
+    const respond = await getFilteredCourses({
+        category,
+        level,
+        minRating,
+        maxRating,
+    });
 
     if (!respond.operation) return res.status(400).json({ respond });
 
-    return res.status(respond.status).json({ course: respond.payload });
+    return res.status(respond.status).json({ course: respond.data });
 });
 
 router.get("/", async (req, res) => {
@@ -29,7 +41,7 @@ router.get("/", async (req, res) => {
 
     if (!respond.operation) return res.status(400).json({ respond });
 
-    return res.status(respond.status).json({ courses: respond.payload });
+    return res.status(respond.status).json({ courses: respond.data });
 });
 
 router.get("/:courseId", async (req, res) => {
@@ -37,10 +49,9 @@ router.get("/:courseId", async (req, res) => {
 
     const respond = await getCourseDetails(courseId);
 
-    if (!respond.operation) 
-        return res.status(400).json({ respond });
+    if (!respond.operation) return res.status(400).json({ respond });
 
-    return res.status(respond.status).json({ course: respond.course, topics: respond.topics });
+    return res
 });
 
 // Instructor role operations
@@ -63,7 +74,7 @@ router.post("/post", async (req, res) => {
     return res.status(respond.status).json({ message: respond.message });
 });
 
-router.put("/update/:courseId", async (req, res) => {
+router.put("/:courseId", async (req, res) => {
     const updatedCourse = {
         id: parseInt(req.params.courseId),
         name: req.body.name,
@@ -76,12 +87,12 @@ router.put("/update/:courseId", async (req, res) => {
 
     const respond = await updateCourseDetails(updatedCourse);
 
-    if(!respond.operation) 
+    if (!respond.operation)
         return res.status(400).json({ message: "Bad request" });
 
     return res.status(respond.status).json({ message: respond.message });
 });
 
-router.delete("/delete", (req, res) => {});
+router.delete("/:courseId", async (req, res) => {
 
 module.exports = router;

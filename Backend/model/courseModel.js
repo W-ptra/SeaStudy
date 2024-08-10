@@ -64,6 +64,61 @@ async function getCourseById(courseId) {
     }
 }
 
+async function filterCourses({ category, level, minRating, maxRating }) {
+    try {
+        const whereClause = {};
+
+        if (category) {
+            whereClause.category = category;
+        }
+
+        if (level) {
+            whereClause.level = level;
+        }
+
+        if (minRating !== undefined && maxRating !== undefined) {
+            whereClause.avgRating = {
+                gte: minRating,
+                lte: maxRating,
+            };
+        } else if (minRating !== undefined) {
+            whereClause.avgRating = {
+                gte: minRating,
+            };
+        } else if (maxRating !== undefined) {
+            whereClause.avgRating = {
+                lte: maxRating,
+            };
+        }
+        console.log({whereClause});
+
+        const courses = await prisma.course.findMany({
+            where: whereClause,
+        });
+
+        const coursesWithBigIntAsString = courses.map((course) => {
+            return {
+                ...course,
+                price: course.price.toString(),
+            };
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            payload: coursesWithBigIntAsString,
+        };
+    } catch (err) {
+        console.error(err); 
+        return {
+            operation: false,
+            message: err,
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function createNewCourse(newCourse) {
     try {
         const data = {
@@ -93,4 +148,4 @@ async function createNewCourse(newCourse) {
     }
 }
 
-module.exports = { createNewCourse, getAllCourses, getCourseById };
+module.exports = { createNewCourse, getAllCourses, getCourseById, filterCourses };

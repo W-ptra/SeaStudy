@@ -1,4 +1,4 @@
-const { getAllCourses, getCourseById, createNewCourse } = require("../model/courseModel");
+const { getAllCourses, getCourseById, createNewCourse, filterCourses } = require("../model/courseModel");
 
 async function getCourses() {
     return getAllCourses();
@@ -10,7 +10,19 @@ async function getCourseDetails(courseId) {
     if (isNaN(courseId))
         return res.status(400).json({ message: "Invalid courseId" });
 
+    // TODO: get topics for the course
+
     return getCourseById(courseId);
+}
+
+async function getFilteredCourses(filter) {
+    if(filter.minRating < 0 || filter.minRating > 5 || filter.maxRating < 0 || filter.maxRating > 5) {
+        return { status: 400, operation: false, message:"minRating and maxRating must be between 0 and 5" };
+    }
+
+    console.log({filter});
+
+    return filterCourses(filter);
 }
 
 async function postCourse(course) {
@@ -23,4 +35,4 @@ async function postCourse(course) {
     return await createNewCourse(course);
 }
 
-module.exports = { postCourse, getCourses, getCourseDetails };
+module.exports = { postCourse, getCourses, getCourseDetails, getFilteredCourses };

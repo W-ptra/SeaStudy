@@ -1,7 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const { authenticateJWT } = require("../middleware/auth");
-const { getCourses, getCourseDetails, postCourse } = require("../service/course");
+const { getCourses, getCourseDetails, getFilteredCourses, postCourse } = require("../service/course");
+
+router.get("/filter", async (req, res) => {
+    const category = req.query.category;
+    const level = req.query.level;
+    let minRating = req.query.minRating;
+    let maxRating = req.query.maxRating;
+
+    if(minRating !== undefined) {
+        minRating = parseFloat(minRating);
+    }
+
+    if(maxRating !== undefined) {
+        maxRating = parseFloat(maxRating);
+    }
+
+    const respond = await getFilteredCourses({ category, level, minRating, maxRating });
+
+    if (!respond.operation) return res.status(400).json({ respond });
+
+    return res.status(respond.status).json({ course: respond.payload });
+});
 
 router.get("/", async (req, res) => {
     const respond = await getCourses();

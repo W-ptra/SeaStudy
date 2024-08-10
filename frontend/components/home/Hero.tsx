@@ -1,5 +1,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
+import { Sparkles } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -9,7 +11,7 @@ const Hero = () => {
         <h5>Join millions of learners mastering new skills, advancing their careers, and exploring new hobbies with our expert-led courses.</h5>
       </div>
       <div className='flex gap-x-4'>
-        <Button variant={"default"} className='rounded-full'>Explore Courses</Button>
+        <Button variant={"default"} className='rounded-full flex items-center gap-4'>Explore Courses <Sparkles className='h-5 w-5' /></Button>
         <Button variant={"outline"} className='rounded-full'>Get Started</Button>
       </div>
     </div>

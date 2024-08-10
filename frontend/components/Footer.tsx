@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <div className='wrapper w-full text-center mt-[100px]'>COMPFEST SEA ACADEMY | Team Sigma Rizz</div>
   )
 }
 

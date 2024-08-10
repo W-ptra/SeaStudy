@@ -17,10 +17,14 @@ async function createNewMaterial(newMaterial){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();
@@ -37,10 +41,14 @@ async function getAllMaterialByTopicId(topicId){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();
@@ -57,10 +65,14 @@ async function getMaterialById(id){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();
@@ -83,10 +95,14 @@ async function updateMaterialById(updatedMaterial){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();
@@ -102,10 +118,14 @@ async function deleteMaterialById(id){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();

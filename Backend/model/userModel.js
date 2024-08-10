@@ -17,10 +17,14 @@ async function createNewUser(newUser){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();
@@ -37,10 +41,14 @@ async function getUserByEmail(email){
         }
     }
     catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
-            operation:  false,
-            message:    err
-        }
+            operation: false,
+            message: "Interval Server Error",
+        };
     }
     finally {
         await prisma.$disconnect();

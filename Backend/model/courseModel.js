@@ -18,9 +18,13 @@ async function getAllCourses() {
             payload: coursesWithBigIntAsString,
         };
     } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
             operation: false,
-            message: err,
+            message: "Interval Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -55,9 +59,13 @@ async function getCourseById(courseId) {
             payload: courseWithBigIntAsString,
         };
     } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
             operation: false,
-            message: err,
+            message: "Interval Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -84,9 +92,13 @@ async function createNewCourse(newCourse) {
             payload: course,
         };
     } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
         return {
             operation: false,
-            message: err,
+            message: "Interval Server Error",
         };
     } finally {
         await prisma.$disconnect();

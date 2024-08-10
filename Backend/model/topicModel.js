@@ -11,7 +11,7 @@ async function createNewTopic(newTopic){
         const topic = await prisma.topic.create({ data });
         return {
             operation:  true,
-            message:    `Sucessfully created new Topic with id: ${topic.id}`
+            message:    `Successfully created new Topic with id: ${topic.id}`
         }
     }
     catch (err){
@@ -21,7 +21,7 @@ async function createNewTopic(newTopic){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -32,7 +32,13 @@ async function createNewTopic(newTopic){
 async function getAllTopicByCourseId(courseId){
     try{
         const where = { courseId }
-        const allTopic = await prisma.topic.findMany({where})
+        const select = { 
+            id: true,
+            title: true,
+            description: true
+        }
+
+        const allTopic = await prisma.topic.findMany({where,select})
         return {
             operation:  true,
             data:       allTopic
@@ -45,7 +51,7 @@ async function getAllTopicByCourseId(courseId){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -55,8 +61,33 @@ async function getAllTopicByCourseId(courseId){
 
 async function getTopicById(id){
     try{
-        const where = { id }
-        const topic = await prisma.topic.findUnique({where})
+        const where = { id };
+        const include = {
+            assignment: {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                }
+            },
+            material: {
+                select: {
+                    id: true,
+                    name: true,
+                    type: true,
+                    link: true,
+                }
+            }
+        }
+        const select = {
+            id: true,
+            title: true,
+            description: true,
+            assignment: include.assignment,
+            material: include.material
+        }
+
+        const topic = await prisma.topic.findUnique({where,select})
         return {
             operation:  true,
             data:       topic
@@ -69,7 +100,7 @@ async function getTopicById(id){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -88,7 +119,7 @@ async function updateTopicById(updatedTopic){
         const updating = await prisma.topic.update({where,data})
         return {
             operation:  true,
-            message:    `Sucessfully update Topic with id: ${updating.id}`
+            message:    `Successfully update Topic with id: ${updating.id}`
         }
     }
     catch (err){
@@ -98,7 +129,7 @@ async function updateTopicById(updatedTopic){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -111,7 +142,7 @@ async function deleteTopicById(id){
         await prisma.topic.delete({where:{id}})
         return {
             operation:  true,
-            message:    `Sucessfully delete Topic with id: ${updating.id}`
+            message:    `Successfully delete Topic with id: ${updating.id}`
         }
     }
     catch (err){
@@ -121,7 +152,7 @@ async function deleteTopicById(id){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {

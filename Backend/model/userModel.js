@@ -13,7 +13,7 @@ async function createNewUser(newUser){
         const user = await prisma.users.create({ data });
         return {
             operation:  true,
-            message:    `Sucessfully created new User with id: ${user.id}`
+            message:    `Successfully created new User with id: ${user.id}`
         }
     }
     catch (err){
@@ -23,7 +23,7 @@ async function createNewUser(newUser){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -47,7 +47,7 @@ async function getUserByEmail(email){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {

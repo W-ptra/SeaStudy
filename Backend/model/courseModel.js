@@ -24,7 +24,7 @@ async function getAllCourses() {
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -65,7 +65,7 @@ async function getCourseById(courseId) {
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -88,7 +88,7 @@ async function createNewCourse(newCourse) {
         return {
             operation: true,
             status: 201,
-            message: `Sucessfully created new Course with id: ${course.id}`,
+            message: `Successfully created new Course with id: ${course.id}`,
             payload: course,
         };
     } catch (err) {
@@ -98,7 +98,7 @@ async function createNewCourse(newCourse) {
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();

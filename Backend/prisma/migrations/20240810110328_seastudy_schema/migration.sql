@@ -16,8 +16,8 @@ CREATE TABLE "Users" (
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" "userRole" NOT NULL,
-    "credit" BIGINT NOT NULL,
+    "role" "userRole" NOT NULL DEFAULT 'User',
+    "credit" BIGINT NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -32,6 +32,7 @@ CREATE TABLE "Course" (
     "category" "category" NOT NULL,
     "level" "courseLevel" NOT NULL,
     "price" BIGINT NOT NULL,
+    "avgRating" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -130,6 +131,7 @@ CREATE TABLE "Submission" (
     "isGraded" BOOLEAN NOT NULL,
     "content" TEXT NOT NULL,
     "assignmentId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -177,3 +179,6 @@ ALTER TABLE "Assigment" ADD CONSTRAINT "Assigment_topicId_fkey" FOREIGN KEY ("to
 
 -- AddForeignKey
 ALTER TABLE "Submission" ADD CONSTRAINT "Submission_assignmentId_fkey" FOREIGN KEY ("assignmentId") REFERENCES "Assigment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Submission" ADD CONSTRAINT "Submission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

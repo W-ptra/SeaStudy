@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "Course" ADD COLUMN     "avgRating" DOUBLE PRECISION NOT NULL DEFAULT 0;
-
--- AlterTable
-ALTER TABLE "Users" ALTER COLUMN "role" SET DEFAULT 'User',
-ALTER COLUMN "credit" SET DEFAULT 0;

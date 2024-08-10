@@ -13,7 +13,7 @@ async function createNewMaterial(newMaterial){
         const topic = await prisma.material.create({ data });
         return {
             operation:  true,
-            message:    `Sucessfully created new Material with id: ${topic.id}`
+            message:    `Successfully created new Material with id: ${topic.id}`
         }
     }
     catch (err){
@@ -23,7 +23,7 @@ async function createNewMaterial(newMaterial){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -47,7 +47,7 @@ async function getAllMaterialByTopicId(topicId){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -71,7 +71,7 @@ async function getMaterialById(id){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -91,7 +91,7 @@ async function updateMaterialById(updatedMaterial){
         const updating = await prisma.material.update({where,data})
         return {
             operation:  true,
-            message:    `Sucessfully updated Material with id: ${updating.id}`
+            message:    `Successfully updated Material with id: ${updating.id}`
         }
     }
     catch (err){
@@ -101,7 +101,7 @@ async function updateMaterialById(updatedMaterial){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {
@@ -114,7 +114,7 @@ async function deleteMaterialById(id){
         await prisma.material.delete({where:{id}})
         return {
             operation:  true,
-            message:    `Sucessfully delete Material with id: ${id}`
+            message:    `Successfully delete Material with id: ${id}`
         }
     }
     catch (err){
@@ -124,7 +124,7 @@ async function deleteMaterialById(id){
 
         return {
             operation: false,
-            message: "Interval Server Error",
+            message: "Internal Server Error",
         };
     }
     finally {

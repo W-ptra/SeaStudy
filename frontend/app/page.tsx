@@ -4,7 +4,7 @@ import PopularCourses from "@/components/home/PopularCourses";
 
 export default function Home() {
   return (
-    <main className="wrapper space-y-28">
+    <main className="space-y-8 md:space-y-16 lg:space-y-24">
       <Hero />
       <Features />
       <PopularCourses />

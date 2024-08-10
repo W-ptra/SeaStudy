@@ -1,5 +1,7 @@
 import { popularCourses } from '@/lib/constants'
 import React from 'react'
+import { Star } from 'lucide-react';
+import { Button } from '../ui/button';
 
 const PopularCourses = () => {
   return (
@@ -40,15 +42,19 @@ const PopularCoursesCard = ({
   ctaButton: string
 }) => {
   return (
-    <div className='p-4 border border-black rounded-xl space-y-4'>
+    <div className='p-4 border border-black flex flex-col justify-between rounded-lg space-y-4'>
       <div>
         <p className='text-[18px] font-bold'>{courseName}</p>
         <p className='text-[14px] text-black/70'>{instructor}</p>
       </div>
-      <p>{rating}</p>
-      <div>
-        <p className='text-sm'>{description}</p>
-        <p>{ctaButton}</p>
+      <div className='space-y-4'>
+        <p className='flex items-center gap-x-2'>{rating} <Star className='h-4 w-4' /></p>
+        <div>
+          <p className='text-sm'>{description}</p>
+        </div>
+        <Button className='rounded-full'>
+          {ctaButton}
+        </Button>
       </div>
     </div>
   )

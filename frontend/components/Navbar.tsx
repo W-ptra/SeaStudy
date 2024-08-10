@@ -35,7 +35,7 @@ const Navbar = () => {
         </h1>
         <nav>
           {/* IF THE USER HASN'T LOGGED IN */}
-          <Button className='w-[120px] flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all'>
+          <Button className='w-[120px] hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all'>
             Log In <LogIn className='w-4 h-4' />
           </Button>
         </nav>

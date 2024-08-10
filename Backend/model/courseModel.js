@@ -12,6 +12,7 @@ async function getAllCourses() {
                 price: course.price.toString(),
             };
         });
+        console.log(coursesWithBigIntAsString);
 
         return {
             operation: true,
@@ -183,9 +184,34 @@ async function updateCourse(updatedCourse) {
     }
 }
 
+async function deleteCourse(courseId) {
+    try {
+        const course = await prisma.course.delete({
+            where: {
+                id: courseId,
+            },
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            message: `Sucessfully deleted Course with id: ${course.id}`,
+            data: course,
+        };
+    } catch (err) {
+        return {
+            operation: false,
+            message: err,
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 module.exports = {
     createNewCourse,
     updateCourse,
+    deleteCourse,
     getAllCourses,
     getCourseById,
     filterCourses,

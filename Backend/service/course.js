@@ -2,6 +2,7 @@ const {
     getAllCourses,
     getCourseById,
     createNewCourse,
+    deleteCourse: deleteCourseDB,
     filterCourses,
     updateCourse,
 } = require("../model/courseModel");
@@ -82,9 +83,17 @@ async function updateCourseDetails(course) {
     return await updateCourse(course);
 }
 
+async function deleteCourse(courseId) {
+    if (courseId == null)
+        return { status: 400, operation: false, message: "courseId is required" };
+
+    return await deleteCourseDB(courseId);
+}
+
 module.exports = {
     updateCourseDetails,
     postCourse,
+    deleteCourse,
     getCourses,
     getCourseDetails,
     getFilteredCourses,

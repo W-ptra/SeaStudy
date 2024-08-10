@@ -52,6 +52,8 @@ router.get("/:courseId", async (req, res) => {
     if (!respond.operation) return res.status(400).json({ respond });
 
     return res
+        .status(respond.status)
+        .json({ course: respond.course, topics: respond.topics });
 });
 
 // Instructor role operations
@@ -94,5 +96,12 @@ router.put("/:courseId", async (req, res) => {
 });
 
 router.delete("/:courseId", async (req, res) => {
+    const respond = await deleteCourse(parseInt(req.params.courseId));
+
+    if (!respond.operation)
+        return res.status(404).json({ message: "Course does not exist" });
+
+    return res.status(respond.status).json({ message: respond.message });
+});
 
 module.exports = router;

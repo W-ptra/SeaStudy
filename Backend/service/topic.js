@@ -1,6 +1,7 @@
 const topicModel = require("../model/topicModel");
 
 async function getAllTopicByCourseId(courseId){
+    
     return await topicModel.getAllTopicByCourseId(courseId);;
 }
 

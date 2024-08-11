@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "test": "jest"
+    "test": "jest unit",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",

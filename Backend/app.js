@@ -2,6 +2,7 @@ const apiController = require("./controller/apiController");
 const authController = require("./controller/authController");
 const courseController = require("./controller/courseController");
 const topicController = require("./controller/topicController");
+const completionController = require("./controller/completionController");
 const materialController = require("./controller/materialController");
 const assignmentController = require("./controller/assignmentController");
 const { sanitize } = require("./middleware/sanitize");
@@ -27,6 +28,7 @@ app.use("/api/course", courseController);
 app.use("/api/topic", topicController);
 app.use("/api/material", materialController);
 app.use("/api/assignment", assignmentController);
+app.use("/api/completion", completionController);
 app.use("/api", apiController);
 
 app.get("/", (req, res) => {

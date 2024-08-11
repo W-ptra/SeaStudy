@@ -5,7 +5,7 @@ async function createNewCompletion(newCompletion) {
     try {
         const data = {
             topic: { connect:{id: newCompletion.topicId} },
-            user: { connect:{id: newCompletion.userId} },
+            user: { connect:{id: newCompletion.userId} }
         };
 
         const completion = await prisma.completion.create({ data });

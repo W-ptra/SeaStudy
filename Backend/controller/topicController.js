@@ -1,3 +1,4 @@
+const {authenticateJWT} = require("../middleware/auth");
 const topic = require("../service/topic");
 const express = require("express");
 const router = express.Router();
@@ -25,6 +26,8 @@ router.get('/:topicid',async (req,res)=>{
 
     return res.status(200).json(respond);
 })
+
+router.use(authenticateJWT("Instructor"));
 
 router.post('/',async (req,res)=>{
     const newTopic = {

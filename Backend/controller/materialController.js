@@ -1,9 +1,12 @@
+const {authenticateJWT} = require("../middleware/auth");
 const material = require("../service/material");
 const { v4: uuidv4} = require("uuid");
 const express = require("express");
 const multer = require("multer");
 const router = express.Router();
 const path = require('path');
+
+router.use(authenticateJWT("Instructor"));
 
 router.post('/',async (req,res)=>{
     const newMaterial = {

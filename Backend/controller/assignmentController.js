@@ -1,6 +1,9 @@
+const {authenticateJWT} = require("../middleware/auth");
 const assigment = require("../service/assignment");
 const express = require("express");
 const router = express.Router();
+
+router.use(authenticateJWT("Instructor"));
 
 router.post('/',async (req,res)=>{
     const newAssignment = {

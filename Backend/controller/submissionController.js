@@ -1,3 +1,4 @@
+const {authenticateJWT} = require("../middleware/auth");
 const submission = require("../service/submission");
 const express = require("express");
 const router = express.Router();
@@ -26,6 +27,8 @@ router.get('/user/:userid',async (req,res)=>{
     return res.status(200).json(respond);
 })
 
+router.use(authenticateJWT("User"));
+
 router.post('/',async (req,res)=>{
     const newSubmission = {
         score:          parseFloat(req.body.score),
@@ -51,7 +54,7 @@ router.put('/:submissionid',async (req,res)=>{
         content:        req.body.content,
         assignmentId:   parseInt(req.body.assignmentId)
     }
-    //console.log(updatedSubmission)
+    
     const respond = await submission.updateSubmission(updatedSubmission);
 
     if (!respond.operation)

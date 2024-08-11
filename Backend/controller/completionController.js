@@ -1,6 +1,9 @@
+const {authenticateJWT} = require("../middleware/auth");
 const completion = require("../service/completion");
 const express = require("express");
 const router = express.Router();
+
+router.use(authenticateJWT("User"));
 
 router.post('/',async (req,res)=>{
     const newCompletion = {

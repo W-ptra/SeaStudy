@@ -31,7 +31,7 @@ router.put('/:materialid',async (req,res)=>{
     const respond = await material.updateMaterial(newMaterial);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })
@@ -42,7 +42,7 @@ router.delete('/:materialid',async (req,res)=>{
     const respond = await material.deleteMaterial(id);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })

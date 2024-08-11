@@ -52,7 +52,7 @@ router.put('/:topicid',async (req,res)=>{
     const respond = await topic.updateTopicById(updateTopic);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })
@@ -64,7 +64,7 @@ router.delete('/:id',async (req,res)=>{
     const respond = await topic.deleteTopicById(id);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })

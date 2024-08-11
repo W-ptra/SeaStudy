@@ -59,6 +59,30 @@ async function getAllTopicByCourseId(courseId){
     }
 }
 
+async function getTopicByIdNonJoin(id){
+    try{
+        const where = { id };
+        const topic = await prisma.topic.findUnique({where})
+        return {
+            operation:  true,
+            data:       topic
+        }
+    }
+    catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function getTopicById(id){
     try{
         const where = { id };
@@ -184,6 +208,7 @@ module.exports = {
     createNewTopic,
     getAllTopicByCourseId,
     getTopicById,
+    getTopicByIdNonJoin,
     getTopicsByCourseId,
     updateTopicById,
     deleteTopicById

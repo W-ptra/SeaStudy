@@ -91,6 +91,30 @@ async function getSubmissionByUserId(userId){
     }
 }
 
+async function getSubmissionById(id){
+    try{
+        const where = { id }
+        const submission = await prisma.submission.findUnique({where})
+        return {
+            operation:  true,
+            data:       submission
+        }
+    }
+    catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function updateSubmissionById(updatedSubmission){
     try{
         const where = { id:updatedSubmission.id }
@@ -128,5 +152,6 @@ module.exports = {
     createNewSubmission,
     getAllSubmissionByAssignmentId,
     getSubmissionByUserId,
+    getSubmissionById,
     updateSubmissionById
 }

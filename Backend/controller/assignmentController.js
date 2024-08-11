@@ -28,19 +28,18 @@ router.put('/:assignmentid',async (req,res)=>{
     const respond = await assigment.updateAssignment(updateAssignment);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })
 
 router.delete('/:assignmentid',async (req,res)=>{
-    let id = req.params.assignmentid;
-    id = parseInt(id,10);
+    const id = parseInt(req.params.assignmentid,10);
 
     const respond = await assigment.deleteAssignment(id);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })

@@ -1,6 +1,30 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
+async function getAssignmentById(id){
+    try{
+        const where = {id}
+        const assignment = await prisma.assigment.findUnique({where});
+        return {
+            operation:  true,
+            data:    assignment
+        }
+    }
+    catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function createNewAssignment(newAssignment){
     try{
         const data = {
@@ -82,6 +106,7 @@ async function deleteAssignmentById(id){
 }
 
 module.exports = {
+    getAssignmentById,
     createNewAssignment,
     updateAssignmentById,
     deleteAssignmentById

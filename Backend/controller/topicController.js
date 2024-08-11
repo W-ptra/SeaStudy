@@ -1,7 +1,9 @@
-const {authenticateJWT} = require("../middleware/auth");
+const {authenticateJWT,isAuthorized} = require("../middleware/auth");
 const topic = require("../service/topic");
 const express = require("express");
 const router = express.Router();
+
+router.use(isAuthorized);
 
 router.get('/course/:courseid',async (req,res)=>{
     let courseId = req.params.courseid;

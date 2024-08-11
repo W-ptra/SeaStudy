@@ -8,9 +8,9 @@ router.use(authenticateJWT("User"));
 router.post('/',async (req,res)=>{
     const newCompletion = {
         topicId:        parseInt(req.body.topicId,10),
-        userId:         parseInt(req.body.userId,10)
+        userId:         parseInt(req.user.id,10)
     }
-
+    
     const respond = await completion(newCompletion);
 
     if (!respond.operation)

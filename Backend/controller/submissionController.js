@@ -1,7 +1,9 @@
-const {authenticateJWT} = require("../middleware/auth");
+const {authenticateJWT,isAuthorized} = require("../middleware/auth");
 const submission = require("../service/submission");
 const express = require("express");
 const router = express.Router();
+
+router.use(isAuthorized);
 
 router.get('/assignment/:assignmentid',async (req,res)=>{
     let assignmentid = req.params.assignmentid;

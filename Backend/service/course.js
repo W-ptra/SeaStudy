@@ -14,7 +14,11 @@ async function getCourses() {
 
 async function getCourseDetails(courseId) {
     if (isNaN(courseId))
-        return res.status(400).json({ message: "Invalid courseId" });
+        return {
+            operation: false,
+            status: 400,
+            message: "Invalid courseId",
+        };
 
     const course = await getCourseById(courseId);
     const topics = await getTopicsByCourseId(courseId);

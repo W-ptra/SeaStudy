@@ -28,9 +28,9 @@ router.get('/:topicid',async (req,res)=>{
 
 router.post('/',async (req,res)=>{
     const newTopic = {
-        title: req.body.title,
-        description: req.body.description,
-        courseId: parseInt(req.body.courseId,10)
+        title:          req.body.title,
+        description:    req.body.description,
+        courseId:       parseInt(req.body.courseId,10)
     }
 
     const respond = await topic.createNewTopic(newTopic);
@@ -41,12 +41,12 @@ router.post('/',async (req,res)=>{
     return res.status(200).json(respond);
 })
 
-router.put('/:id',async (req,res)=>{
+router.put('/:topicid',async (req,res)=>{
     const updateTopic = {
-        id: parseInt(req.params.id,10),
-        title: req.body.title,
-        description: req.body.description,
-        courseId: parseInt(req.body.courseId,10)
+        id:             parseInt(req.params.topicid,10),
+        title:          req.body.title,
+        description:    req.body.description,
+        courseId:       parseInt(req.body.courseId,10)
     }
 
     const respond = await topic.updateTopicById(updateTopic);

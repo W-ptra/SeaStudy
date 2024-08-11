@@ -13,11 +13,13 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 
+app.use(express.static('./public'));
 app.use(cors({ origin: "*" }));
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 
 app.use(sanitize);
 app.use("/api/auth", authController);

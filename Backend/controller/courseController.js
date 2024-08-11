@@ -27,12 +27,12 @@ router.use(authenticateJWT("Instructor"));
 
 router.post("/post", async (req, res) => {
     const newCourse = {
-        name: req.body.name,
-        description: req.body.description,
-        category: req.body.category,
-        level: req.body.level,
-        price: req.body.price,
-        userId: req.user.id,
+        name:           req.body.name,
+        description:    req.body.description,
+        category:       req.body.category,
+        level:          req.body.level,
+        price:          req.body.price,
+        userId:         req.user.id,
     };
 
     const respond = await postCourse(newCourse);

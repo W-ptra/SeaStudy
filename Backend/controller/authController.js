@@ -6,10 +6,10 @@ require("dotenv").config();
 
 router.post("/register", async (req, res) => {
     const newUser = {
-        email: req.body.email,
-        name: req.body.name,
-        password: req.body.password,
-        role: req.body.role,
+        email:      req.body.email,
+        name:       req.body.name,
+        password:   req.body.password,
+        role:       req.body.role,
     };
 
     const respond = await register(newUser);

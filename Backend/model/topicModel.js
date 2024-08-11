@@ -108,6 +108,26 @@ async function getTopicById(id){
     }
 }
 
+async function getTopicsByCourseId(courseId){
+    try{
+        const where = { courseId }
+        const topic = await prisma.topic.findMany({where})
+        return {
+            operation:  true,
+            data:       topic
+        }
+    }
+    catch (err){
+        return {
+            operation:  false,
+            message:    err
+        }
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function updateTopicById(updatedTopic){
     try{
         const where = { id:updatedTopic.id }
@@ -164,6 +184,7 @@ module.exports = {
     createNewTopic,
     getAllTopicByCourseId,
     getTopicById,
+    getTopicsByCourseId,
     updateTopicById,
     deleteTopicById
 }

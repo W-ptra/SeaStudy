@@ -1,5 +1,5 @@
 const {
-    getEnrolledUsers: getEnrolledUsersDB,
+    getEnrollmentByCourseId: getEnrolledUsersDB,
     enrollCourse: enrollCourseDB,
     unenrollCourse: unenrollCourseDB,
 } = require("../model/enrollmentModel");

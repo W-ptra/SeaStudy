@@ -52,12 +52,11 @@ async function getCourseById(courseId) {
             ...course,
             price: course.price.toString(),
         };
-        console.log(courseWithBigIntAsString);
 
         return {
             operation: true,
             status: 200,
-            payload: courseWithBigIntAsString,
+            data: courseWithBigIntAsString,
         };
     } catch (err) {
         console.log("====== Error Log ======");
@@ -217,7 +216,7 @@ async function deleteCourse(courseId) {
             message: `Sucessfully deleted Course with id: ${course.id}`,
             data: course,
             message: `Successfully created new Course with id: ${course.id}`,
-            payload: course,
+            data: course,
         };
     } catch (err) {
         console.log("====== Error Log ======");

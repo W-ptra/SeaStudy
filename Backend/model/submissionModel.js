@@ -8,7 +8,7 @@ async function createNewSubmission(newSubmission){
             isGraded:        newSubmission.isGraded,
             content:         newSubmission.content,
             assignment:      { connect:{id: newSubmission.assignmentId} },
-            
+            user:            { connect:{id: newSubmission.userId} }
         }
         const topic = await prisma.submission.create({ data });
         return {
@@ -99,9 +99,10 @@ async function updateSubmissionById(updatedSubmission){
             score:           updatedSubmission.score,
             isGraded:        updatedSubmission.isGraded,
             content:         updatedSubmission.content,
-            assignmentId:    updatedSubmission.assignmentId
-            
+            assignmentId:    updatedSubmission.assignmentId,
+            userId:    updatedSubmission.userId
         }
+        
         const updating = await prisma.submission.update({where,data})
         return {
             operation:  true,

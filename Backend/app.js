@@ -3,8 +3,10 @@ const authController = require("./controller/authController");
 const courseController = require("./controller/courseController");
 const enrollmentController = require("./controller/enrollmentController");
 const topicController = require("./controller/topicController");
+const completionController = require("./controller/completionController");
 const materialController = require("./controller/materialController");
 const assignmentController = require("./controller/assignmentController");
+const submissionController = require("./controller/submissionController");
 const { sanitize } = require("./middleware/sanitize");
 
 const cookieParser = require("cookie-parser");
@@ -29,6 +31,8 @@ app.use("/api/enrollment", enrollmentController);
 app.use("/api/topic", topicController);
 app.use("/api/material", materialController);
 app.use("/api/assignment", assignmentController);
+app.use("/api/completion", completionController);
+app.use("/api/submission", submissionController);
 app.use("/api", apiController);
 
 app.get("/", (req, res) => {

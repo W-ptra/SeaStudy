@@ -1,6 +1,7 @@
 const apiController = require("./controller/apiController");
 const authController = require("./controller/authController");
 const courseController = require("./controller/courseController");
+const enrollmentController = require("./controller/enrollmentController");
 const topicController = require("./controller/topicController");
 const materialController = require("./controller/materialController");
 const assignmentController = require("./controller/assignmentController");
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(sanitize);
 app.use("/api/auth", authController);
 app.use("/api/course", courseController);
+app.use("/api/enrollment", enrollmentController);
 app.use("/api/topic", topicController);
 app.use("/api/material", materialController);
 app.use("/api/assignment", assignmentController);

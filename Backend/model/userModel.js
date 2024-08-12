@@ -79,4 +79,36 @@ async function getUserById(id){
     }
 }
 
-module.exports = { createNewUser, getUserByEmail, getUserById }
+async function updateUserSaldo(id,amount){
+    try{
+        const where = { id }
+        const data = {credit: amount}
+        const user = await prisma.users.update({where,data})
+        return {
+            operation:      true,
+            message:        `Credit of user with id ${id} has changes`,
+            userId:         id,
+            credit:         user.credit
+        }
+    }
+    catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
+module.exports = {
+    createNewUser,
+    getUserByEmail,
+    getUserById,
+    updateUserSaldo
+}

@@ -73,7 +73,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif'],
+        satoshi: ['Satoshi', 'sans-serif'],
       },
       boxShadow: {
         'custom': '8px 8px 0px 0px rgba(0, 0, 0, 1)',

@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { GraduationCap } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,9 +37,11 @@ const Navbar = () => {
         </h1>
         <nav>
           {/* IF THE USER HASN'T LOGGED IN */}
-          <Button className='w-[120px] hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all'>
-            Log In <LogIn className='w-4 h-4' />
-          </Button>
+          <Link href="/sign-in">
+            <Button className='w-[120px] hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all'>
+              Sign In <LogIn className='w-4 h-4' />
+            </Button>
+          </Link>
         </nav>
       </header>
     </div>

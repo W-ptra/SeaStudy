@@ -30,6 +30,8 @@ app.use(sanitize);
 app.use("/api/auth", authController);
 app.use("/api/user", userController);
 app.use("/api/course", courseController);
+app.use("/api/post", courseController);
+app.use("/api/review", courseController);
 app.use("/api/enrollment", enrollmentController);
 app.use("/api/topic", topicController);
 app.use("/api/material", materialController);

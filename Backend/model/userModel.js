@@ -34,7 +34,14 @@ async function createNewUser(newUser){
 async function getUserByEmail(email){
     try{
         const where = { email }
-        const user = await prisma.users.findUnique({where})
+        const select = {
+            id:         true,
+            email:      true,
+            name:       true,
+            role:       true,
+            credit:     true,
+        }
+        const user = await prisma.users.findUnique({where,select})
         return {
             operation:  true,
             data:       user
@@ -58,7 +65,14 @@ async function getUserByEmail(email){
 async function getUserById(id){
     try{
         const where = { id }
-        const user = await prisma.users.findUnique({where})
+        const select = {
+            id:         true,
+            email:      true,
+            name:       true,
+            role:       true,
+            credit:     true,
+        }
+        const user = await prisma.users.findUnique({where,select})
         return {
             operation:  true,
             data:       user

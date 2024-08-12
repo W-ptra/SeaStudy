@@ -1,5 +1,7 @@
-import CreateCourse from '@/components/dashboard/CreateCourse'
 import React from 'react'
+
+// Component Import
+import CreateCourse from '@/components/dashboard/CreateCourse'
 
 // Card Import
 import {
@@ -14,30 +16,10 @@ import { cn } from '@/lib/utils'
 
 // Button Import
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { course } from './data'
 
-const course = [
-  {
-    "name": "Introduction to Programming",
-    "description": "Learn the basics of programming using Python. Perfect for beginners.",
-    "category": "Programming",
-    "level": "Easy",
-    "price": 29.99
-  },
-  {
-    "name": "Advanced JavaScript",
-    "description": "Master JavaScript with advanced concepts and techniques.",
-    "category": "Web Development",
-    "level": "Medium",
-    "price": 49.99
-  },
-  {
-    "name": "Data Structures and Algorithms",
-    "description": "Deep dive into data structures and algorithms to enhance your problem-solving skills.",
-    "category": "Computer Science",
-    "level": "Hard",
-    "price": 69.99
-  },
-]
+// Dummy Data Import
 
 const InstructorDashboard = () => {
   return (
@@ -59,19 +41,21 @@ const InstructorDashboard = () => {
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>
               <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                <p className='rounded-full bg-gray-50 border py-1 px-4'>{item.category}</p>
                 <p className={cn(
                   'rounded-full bg-gray-50 border py-1 px-4',
                   item.level === 'Easy' && 'bg-green-50 border border-green-300',
                   item.level === 'Medium' && 'bg-orange-50 border border-orange-300',
                   item.level === 'Hard' && 'bg-red-50 border border-red-300'  
                 )}>{item.level}</p>
+                <p className='rounded-full bg-gray-100 border py-1 px-4'>{item.category}</p>
               </CardContent>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
                 <p>$ {item.price}</p>
-                <Button size={'sm'} variant={'secondary'}>
-                  Manage Course
-                </Button>
+                <Link href={`/dashboard/instructor/${item.name}`}>
+                  <Button size={'sm'} variant={'secondary'}>
+                    Manage Course
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           )

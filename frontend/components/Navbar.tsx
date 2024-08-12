@@ -39,7 +39,7 @@ const Navbar = () => {
           {/* IF THE USER HASN'T LOGGED IN */}
           <Link href="/sign-in">
             <Button className='w-[120px] hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all'>
-              Sign In <LogIn className='w-4 h-4' />
+              Sign In <LogIn className='w-5 h-5' />
             </Button>
           </Link>
         </nav>

@@ -6,7 +6,12 @@ const createPost = async (data) => {
         const post = await prisma.post.create({
             data,
         });
-        return post;
+
+        return {
+            operation: true,
+            status: 201,
+            data: post,
+        };
     } catch (err) {
         console.log("====== Error Log ======");
         console.log(err);
@@ -26,15 +31,11 @@ const getPostsByCourseId = async (courseId) => {
                 courseId,
             },
         });
-        return posts;
-    } catch (err) {
-        console.log("====== Error Log ======");
-        console.log(err);
-        console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation: true,
+            status: 200,
+            data: posts,
         };
     } catch (err) {
         console.log("====== Error Log ======");
@@ -55,7 +56,12 @@ const deletePostById = async (id) => {
                 id,
             },
         });
-        return post;
+
+        return {
+            operation: true,
+            status: 200,
+            message: `Post with id ${id} has been deleted`,
+        };
     } catch (err) {
         console.log("====== Error Log ======");
         console.log(err);

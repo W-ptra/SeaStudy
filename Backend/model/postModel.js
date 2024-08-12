@@ -1,15 +1,21 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// Create a new post
 const createPost = async (data) => {
     try {
         const post = await prisma.post.create({
             data,
         });
         return post;
-    } catch (error) {
-        throw new Error(`Failed to create post: ${error.message}`);
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
@@ -23,7 +29,26 @@ const getAllPosts = async () => {
     }
 };
 
-// Get a post by ID
+const getCommentsByPostId = async (postId) => {
+    try {
+        const comments = await prisma.comment.findMany({
+            where: {
+                postId,
+            },
+        });
+        return comments;
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    }
+};
+
 const getPostById = async (id) => {
     try {
         const post = await prisma.post.findUnique({
@@ -31,28 +56,23 @@ const getPostById = async (id) => {
                 id,
             },
         });
+
+        const comments = await getCommentsByPostId(id);
+        post.comments = comments;
+
         return post;
-    } catch (error) {
-        throw new Error(`Failed to get post: ${error.message}`);
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
-// Update a post by ID
-const updatePostById = async (id, data) => {
-    try {
-        const post = await prisma.post.update({
-            where: {
-                id,
-            },
-            data,
-        });
-        return post;
-    } catch (error) {
-        throw new Error(`Failed to update post: ${error.message}`);
-    }
-};
-
-// Delete a post by ID
 const deletePostById = async (id) => {
     try {
         const post = await prisma.post.delete({
@@ -61,8 +81,15 @@ const deletePostById = async (id) => {
             },
         });
         return post;
-    } catch (error) {
-        throw new Error(`Failed to delete post: ${error.message}`);
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
@@ -70,6 +97,7 @@ module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    getCommentsByPostId,
     updatePostById,
     deletePostById,
 };

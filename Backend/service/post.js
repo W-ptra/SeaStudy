@@ -1,28 +1,31 @@
-// Import any required dependencies
+const {
+    createPost : createPostDB,
+    getPostsByCourseId: getPostDB,
+    deletePostById: deletePostDB,
+} = require("../model/postModel");
 
-// Define your post service functions
+async function createPost(postData) {
+    if(postData.message === "") {
+        return {
+            operation: false,
+            status: 400,
+            message: "Message is required",
+        };
+    }
 
-const createPost = (postData) => {
-    // Logic to create a new post
-};
+    return createPostDB(postData);
+}
 
-const getPost = (postId) => {
-    // Logic to get a specific post by ID
-};
+async function getPosts(postId) {
+    return getPostDB(postId);
+}
 
-const updatePost = (postId, updatedData) => {
-    // Logic to update a specific post
-};
-
-const deletePost = (postId) => {
-    // Logic to delete a specific post
-};
-
-// Export the post service functions
+async function deletePost(postId) {
+    return deletePostDB(postId);
+}
 
 module.exports = {
     createPost,
-    getPost,
-    updatePost,
+    getPosts,
     deletePost,
 };

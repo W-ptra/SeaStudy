@@ -1,15 +1,18 @@
 const { PrismaClient } = require('@prisma/client');
+const { get } = require('mongoose');
 const prisma = new PrismaClient();
 
-const createPost = async (data) => {
+const getPostById = async (id) => {
     try {
-        const post = await prisma.post.create({
-            data,
+        const post = await prisma.post.findUnique({
+            where: {
+                id,
+            },
         });
 
         return {
             operation: true,
-            status: 201,
+            status: 200,
             data: post,
         };
     } catch (err) {
@@ -19,6 +22,35 @@ const createPost = async (data) => {
 
         return {
             operation: false,
+            message: "Internal Server Error",
+        };
+    }
+}
+
+const createPost = async (data) => {
+    try {
+        const post = await prisma.post.create({
+            data: {
+                userId: data.userId,
+                courseId: data.courseId,
+                message: data.message,
+            },
+        });
+
+        return {
+            operation: true,
+            status: 201,
+            message: "Post has been created",
+            data: post,
+        };
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.error(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -51,7 +83,16 @@ const getPostsByCourseId = async (courseId) => {
 
 const deletePostById = async (id) => {
     try {
-        const post = await prisma.post.delete({
+        const post = await getPostById(id);
+
+        if(post.data === null) 
+            return {
+                operation: false,
+                status: 404,
+                message: "Post does not exist",
+            };
+
+        await prisma.post.delete({
             where: {
                 id,
             },
@@ -69,6 +110,7 @@ const deletePostById = async (id) => {
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -77,7 +119,5 @@ const deletePostById = async (id) => {
 module.exports = {
     createPost,
     getPostsByCourseId,
-    getPostById,
-    updatePostById,
     deletePostById,
 };

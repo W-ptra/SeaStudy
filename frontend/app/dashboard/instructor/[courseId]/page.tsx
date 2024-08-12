@@ -24,13 +24,25 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 
+// Alert Dialog Import
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const CourseDetailPage = () => {
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
   const data = course.find(item => item.name === lastPathname)
   // @ts-ignore
-  const { name, description, category, level, topics } = data
+  const { name, description, category, level } = data
 
   function deleteCourseHandler() {
     console.log("Course Deleted")
@@ -56,12 +68,28 @@ const CourseDetailPage = () => {
         </div>
         <div className='flex gap-x-4'>
           <CreateTopic />
-          <Button variant={'destructive'} onClick={deleteCourseHandler}>
-            Delete Course
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={'destructive'}>
+                Delete Course
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the topic
+                  and remove the data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction className='bg-red-500'>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
-
 
       {/* Topics */}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
@@ -80,7 +108,7 @@ const CourseDetailPage = () => {
               <CardFooter>
                 <Link href={`/dashboard/instructor/${lastPathname}/${item.title}`}>
                   <Button size={'sm'} variant={'secondary'}>
-                    Manage Course
+                    Manage Topic
                   </Button>
                 </Link>
               </CardFooter>

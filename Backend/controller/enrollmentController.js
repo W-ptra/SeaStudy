@@ -10,7 +10,7 @@ router.get("/:courseId", async (req, res) => {
 
     if (!respond.operation) return res.status(400).json({ respond });
 
-    return res.status(respond.status).json({ course: respond.course });
+    return res.status(respond.status).json({ course: respond.data });
 });
 
 // Logged in users can enroll and unenroll from a course

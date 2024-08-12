@@ -3,79 +3,31 @@ const { getCourseById } = require("./courseModel");
 const { getUserById } = require("./userModel");
 const prisma = new PrismaClient();
 
-async function getEnrollmentByCourseId(courseId) {
-    if (!courseId) {
-        throw new Error('courseId is required');
-    }
-
+async function getEnrollmentsByCourseId(courseId) {
     try {
-        const course = await prisma.course.findUnique({
+        const enrollments = await prisma.enrollment.findMany({
             where: {
-                id: courseId,
-            },
-            select: {
-                enrollment: true,
+                courseId,
             },
         });
 
-        if (!course) {
-            return {
-                operation: false,
-                status: 404,
-                message: `Course with id: ${courseId} not found`,
-            };
-        }
+        const enrollmentData = enrollments.map((enroll) => ({
+            userId: enroll.userId,
+            courseId: enroll.courseId,
+        }));
+        console.log(enrollmentData);
 
         return {
             operation: true,
             status: 200,
-            data: course,
+            data: enrollmentData,
         };
     } catch (err) {
-        console.log("====== Error Log ======");
-        console.log(err);
-        console.log("====== End of Error Log ======");
+        console.error("Error fetching enrollments:", err);
 
         return {
             operation: false,
-            message: "Internal Server Error",
-        };
-    } finally {
-        await prisma.$disconnect();
-    }
-}
-
-async function getEnrollmentByUserId(userId) {
-    try {
-        const user = await prisma.user.findUnique({
-            where: {
-                id: userId,
-            },
-            select: {
-                enrollments: true,
-            },
-        });
-
-        if (!user) {
-            return {
-                operation: false,
-                status: 404,
-                message: `User with id: ${userId} not found`,
-            };
-        }
-
-        return {
-            operation: true,
-            status: 200,
-            data: user,
-        };
-    } catch (err) {
-        console.log("====== Error Log ======");
-        console.log(err);
-        console.log("====== End of Error Log ======");
-
-        return {
-            operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     } finally {
@@ -85,16 +37,39 @@ async function getEnrollmentByUserId(userId) {
 
 async function enrollCourse(courseId, userId) {
     try {
-        // TODO: handle error if course or user not found
-        await getCourseById(courseId);
-        await getUserById(userId);
+        const course = await getCourseById(courseId);
 
-        const enrollment = await getEnrollmentByUserId(userId);
-
-        if (enrollment.data) {
+        if (!course.data) {
             return {
                 operation: false,
-                status: 400,
+                status: 404,
+                message: `Course with id: ${courseId} not found`,
+            };
+        }
+
+        const user = await getUserById(userId);
+
+        if (!user.data) {
+            return {
+                operation: false,
+                status: 404,
+                message: `User with id: ${userId} not found`,
+            };
+        }
+
+        const enrollment = await prisma.enrollment.findUnique({
+            where: {
+                userId_courseId: {
+                    userId,
+                    courseId,
+                },
+            },
+        });
+
+        if (enrollment) {
+            return {
+                operation: false,
+                status: 404,
                 message: `User with id: ${userId} already enrolled in Course with id: ${courseId}`,
             };
         }
@@ -128,13 +103,9 @@ async function enrollCourse(courseId, userId) {
 
 async function unenrollCourse(courseId, userId) {
     try {
-        const course = await prisma.course.findUnique({
-            where: {
-                id: courseId,
-            },
-        });
+        const course = await getCourseById(courseId);
 
-        if (!course) {
+        if (!course.data) {
             return {
                 operation: false,
                 status: 404,
@@ -142,13 +113,9 @@ async function unenrollCourse(courseId, userId) {
             };
         }
 
-        const user = await prisma.user.findUnique({
-            where: {
-                id: userId,
-            },
-        });
+        const user = await getUserById(userId);
 
-        if (!user) {
+        if (!user.data) {
             return {
                 operation: false,
                 status: 404,
@@ -156,15 +123,11 @@ async function unenrollCourse(courseId, userId) {
             };
         }
 
-        const updatedCourse = await prisma.course.update({
+        await prisma.enrollment.delete({
             where: {
-                id: courseId,
-            },
-            data: {
-                users: {
-                    disconnect: {
-                        id: userId,
-                    },
+                userId_courseId: {
+                    userId,
+                    courseId,
                 },
             },
         });
@@ -173,7 +136,6 @@ async function unenrollCourse(courseId, userId) {
             operation: true,
             status: 200,
             message: `User with id: ${userId} unenrolled from Course with id: ${courseId}`,
-            data: updatedCourse,
         };
     } catch (err) {
         console.log("====== Error Log ======");
@@ -187,11 +149,10 @@ async function unenrollCourse(courseId, userId) {
     } finally {
         await prisma.$disconnect();
     }
-}   
+}
 
 module.exports = {
-    getEnrollmentByUserId,
-    getEnrollmentByCourseId,
+    getEnrollmentsByCourseId,
     enrollCourse,
-    unenrollCourse
+    unenrollCourse,
 };

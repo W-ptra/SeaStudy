@@ -19,13 +19,23 @@ const createPost = async (data) => {
     }
 };
 
-// Get all posts
-const getAllPosts = async () => {
+const getPostsByCourseId = async (courseId) => {
     try {
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({
+            where: {
+                courseId,
+            },
+        });
         return posts;
-    } catch (error) {
-        throw new Error(`Failed to get posts: ${error.message}`);
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
@@ -95,7 +105,7 @@ const deletePostById = async (id) => {
 
 module.exports = {
     createPost,
-    getAllPosts,
+    getPostsByCourseId,
     getPostById,
     getCommentsByPostId,
     updatePostById,

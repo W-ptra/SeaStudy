@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import Link from 'next/link';
 
 // Icon Import
 import { LogIn } from 'lucide-react';
@@ -92,6 +93,10 @@ const SignUpPage = () => {
                   </FormItem>
                 )}
               />
+              <div />
+              <Link href="/sign-in" className='text-sm underline'>
+                Already have an account?
+              </Link>
             </div>
             <Button type='submit' className='w-full flex items-center gap-x-2 hover:gap-x-4 transition-all'>
               Sign Up <LogIn className='w-5 h-5' />

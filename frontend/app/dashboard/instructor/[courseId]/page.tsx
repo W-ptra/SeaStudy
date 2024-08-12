@@ -1,9 +1,9 @@
 "use client"
 
 import React from 'react'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation'
+import { cn, getLastPathSegment } from '@/lib/utils';
 
 // Components Input
 import CreateTopic from '@/components/dashboard/CreateTopic';
@@ -24,12 +24,6 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 
-// Helper function
-function getLastPathSegment(pathname: string) {
-  const segments = pathname.split('/');
-  const lastSegment = segments.pop() || '';
-  return decodeURIComponent(lastSegment);
-}
 
 const CourseDetailPage = () => {
   const pathname = usePathname();

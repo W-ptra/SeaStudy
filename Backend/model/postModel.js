@@ -36,18 +36,6 @@ const getPostsByCourseId = async (courseId) => {
             operation: false,
             message: "Internal Server Error",
         };
-    }
-};
-
-const getPostById = async (id) => {
-    try {
-        const post = await prisma.post.findUnique({
-            where: {
-                id,
-            },
-        });
-
-        return post;
     } catch (err) {
         console.log("====== Error Log ======");
         console.log(err);

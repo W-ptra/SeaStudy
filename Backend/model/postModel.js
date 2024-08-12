@@ -39,26 +39,6 @@ const getPostsByCourseId = async (courseId) => {
     }
 };
 
-const getCommentsByPostId = async (postId) => {
-    try {
-        const comments = await prisma.comment.findMany({
-            where: {
-                postId,
-            },
-        });
-        return comments;
-    } catch (err) {
-        console.log("====== Error Log ======");
-        console.log(err);
-        console.log("====== End of Error Log ======")
-
-        return {
-            operation: false,
-            message: "Internal Server Error",
-        };
-    }
-};
-
 const getPostById = async (id) => {
     try {
         const post = await prisma.post.findUnique({
@@ -66,9 +46,6 @@ const getPostById = async (id) => {
                 id,
             },
         });
-
-        const comments = await getCommentsByPostId(id);
-        post.comments = comments;
 
         return post;
     } catch (err) {
@@ -107,7 +84,6 @@ module.exports = {
     createPost,
     getPostsByCourseId,
     getPostById,
-    getCommentsByPostId,
     updatePostById,
     deletePostById,
 };

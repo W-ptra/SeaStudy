@@ -24,3 +24,10 @@ export const CourseSchema = z.object({
   price: z.number(),
 })
 export type CourseSchemaType = z.infer<typeof CourseSchema>
+
+// Topic
+export const TopicSchema = z.object({
+  title: z.string(),
+  description: z.string()
+})
+export type TopicSchemaType = z.infer<typeof TopicSchema>

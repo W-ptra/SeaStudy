@@ -5,14 +5,24 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-// ButtonImport
+// Components Input
+import CreateTopic from '@/components/dashboard/CreateTopic';
+
+// Button Import
 import { Button } from '@/components/ui/button';
 
 // Dummy Data Import
 import { course } from '../data';
 
 // Card Import
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
 
 // Helper function
 function getLastPathSegment(pathname: string) {
@@ -50,9 +60,12 @@ const CourseDetailPage = () => {
             <p className='rounded-full bg-gray-100 border py-1 px-4'>{category}</p>
           </div>
         </div>
-        <Button variant={'destructive'} onClick={deleteCourseHandler}>
-          Delete Course
-        </Button>
+        <div className='flex gap-x-4'>
+          <CreateTopic />
+          <Button variant={'destructive'} onClick={deleteCourseHandler}>
+            Delete Course
+          </Button>
+        </div>
       </div>
 
 
@@ -67,7 +80,7 @@ const CourseDetailPage = () => {
                   <CardDescription>{item.description}</CardDescription>
                 </CardHeader>
                 <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                  <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length} Materials</p>
+                  <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length > 0 ? item.materials.length : 0} Materials</p>
                 </CardContent>
               </div>
               <CardFooter>

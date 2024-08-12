@@ -1,31 +1,42 @@
 const express = require('express');
 const router = express.Router();
 const { authenticateJWT } = require('../middleware/auth');
+const { createReview, getReviews, deleteReview } = require('../service/review');
 
-// GET all reviews
-router.get('/', (req, res) => {
-    // Your code to fetch all reviews from the database
-});
+router.get('/:courseId', async (req, res) => {
+    const courseId = parseInt(req.params.courseId);
 
-// GET a specific review
-router.get('/:id', (req, res) => {
-    // Your code to fetch a specific review from the database based on the provided ID
+    const respond = await getReviews(courseId);
+
+    if (!respond.operation) return res.status(400).json({ respond });
+
+    return res.status(respond.status).json({ course: respond.data });
 });
 
 router.use(authenticateJWT("User"));
-// CREATE a new review
-router.post('/', (req, res) => {
-    // Your code to create a new review in the database based on the data provided in the request body
+router.post('/', async (req, res) => {
+    const newReview = {
+        userId: Number(req.user.id),
+        courseId: parseInt(req.body.courseId),
+        rating: parseInt(req.body.rating),
+        comment: req.body.comment,
+    };
+
+    const respond = await createReview(newReview);
+
+    if (!respond.operation)
+        return res.status(400).json({ message: respond.message });
+
+    return res.status(respond.status).json({ post: respond.message, payload: respond.data });
 });
 
-// UPDATE an existing review
-router.put('/:id', (req, res) => {
-    // Your code to update an existing review in the database based on the provided ID and data in the request body
-});
+router.delete('/:reviewId', async (req, res) => {
+    const respond = await deleteReview(parseInt(req.params.reviewId));
 
-// DELETE a review
-router.delete('/:id', (req, res) => {
-    // Your code to delete a review from the database based on the provided ID
+    if (!respond.operation)
+        return res.status(400).json({ message: respond.message });
+
+    return res.status(respond.status).json({ message: respond.message });
 });
 
 module.exports = router;

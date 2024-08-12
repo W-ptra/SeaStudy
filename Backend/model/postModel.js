@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const { get } = require('mongoose');
 const prisma = new PrismaClient();
 
 const getPostById = async (id) => {

@@ -1,29 +1,32 @@
-// review.js
+const {
+    createReview : createReviewDB,
+    getReviewsByCourseId: getReviewDB,
+    deleteReviewById: deleteReviewDB,
+} = require("../model/reviewModel");
 
-// Function to create a new review
 function createReview(reviewData) {
-    // Add your code here to create a new review
+    if (!reviewData.userId || !reviewData.courseId || !reviewData.rating) {
+        return {
+            operation: false,
+            status: 400,
+            message: "Missing required fields",
+        };
+    }
+
+    return createReviewDB(reviewData);
 }
 
-// Function to get a review by ID
-function getReviewById(reviewId) {
-    // Add your code here to get a review by ID
+function getReviews(reviewId) {
+    return getReviewDB(reviewId);
 }
 
-// Function to update a review
-function updateReview(reviewId, updatedData) {
-    // Add your code here to update a review
-}
-
-// Function to delete a review
 function deleteReview(reviewId) {
-    // Add your code here to delete a review
+    return deleteReviewDB(reviewId);
 }
 
 // Export the functions
 module.exports = {
     createReview,
-    getReviewById,
-    updateReview,
+    getReviews,
     deleteReview
 };

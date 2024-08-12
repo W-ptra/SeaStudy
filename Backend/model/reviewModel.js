@@ -1,14 +1,90 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const createReview = async (data) => {
     try {
-        const review = await prisma.review.create({
-            data,
+        // Check if the user has already reviewed the course
+        const existingReview = await prisma.review.findFirst({
+            where: {
+                userId: data.userId,
+                courseId: data.courseId,
+            },
         });
-        return review;
-    } catch (error) {
-        throw new Error(`Failed to create review: ${error.message}`);
+
+        if (existingReview) {
+            return {
+                operation: false,
+                status: 400,
+                message: "User has already reviewed this course",
+            };
+        }
+
+        // Create the review
+        const review = await prisma.review.create({
+            data: {
+                userId: data.userId,
+                courseId: data.courseId,
+                rating: data.rating,
+                comment: data.comment,
+            },
+        });
+
+        // Calculate the new average rating
+        const reviews = await prisma.review.findMany({
+            where: { courseId: data.courseId },
+            select: { rating: true },
+        });
+
+        const totalRatings = reviews.reduce(
+            (sum, review) => sum + review.rating,
+            0
+        );
+        const avgRating = totalRatings / reviews.length;
+
+        // Update the course with the new average rating
+        await prisma.course.update({
+            where: { id: data.courseId },
+            data: { avgRating: avgRating },
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            data: review,
+        };
+    } catch (err) {
+        console.error("Error creating review:", err);
+
+        return {
+            operation: false,
+            status: 500,
+            message: "Internal Server Error",
+        };
+    }
+};
+
+const getReviewsByCourseId = async (id) => {
+    try {
+        const reviews = await prisma.review.findMany({
+            where: {
+                id,
+            },
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            data: reviews,
+        };
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
@@ -19,42 +95,61 @@ const getReviewById = async (id) => {
                 id,
             },
         });
-        return review;
-    } catch (error) {
-        throw new Error(`Failed to get review: ${error.message}`);
+
+        return {
+            operation: true,
+            status: 200,
+            data: review,
+        };
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
-const updateReview = async (id, data) => {
+const deleteReviewById = async (id) => {
+    console.log("Deleting review with id: ", id);
     try {
-        const review = await prisma.review.update({
-            where: {
-                id,
-            },
-            data,
-        });
-        return review;
-    } catch (error) {
-        throw new Error(`Failed to update review: ${error.message}`);
-    }
-};
+        const review = await getReviewById(id);
 
-const deleteReview = async (id) => {
-    try {
-        const review = await prisma.review.delete({
+        if (review.data === null)
+            return {
+                operation: false,
+                status: 404,
+                message: "Review does not exist",
+            };
+
+        await prisma.review.delete({
             where: {
                 id,
             },
         });
-        return review;
-    } catch (error) {
-        throw new Error(`Failed to delete review: ${error.message}`);
+        return {
+            operation: true,
+            status: 200,
+            message: "Review deleted successfully",
+        };
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
     }
 };
 
 module.exports = {
     createReview,
+    getReviewsByCourseId,
     getReviewById,
-    updateReview,
-    deleteReview,
+    deleteReviewById,
 };

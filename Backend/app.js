@@ -1,3 +1,4 @@
+const userController = require("./controller/userController");
 const apiController = require("./controller/apiController");
 const authController = require("./controller/authController");
 const courseController = require("./controller/courseController");
@@ -26,6 +27,7 @@ app.use(cookieParser());
 
 app.use(sanitize);
 app.use("/api/auth", authController);
+app.use("/api/user", userController);
 app.use("/api/course", courseController);
 app.use("/api/enrollment", enrollmentController);
 app.use("/api/topic", topicController);

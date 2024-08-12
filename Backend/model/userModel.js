@@ -38,6 +38,7 @@ async function getUserByEmail(email){
             id:         true,
             email:      true,
             name:       true,
+            password:   true,
             role:       true,
             credit:     true,
         }

@@ -1,4 +1,5 @@
 const userController = require("./controller/userController");
+const paymentController = require("./controller/paymentController");
 const apiController = require("./controller/apiController");
 const authController = require("./controller/authController");
 const courseController = require("./controller/courseController");
@@ -35,6 +36,7 @@ app.use("/api/material", materialController);
 app.use("/api/assignment", assignmentController);
 app.use("/api/completion", completionController);
 app.use("/api/submission", submissionController);
+app.use("/api/payment", paymentController);
 app.use("/api", apiController);
 
 app.get("/", (req, res) => {

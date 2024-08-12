@@ -30,7 +30,10 @@ async function purchaseCourse(userId,courseId){
 
     await updateUserSaldo(userId,remainCredit);
     console.log(courseId, " ", userId)
-    await enrollCourse(courseId,userId);
+    await enrollCourse(courseId,userId); // ada error
+
+    // btw kalo ada yang beli course, credit instructor pembuatnya bertambah
+    // bisa di tambahin logicnya di sini
 
     return {
         operaration:    true,
@@ -38,11 +41,11 @@ async function purchaseCourse(userId,courseId){
     }
 }
 
-async function test(){
-    await topUp(2,5000);
-    const result = await purchaseCourse(2,10);
-    console.log(result);
-}
-test()
+// async function test(){
+//     await topUp(2,5000);
+//     const result = await purchaseCourse(2,10);
+//     console.log(result);
+// }
+// test()
 
 module.exports = {topUp,purchaseCourse}

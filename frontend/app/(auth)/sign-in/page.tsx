@@ -30,6 +30,9 @@ import {
 } from "@/components/ui/card"
 import { SignInSchema, SignInSchemaType } from '@/lib/schemas';
 
+// Import Toast
+import { toast } from 'sonner';
+
 const SignInPage = () => {
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
@@ -41,6 +44,7 @@ const SignInPage = () => {
 
   function onSubmit(values: SignInSchemaType) {
     console.log(values)
+    toast("Signed In Successfully")
   }
 
   return (
@@ -68,7 +72,7 @@ const SignInPage = () => {
               />
               <FormField 
                 control={form.control}
-                name='email'
+                name='password'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>

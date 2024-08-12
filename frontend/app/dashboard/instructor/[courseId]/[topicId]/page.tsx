@@ -36,7 +36,7 @@ const TopicDetailPage = () => {
   // @ts-ignore
   const { title, description, assignment } = topicData;
 
-  function deleteCourseHandler() {
+  function handleDeleteCourse() {
     console.log("Course Deleted")
   }
 
@@ -66,7 +66,7 @@ const TopicDetailPage = () => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className='bg-red-500'>Continue</AlertDialogAction>
+                <AlertDialogAction className='bg-red-500 hover:bg-red-400' onClick={handleDeleteCourse}>Continue</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

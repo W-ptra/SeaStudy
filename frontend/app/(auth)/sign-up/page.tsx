@@ -30,6 +30,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+// Import Toaster
+import { toast } from 'sonner';
+
 const SignUpPage = () => {
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
@@ -42,6 +45,7 @@ const SignUpPage = () => {
 
   function onSubmit(values: SignUpSchemaType) {
     console.log(values)
+    toast("Signed Up Successfully")
   }
 
   return (
@@ -69,7 +73,7 @@ const SignUpPage = () => {
               />
               <FormField 
                 control={form.control}
-                name='email'
+                name='password'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>

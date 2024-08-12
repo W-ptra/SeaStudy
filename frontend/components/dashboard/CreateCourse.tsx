@@ -39,6 +39,9 @@ import {
 // Textarea Import
 import { Textarea } from '../ui/textarea'
 
+// Toaster Import
+import { toast } from 'sonner'
+
 const CreateCourse = () => {
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(CourseSchema),
@@ -53,6 +56,7 @@ const CreateCourse = () => {
 
   function onSubmit(values: CourseSchemaType) {
     console.log(values)
+    toast("Course Created Successfully")
   }
 
   return (

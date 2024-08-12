@@ -36,6 +36,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { toast } from 'sonner';
 
 const CourseDetailPage = () => {
   const pathname = usePathname();
@@ -44,8 +45,9 @@ const CourseDetailPage = () => {
   // @ts-ignore
   const { name, description, category, level } = data
 
-  function deleteCourseHandler() {
+  function handleDeleteCourse() {
     console.log("Course Deleted")
+    toast("Course Deleted")
   }
 
   return (
@@ -84,7 +86,7 @@ const CourseDetailPage = () => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className='bg-red-500'>Continue</AlertDialogAction>
+                <AlertDialogAction className='bg-red-500 hover:bg-red-400' onClick={handleDeleteCourse}>Continue</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

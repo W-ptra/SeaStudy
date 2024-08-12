@@ -4,6 +4,7 @@ import "./globals.css";
 // Components Import
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "SeaStudy",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className='font-satoshi'>
         <Navbar />
         {children}
+        <Toaster />
         <Footer />
       </body>
     </html>

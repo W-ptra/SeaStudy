@@ -28,6 +28,9 @@ import { TopicSchema, TopicSchemaType } from '@/lib/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Textarea } from '../ui/textarea'
 
+// Toaster Import
+import { toast } from 'sonner'
+
 const CreateTopic = () => {
   const form = useForm<TopicSchemaType>({
     resolver: zodResolver(TopicSchema),
@@ -39,6 +42,7 @@ const CreateTopic = () => {
 
   function onSubmit(values: TopicSchemaType) {
     console.log(values)
+    toast("Topic Created Successfully")
   }
 
   return (

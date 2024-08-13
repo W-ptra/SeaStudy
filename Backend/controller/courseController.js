@@ -59,7 +59,7 @@ router.get("/:courseId", async (req, res) => {
 // Instructor role operations
 router.use(authenticateJWT("Instructor"));
 
-router.post("/post", async (req, res) => {
+router.post("/", async (req, res) => {
     const newCourse = {
         name:           req.body.name,
         description:    req.body.description,

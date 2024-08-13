@@ -54,11 +54,4 @@ async function purchaseCourse(userId,courseId){
     }
 }
 
-// async function test(){
-//     await topUp(2,5000);
-//     const result = await purchaseCourse(2,10);
-//     console.log(result);
-// }
-// test()
-
 module.exports = {topUp,purchaseCourse}

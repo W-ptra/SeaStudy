@@ -22,7 +22,7 @@ router.get('/:topicid',async (req,res)=>{
     let topicid = req.params.topicid;
     topicid = parseInt(topicid,10);
 
-    const respond = await topic.getAllTopicById(topicid);
+    const respond = await topic.getTopicById(topicid);
 
     if (!respond.operation)
         return res.status(500).json({ message: respond.message });

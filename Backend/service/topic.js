@@ -14,7 +14,7 @@ async function getAllTopicByCourseId(courseId){
     return await topicModel.getAllTopicByCourseId(courseId);;
 }
 
-async function getAllTopicById(Id){
+async function getTopicById(Id){
     return await topicModel.getTopicById(Id);;
 }
 
@@ -69,7 +69,7 @@ async function deleteTopicById(id){
 
 module.exports = {
     getAllTopicByCourseId,
-    getAllTopicById,
+    getTopicById,
     createNewTopic,
     updateTopicById,
     deleteTopicById

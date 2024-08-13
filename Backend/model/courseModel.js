@@ -11,7 +11,6 @@ async function getAllCourses() {
                 price: course.price.toString(),
             };
         });
-        console.log(coursesWithBigIntAsString);
 
         return {
             operation: true,
@@ -59,6 +58,91 @@ async function getCourseById(courseId) {
             data: courseWithBigIntAsString,
         };
     } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+async function getEnrolledCourses(id) {
+    console.log("user ID: " + id);
+    
+    try {
+        const enrollments = await prisma.course.findMany({
+            where: {
+                userId: id
+            }
+        })
+        console.log(enrollments);
+
+        const courses = [];
+
+        for (const enrollment of enrollments) {
+            const course = await prisma.course.findUnique({
+                where: {
+                    id: enrollment.courseId
+                }
+            });
+
+            if (course) {
+                courses.push(course);
+            }
+        }
+
+        const coursesWithBigIntAsString = courses.map((course) => {
+            return {
+                ...course,
+                price: course.price.toString(),
+            };
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            data: coursesWithBigIntAsString,
+        };
+    } catch(err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+async function getCreatedCourses(id) {    
+    try {
+        const courses = await prisma.course.findMany({
+            where: {
+                userId: id
+            }
+        })
+
+        const coursesWithBigIntAsString = courses.map((course) => {
+            return {
+                ...course,
+                price: course.price.toString(),
+            };
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            data: coursesWithBigIntAsString,
+        };
+    } catch(err) {
         console.log("====== Error Log ======");
         console.log(err);
         console.log("====== End of Error Log ======");
@@ -239,4 +323,6 @@ module.exports = {
     getAllCourses,
     getCourseById,
     filterCourses,
+    getEnrolledCourses,
+    getCreatedCourses
 };

@@ -5,6 +5,8 @@ const {
     deleteCourse: deleteCourseDB,
     filterCourses,
     updateCourse,
+    getEnrolledCourses : getEnrolledCoursesDB,
+    getCreatedCourses : getCreatedCoursesDB,
 } = require("../model/courseModel");
 const { getTopicsByCourseId } = require("../model/topicModel");
 
@@ -38,6 +40,28 @@ async function getCourseDetails(courseId) {
         status: 400,
         message: course.message || topics.message,
     };
+}
+
+async function getEnrolledCourses(userId) {
+    if (isNaN(userId))
+        return {
+            operation: false,
+            status: 400,
+            message: "Invalid userId",
+        };
+    
+    return getEnrolledCoursesDB(userId);
+}
+
+async function getCreatedCourses(userId) {
+    if (isNaN(userId))
+        return {
+            operation: false,
+            status: 400,
+            message: "Invalid userId",
+        };
+
+    return getCreatedCoursesDB(userId);
 }
 
 async function getFilteredCourses(filter) {
@@ -101,4 +125,6 @@ module.exports = {
     getCourses,
     getCourseDetails,
     getFilteredCourses,
+    getEnrolledCourses,    
+    getCreatedCourses,
 };

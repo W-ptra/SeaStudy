@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, { httpOnly: true, secure: true });
     return res
         .status(respond.status)
-        .json({ message: respond.message, token: token });
+        .json({ message: respond.message });
 });
 
 router.get("/logout", (req, res) => {

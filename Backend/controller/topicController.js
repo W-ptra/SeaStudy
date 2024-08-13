@@ -7,10 +7,10 @@ const router = express.Router();
 router.use(isAuthorized);
 
 router.get('/course/:courseid',async (req,res)=>{
-    let courseId = req.params.courseid;
-    courseId = parseInt(courseId,10);
-    
-    const respond = await topic.getAllTopicByCourseId(courseId);
+    const courseId = parseInt(req.params.courseid,10);
+    const userId = parseInt(req.user.id);
+
+    const respond = await topic.getAllTopicByCourseId(userId,courseId);
 
     if (!respond.operation)
         return res.status(500).json({ message: respond.message });
@@ -19,13 +19,13 @@ router.get('/course/:courseid',async (req,res)=>{
 })
 
 router.get('/:topicid',async (req,res)=>{
-    let topicid = req.params.topicid;
-    topicid = parseInt(topicid,10);
+    const topicid = parseInt(req.params.topicid,10);
+    const userId = parseInt(req.user.id,10);
 
-    const respond = await topic.getTopicById(topicid);
-
+    const respond = await topic.getTopicById(userId,topicid);
+    
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })
@@ -33,13 +33,14 @@ router.get('/:topicid',async (req,res)=>{
 router.use(authenticateJWT("Instructor"));
 
 router.post('/',parameterCheckPost,async (req,res)=>{
+    const userId = parseInt(req.user.id);
     const newTopic = {
         title:          req.body.title,
         description:    req.body.description,
         courseId:       parseInt(req.body.courseId,10)
     }
 
-    const respond = await topic.createNewTopic(newTopic);
+    const respond = await topic.createNewTopic(userId,newTopic);
 
     if (!respond.operation)
         return res.status(500).json({ message: respond.message });

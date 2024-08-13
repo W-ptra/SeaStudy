@@ -21,6 +21,7 @@ async function createNewTopic(newTopic){
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -51,6 +52,7 @@ async function getAllTopicByCourseId(courseId){
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -75,6 +77,7 @@ async function getTopicByIdNonJoin(id){
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -124,6 +127,7 @@ async function getTopicById(id){
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -173,6 +177,7 @@ async function updateTopicById(updatedTopic){
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }
@@ -196,6 +201,7 @@ async function deleteTopicById(id){
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     }

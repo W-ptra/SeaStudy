@@ -25,7 +25,7 @@ const authenticateJWT = (allowedRole) => async (req,res,next) => {
 
 async function isAuthorized(req,res,next){
     const token = req.cookies.token;
-
+    
     try {
         const decoded = await validateJSONToken(token);
         

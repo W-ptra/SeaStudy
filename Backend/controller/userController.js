@@ -18,7 +18,9 @@ router.get('/',async (req,res)=>{
 })
 
 // router.get('/course',async (req,res)=>{
-//     // get all course purchase/created by user
+//     const userId = parseInt(req.user.id);
+//     const role = req.user.role;
+
 // })
 
 module.exports = router;

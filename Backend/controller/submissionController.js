@@ -3,9 +3,7 @@ const submission = require("../service/submission");
 const express = require("express");
 const router = express.Router();
 
-router.use(isAuthorized);
-
-router.get('/assignment/:assignmentid',async (req,res)=>{
+router.get('/assignment/:assignmentid',authenticateJWT("Instructor"),async (req,res)=>{
     let assignmentid = req.params.assignmentid;
     assignmentid = parseInt(assignmentid,10);
 
@@ -17,10 +15,10 @@ router.get('/assignment/:assignmentid',async (req,res)=>{
     return res.status(200).json(respond);
 })
 
-router.get('/user/:userid',async (req,res)=>{
-    let userid = req.params.userid;
-    userid = parseInt(userid,10);
+router.use(authenticateJWT("User"));
 
+router.get('/user',async (req,res)=>{
+    const userid = parseInt(req.user.id);
     const respond = await submission.getAllSubmissionByUserId(userid);
 
     if (!respond.operation)
@@ -28,8 +26,6 @@ router.get('/user/:userid',async (req,res)=>{
 
     return res.status(200).json(respond);
 })
-
-router.use(authenticateJWT("User"));
 
 router.post('/',async (req,res)=>{
     const newSubmission = {

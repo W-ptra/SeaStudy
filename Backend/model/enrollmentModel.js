@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function getEnrollmentsByUserId(userId,courseId){
     try {
         const where = {userId,courseId}
-        const enrollments = await prisma.enrollment.findFirst({ where });
+        const enrollments = await prisma.enrollment.findMany({ where });
 
         return {
             operation: true,

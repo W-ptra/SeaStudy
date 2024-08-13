@@ -3,7 +3,7 @@ const router = express.Router();
 const { authenticateJWT } = require('../middleware/auth');
 const { createPost, getPosts, deletePost } = require('../service/post');
 
-router.get('/:courseId', async (req, res) => {
+router.get('/course/:courseId', async (req, res) => {
     const courseId = parseInt(req.params.courseId);
 
     const respond = await getPosts(courseId);

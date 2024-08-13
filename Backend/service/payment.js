@@ -1,6 +1,6 @@
 const {getUserById,updateUserSaldo} = require("../model/userModel");
 const {getCourseById} = require("../model/courseModel");
-const {enrollCourse} = require("../model/enrollmentModel");
+const {enrollCourse,getEnrollmentsByUserId} = require("../model/enrollmentModel");
 
 async function topUp(userId,amount){
     const user = await getUserById(userId)
@@ -13,8 +13,17 @@ async function purchaseCourse(userId,courseId){
 
     if(course.data === null)
         return {
-            operaration:    false,
+            operation:    false,
+            status:         404,
             message:        `course with id ${courseId} was not found`
+        }
+
+    const isEnroll = await getEnrollmentsByUserId(userId,courseId);
+    console.log(isEnroll);
+    if(isEnroll.data !== null)
+        return {
+            operation:    false,
+            message:        `User with with ${userId} already enrolled on course with id ${courseId}`
         }
 
     const user = await getUserById(userId);
@@ -23,20 +32,24 @@ async function purchaseCourse(userId,courseId){
     
     if(userCredit < coursePrice)
         return {
-            operaration:    false,
+            operation:    false,
+            status:         400,
             message:        `Credit is insufficient`
         }
+
     const remainCredit = BigInt(userCredit) - BigInt(coursePrice);
-
     await updateUserSaldo(userId,remainCredit);
-    console.log(courseId, " ", userId)
-    await enrollCourse(courseId,userId); // ada error
 
-    // btw kalo ada yang beli course, credit instructor pembuatnya bertambah
-    // bisa di tambahin logicnya di sini
+    const result = await enrollCourse(courseId,userId);
+    if (!result.operation)
+        return result;
+    
+    const instructor = await getUserById(course.data.userId);
+    const instructorCredit = BigInt(instructor.data.credit) + BigInt(coursePrice);
+    await updateUserSaldo(instructor.data.id,instructorCredit);
 
     return {
-        operaration:    true,
+        operation:    true,
         message:        `Successfully purchase course ${course.data.name}`
     }
 }

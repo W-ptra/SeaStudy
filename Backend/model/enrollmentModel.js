@@ -3,6 +3,27 @@ const { getCourseById } = require("./courseModel");
 const { getUserById } = require("./userModel");
 const prisma = new PrismaClient();
 
+async function getEnrollmentsByUserId(userId,courseId){
+    try {
+        const where = {userId,courseId}
+        const enrollments = await prisma.enrollment.findFirst({ where });
+
+        return {
+            operation: true,
+            status: 200,
+            data: enrollments,
+        };
+    } catch (err) {
+        return {
+            operation: false,
+            status: 500,
+            message: "Internal Server Error",
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function getEnrollmentsByCourseId(courseId) {
     try {
         const enrollments = await prisma.enrollment.findMany({
@@ -57,12 +78,10 @@ async function enrollCourse(courseId, userId) {
             };
         }
 
-        const enrollment = await prisma.enrollment.findUnique({
+        const enrollment = await prisma.enrollment.findFirst({
             where: {
-                userId_courseId: {
-                    userId,
-                    courseId,
-                },
+                userId,
+                courseId,
             },
         });
 
@@ -152,6 +171,7 @@ async function unenrollCourse(courseId, userId) {
 }
 
 module.exports = {
+    getEnrollmentsByUserId,
     getEnrollmentsByCourseId,
     enrollCourse,
     unenrollCourse,

@@ -50,10 +50,13 @@ const createReview = async (data) => {
         return {
             operation: true,
             status: 200,
+            message: "Review created successfully",
             data: review,
         };
     } catch (err) {
-        console.error("Error creating review:", err);
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
 
         return {
             operation: false,
@@ -67,7 +70,7 @@ const getReviewsByCourseId = async (id) => {
     try {
         const reviews = await prisma.review.findMany({
             where: {
-                id,
+                courseId: id,
             },
         });
 

@@ -10,7 +10,7 @@ router.get('/:courseId', async (req, res) => {
 
     if (!respond.operation) return res.status(400).json({ respond });
 
-    return res.status(respond.status).json({ course: respond.data });
+    return res.status(respond.status).json({ reviews: respond.data });
 });
 
 router.use(authenticateJWT("User"));
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     if (!respond.operation)
         return res.status(400).json({ message: respond.message });
 
-    return res.status(respond.status).json({ post: respond.message, payload: respond.data });
+    return res.status(respond.status).json({ message: respond.message, data: respond.data });
 });
 
 router.delete('/:reviewId', async (req, res) => {

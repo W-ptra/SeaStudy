@@ -72,15 +72,12 @@ async function getCourseById(courseId) {
 }
 
 async function getEnrolledCourses(id) {
-    console.log("user ID: " + id);
-    
     try {
-        const enrollments = await prisma.course.findMany({
+        const enrollments = await prisma.enrollment.findMany({
             where: {
                 userId: id
             }
-        })
-        console.log(enrollments);
+        });
 
         const courses = [];
 
@@ -108,7 +105,7 @@ async function getEnrolledCourses(id) {
             status: 200,
             data: coursesWithBigIntAsString,
         };
-    } catch(err) {
+    } catch (err) {
         console.log("====== Error Log ======");
         console.log(err);
         console.log("====== End of Error Log ======");

@@ -13,6 +13,7 @@ async function createNewUser(newUser){
         const user = await prisma.users.create({ data });
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully created new User with id: ${user.id}`
         }
     }
@@ -22,8 +23,9 @@ async function createNewUser(newUser){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:      500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -45,6 +47,7 @@ async function getUserByEmail(email){
         const user = await prisma.users.findUnique({where,select});
         return {
             operation:  true,
+            status:     200,
             data:       user
         }
     }
@@ -54,8 +57,9 @@ async function getUserByEmail(email){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -77,6 +81,7 @@ async function getUserById(id){
 
         return {
             operation:  true,
+            status:     200,
             data:       user
         }
     }
@@ -86,8 +91,9 @@ async function getUserById(id){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -102,6 +108,7 @@ async function updateUserSaldo(id,amount){
         const user = await prisma.users.update({where,data})
         return {
             operation:      true,
+            status:         200,
             message:        `Credit of user with id ${id} has changes`,
             userId:         id,
             credit:         user.credit
@@ -113,8 +120,9 @@ async function updateUserSaldo(id,amount){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {

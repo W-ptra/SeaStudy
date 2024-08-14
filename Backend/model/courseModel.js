@@ -23,9 +23,9 @@ async function getAllCourses() {
         });
         createCache(cacheKey,coursesWithBigIntAsString);
         return {
-            operation: true,
-            status: 200,
-            data: coursesWithBigIntAsString,
+            operation:  true,
+            status:     200,
+            data:       coursesWithBigIntAsString,
         };
     } catch (err) {
         console.log("====== Error Log ======");
@@ -33,8 +33,9 @@ async function getAllCourses() {
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -174,8 +175,9 @@ async function getCreatedCourses(id) {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -265,8 +267,9 @@ async function createNewCourse(newCourse) {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();

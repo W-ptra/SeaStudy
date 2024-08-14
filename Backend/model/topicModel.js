@@ -12,6 +12,7 @@ async function createNewTopic(newTopic){
         const topic = await prisma.topic.create({ data });
         return {
             operation:  true,
+            status:     201,
             message:    `Successfully created new Topic with id: ${topic.id}`
         }
     }
@@ -32,7 +33,7 @@ async function createNewTopic(newTopic){
 }
 
 async function getAllTopicByCourseId(courseId){
-    const cacheKey = `get all topic by course id ${id}`;
+    const cacheKey = `get all topic by course id ${courseId}`;
     try{
         const cache = await getCache(cacheKey);
         if(cache !== null)
@@ -54,6 +55,7 @@ async function getAllTopicByCourseId(courseId){
         createCache(cacheKey,allTopic);
         return {
             operation:  true,
+            status:     200,
             data:       allTopic
         }
     }
@@ -90,6 +92,7 @@ async function getTopicByIdNonJoin(id){
         createCache(cacheKey,topic);
         return {
             operation:  true,
+            status:     200,
             data:       topic
         }
     }
@@ -151,6 +154,7 @@ async function getTopicById(id){
         createCache(cacheKey,topic);
         return {
             operation:  true,
+            status:     200,
             data:       topic
         }
     }
@@ -212,6 +216,7 @@ async function updateTopicById(updatedTopic){
         const updating = await prisma.topic.update({where,data})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully update Topic with id: ${updating.id}`
         }
     }
@@ -236,6 +241,7 @@ async function deleteTopicById(id){
         await prisma.topic.delete({where:{id}})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully delete Topic with id: ${id}`
         }
     }

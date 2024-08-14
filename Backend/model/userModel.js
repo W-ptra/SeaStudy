@@ -1,3 +1,4 @@
+const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
@@ -42,7 +43,7 @@ async function getUserByEmail(email){
             role:       true,
             credit:     true,
         }
-        const user = await prisma.users.findUnique({where,select})
+        const user = await prisma.users.findUnique({where,select});
         return {
             operation:  true,
             data:       user
@@ -64,7 +65,16 @@ async function getUserByEmail(email){
 }
 
 async function getUserById(id){
+    const cacheKey = `get user by id ${id}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { id }
         const select = {
             id:         true,
@@ -74,6 +84,8 @@ async function getUserById(id){
             credit:     true,
         }
         const user = await prisma.users.findUnique({where,select})
+
+        createCache(cacheKey,user);
         return {
             operation:  true,
             data:       user

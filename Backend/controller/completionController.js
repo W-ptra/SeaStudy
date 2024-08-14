@@ -14,7 +14,7 @@ router.post('/',async (req,res)=>{
     const respond = await completion(newCompletion);
 
     if (!respond.operation)
-        return res.status(500).json({ message: respond.message });
+        return res.status(respond.status).json({ message: respond.message });
 
     return res.status(200).json(respond);
 })

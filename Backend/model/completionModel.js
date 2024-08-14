@@ -12,6 +12,7 @@ async function createNewCompletion(newCompletion) {
 
         return {
             operation: true,
+            status: 200,
             message: `Successfully created new Completion with id: ${completion.id}`,
         };
     } catch (err) {
@@ -21,6 +22,7 @@ async function createNewCompletion(newCompletion) {
 
         return {
             operation: false,
+            status: 500,
             message: "Internal Server Error",
         };
     } finally {

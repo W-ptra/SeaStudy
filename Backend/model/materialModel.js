@@ -1,3 +1,4 @@
+const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
@@ -32,9 +33,19 @@ async function createNewMaterial(newMaterial){
 }
 
 async function getAllMaterialByTopicId(topicId){
+    const cacheKey = `get all material by topic id ${topicId}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { topicId }
         const allMaterial = await prisma.material.findMany({where})
+        createCache(cacheKey,allMaterial);
         return {
             operation:  true,
             data:       allMaterial
@@ -56,9 +67,19 @@ async function getAllMaterialByTopicId(topicId){
 }
 
 async function getMaterialById(id){
+    const cacheKey = `get material by id ${id}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { id }
         const material = await prisma.material.findUnique({where})
+        createCache(cacheKey,material);
         return {
             operation:  true,
             data:       material

@@ -1,3 +1,4 @@
+const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
@@ -31,7 +32,16 @@ async function createNewTopic(newTopic){
 }
 
 async function getAllTopicByCourseId(courseId){
+    const cacheKey = `get all topic by course id ${id}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { courseId }
         const select = { 
             id: true,
@@ -40,6 +50,8 @@ async function getAllTopicByCourseId(courseId){
         }
 
         const allTopic = await prisma.topic.findMany({where,select})
+
+        createCache(cacheKey,allTopic);
         return {
             operation:  true,
             data:       allTopic
@@ -62,9 +74,20 @@ async function getAllTopicByCourseId(courseId){
 }
 
 async function getTopicByIdNonJoin(id){
+    const cacheKey = `get topic by id non join ${id}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { id };
-        const topic = await prisma.topic.findUnique({where})
+        const topic = await prisma.topic.findUnique({where});
+
+        createCache(cacheKey,topic);
         return {
             operation:  true,
             data:       topic
@@ -87,7 +110,16 @@ async function getTopicByIdNonJoin(id){
 }
 
 async function getTopicById(id){
+    const cacheKey = `get topic by id ${id}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { id };
         const include = {
             assignment: {
@@ -115,6 +147,8 @@ async function getTopicById(id){
         }
 
         const topic = await prisma.topic.findUnique({where,select})
+
+        createCache(cacheKey,topic);
         return {
             operation:  true,
             data:       topic
@@ -137,9 +171,20 @@ async function getTopicById(id){
 }
 
 async function getTopicsByCourseId(courseId){
+    const cacheKey = `get topic by course id ${courseId}`;
     try{
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const where = { courseId }
         const topic = await prisma.topic.findMany({where})
+
+        createCache(cacheKey,topic);
         return {
             operation:  true,
             data:       topic

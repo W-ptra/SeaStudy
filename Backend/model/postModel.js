@@ -1,14 +1,25 @@
+const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const getPostById = async (id) => {
+    const cacheKey = `get post by id ${id}`;
     try {
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const post = await prisma.post.findUnique({
             where: {
                 id,
             },
         });
 
+        createCache(cacheKey,post);
         return {
             operation: true,
             status: 200,
@@ -56,13 +67,23 @@ const createPost = async (data) => {
 };
 
 const getPostsByCourseId = async (courseId) => {
+    const cacheKey = `get post by course id ${courseId}`;
     try {
+        const cache = await getCache(cacheKey);
+        if(cache !== null)
+            return{
+                operation:  true,
+                status:     200,
+                data:       cache
+            }
+
         const posts = await prisma.post.findMany({
             where: {
                 courseId,
             },
         });
 
+        createCache(cacheKey,posts);
         return {
             operation: true,
             status: 200,

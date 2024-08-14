@@ -42,7 +42,7 @@ async function getAllCourses() {
 }
 
 async function getCourseById(courseId) {
-    const cacheKey = `get course by id ${courseId}`
+    const cacheKey = `get course by id ${courseId}`;
     try {
         const cache = await getCache(cacheKey);
         if(cache !== null)
@@ -282,6 +282,39 @@ async function createNewCourse(newCourse) {
     }
 }
 
+async function increaseViewCount(courseId) {
+    try {
+        const course = await prisma.course.update({
+            where: {
+                id: courseId,
+            },
+            data: {
+                viewCount: {
+                    increment: 1,
+                },
+            },
+        });
+
+        return {
+            operation: true,
+            status: 200,
+            message: `Successfully increased view count for Course with id: ${course.id}`,
+            data: course,
+        };
+    } catch (err) {
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======");
+
+        return {
+            operation: false,
+            message: "Internal Server Error",
+        };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function updateCourse(updatedCourse) {
     try {
         const existingCourse = await getCourseById(updatedCourse.id);
@@ -300,6 +333,8 @@ async function updateCourse(updatedCourse) {
             },
             data,
         });
+
+        await increaseViewCount(course.id);
 
         return {
             operation: true,

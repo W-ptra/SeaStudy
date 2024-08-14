@@ -63,7 +63,7 @@ const CourseDetail = () => {
                 </CardContent>
               </div>
               <CardFooter>
-                <Link href={`/dashboard/courses/${lastPathname}/${item.title}`}>
+                <Link href={`/courses/${lastPathname}/${item.title}`}>
                   <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
                     See Materials
                   </Button>

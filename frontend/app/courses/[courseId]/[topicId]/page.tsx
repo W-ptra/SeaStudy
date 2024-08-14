@@ -2,7 +2,7 @@ import React from 'react'
 
 const TopicDetailPage = () => {
   return (
-    <div>TopicDetailPage</div>
+    <div>MaterialDetailPage</div>
   )
 }
 

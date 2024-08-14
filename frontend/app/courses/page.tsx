@@ -20,7 +20,6 @@ import { course } from './data';
 
 // Button Import
 import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
 
 const CoursesPage = () => {
   return (

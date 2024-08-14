@@ -1,4 +1,5 @@
 import React from 'react'
+import { cn } from '@/lib/utils'
 
 // Component Import
 import CreateCourse from '@/components/dashboard/CreateCourse'
@@ -12,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { cn } from '@/lib/utils'
 
 // Button Import
 import { Button } from '@/components/ui/button'

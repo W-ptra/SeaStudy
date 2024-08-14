@@ -4,6 +4,7 @@ require("dotenv").config();
 const resend = new Resend(process.env.EMAIL_KEY);
 
 async function coursePurchasedNotification(instructor,student,course){
+    console.log(instructor);
     const text = `
         Dear ${instructor.name},
 
@@ -12,7 +13,7 @@ async function coursePurchasedNotification(instructor,student,course){
         Purchase Details:
         - Course Name:   ${course.name}
         - Student Name:  ${student.name}
-        - Course price:  ${course.name}
+        - Course price:  Rp.${course.price}
         - Purchase Date: ${new Date()}
 
         Congratulations on your new student, and thank you for being a valued Instructor of SEAstudy!
@@ -33,14 +34,14 @@ async function coursePurchasedNotification(instructor,student,course){
     }
 }
 
-async function assignmentNotification(instructor,student,submission){
+async function assignmentNotification(instructor,student,assignment){
     const text = `
         Dear ${instructor.name},
 
         We are pleased to inform you that a new assignment has been submitted by one of your students.
 
         Submission Details:
-        - Submission Id:   ${submission.id}
+        - Assignment Id:   ${assignment.id}
         - Student Name:    ${student.name}
         - Submission Date: ${new Date()}
 

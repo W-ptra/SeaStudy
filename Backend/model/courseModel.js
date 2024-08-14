@@ -42,15 +42,7 @@ async function getAllCourses() {
 }
 
 async function getCourseById(courseId) {
-    const cacheKey = `get course by id ${courseId}`;
     try {
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
 
         const course = await prisma.course.findUnique({
             where: {
@@ -71,7 +63,6 @@ async function getCourseById(courseId) {
             price: course.price.toString(),
         };
             
-        createCache(cacheKey,courseWithBigIntAsString);
         return {
             operation: true,
             status: 200,

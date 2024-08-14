@@ -47,13 +47,13 @@ async function getTopicById(userId,id){
 
 async function createNewTopic(userId,topic){
 
-    const course = getCourseById(topic.courseId);
+    const course = await getCourseById(topic.courseId);
 
     if(course.data == null)
         return {
             operation:  false,
             status:     404,
-            message:    `Course with id ${course.data.id} was not found`
+            message:    `Course with id ${topic.courseId} was not found`
         }
 
     if(course.data.userId !== userId)

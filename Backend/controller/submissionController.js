@@ -33,7 +33,7 @@ router.post('/',async (req,res)=>{
         isGraded:       Boolean(req.body.isGraded === "true"),
         content:        req.body.content,
         assignmentId:   parseInt(req.body.assignmentId),
-        userId:         parseInt(req.body.userId)
+        userId:         parseInt(req.user.id)
     }
 
     const respond = await submission.createNewSubmission(newSubmission);

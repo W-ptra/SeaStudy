@@ -3,12 +3,26 @@ require("dotenv").config();
 
 const resend = new Resend(process.env.EMAIL_KEY);
 
-async function test(){
+async function coursePurchasedNotification(instructor,student,course){
+    const text = `
+        Dear ${instructor.name},
+
+        We are excited to inform you that your course, ${course.name}, has just been purchased by a new student!
+
+        Purchase Details:
+        - Course Name:   ${course.name}
+        - Student Name:  ${student.name}
+        - Course price:  ${course.name}
+        - Purchase Date: ${new Date()}
+
+        Congratulations on your new student, and thank you for being a valued Instructor of SEAstudy!
+    `
     const email = {
-        from:       `noreply@seastudy.wisnuputra.xyz`,
-        to:         `wisnu.putra001@binus.ac.id`,
-        subject:    `Notification`,
-        text:       `test notif`
+        from:       `noreply@wisnuputra.xyz`,
+        to:         `${instructor.email}`,
+        subject:    `Good News! A student just purchase your course`,
+        Headers:    `Good News! A student just purchase your course`,
+        text
     }
 
     const {data,error} = await resend.emails.send(email);
@@ -17,8 +31,35 @@ async function test(){
         console.log(error);
         return
     }
-
-    console.log(data);
 }
 
-test();
+async function assignmentNotification(instructor,student,submission){
+    const text = `
+        Dear ${instructor.name},
+
+        We are pleased to inform you that a new assignment has been submitted by one of your students.
+
+        Submission Details:
+        - Submission Id:   ${submission.id}
+        - Student Name:    ${student.name}
+        - Submission Date: ${new Date()}
+
+        Thank you for your dedication and hard work in guiding our students!
+    `
+    const email = {
+        from:       `noreply@wisnuputra.xyz`,
+        to:         `${instructor.email}`,
+        subject:    `New Assignment Submission Notification`,
+        Headers:    `New Assignment Submission Notification`,
+        text
+    }
+
+    const {data,error} = await resend.emails.send(email);
+
+    if(error){
+        console.log(error);
+        return
+    }
+}
+
+module.exports = {coursePurchasedNotification,assignmentNotification};

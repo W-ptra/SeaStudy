@@ -5,9 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'
 import { cn, getLastPathSegment } from '@/lib/utils';
 
-// Components Input
-import CreateTopic from '@/components/dashboard/CreateTopic';
-
 // Button Import
 import { Button } from '@/components/ui/button';
 
@@ -24,31 +21,12 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 
-// Alert Dialog Import
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { toast } from 'sonner';
-
 const CourseDetailPage = () => {
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
   const data = course.find(item => item.name === lastPathname)
   // @ts-ignore
   const { name, description, category, level } = data
-
-  function handleDeleteCourse() {
-    console.log("Course Deleted")
-    toast("Course Deleted")
-  }
 
   return (
     <div className='space-y-8'>
@@ -85,7 +63,7 @@ const CourseDetailPage = () => {
                 </CardContent>
               </div>
               <CardFooter>
-                <Link href={`/dashboard/instructor/${lastPathname}/${item.title}`}>
+                <Link href={`/dashboard/courses/${lastPathname}/${item.title}`}>
                   <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
                     See Materials
                   </Button>

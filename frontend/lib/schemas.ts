@@ -31,3 +31,41 @@ export const TopicSchema = z.object({
   description: z.string()
 })
 export type TopicSchemaType = z.infer<typeof TopicSchema>
+
+// Level Enum
+enum courseLevel {
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard'
+}
+
+// Category Enum
+export enum category {
+  programming = 'programming',
+  design = 'design',
+  business = 'business',
+  marketing = 'marketing',
+  music = 'music',
+  cooking = 'cooking',
+  photography = 'photography',
+  health = 'health',
+  fitness = 'fitness',
+  lifestyle = 'lifestyle',
+  personalDevelopment = 'personal development',
+  academics = 'academics',
+  language = 'language',
+  testPrep = 'test prep',
+  teaching = 'teaching',
+  other = 'other',
+}
+
+export type CourseDataType = {
+  courseId: number
+  title: string
+  description: string
+  category: category
+  level: courseLevel
+  price: number
+  rating: number
+  instructorName: string
+}

@@ -2,6 +2,36 @@ const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
+async function createNewAssignment(newAssignment){
+    try{
+        const data = {
+            name:          newAssignment.name,
+            description:   newAssignment.description,
+            topic:         { connect:{id: newAssignment.topicId} },
+        }
+        const assignment = await prisma.assigment.create({ data });
+        return {
+            operation:  true,
+            status:     201,
+            message:    `Successfully created new Assignment with id: ${assignment.id}`
+        }
+    }
+    catch (err){
+        console.log("====== Error Log ======");
+        console.log(err);
+        console.log("====== End of Error Log ======")
+
+        return {
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
+        };
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
 async function getAssignmentById(id){
     const cacheKey = `get assignment by id ${id}`
 
@@ -19,7 +49,8 @@ async function getAssignmentById(id){
         createCache(cacheKey,assignment);
         return {
             operation:  true,
-            data:    assignment
+            status:     200,
+            data:       assignment
         }
     }
     catch (err){
@@ -28,36 +59,9 @@ async function getAssignmentById(id){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
-        };
-    }
-    finally {
-        await prisma.$disconnect();
-    }
-}
-
-async function createNewAssignment(newAssignment){
-    try{
-        const data = {
-            name:          newAssignment.name,
-            description:   newAssignment.description,
-            topic:         { connect:{id: newAssignment.topicId} },
-        }
-        const assignment = await prisma.assigment.create({ data });
-        return {
-            operation:  true,
-            message:    `Successfully created new Assignment with id: ${assignment.id}`
-        }
-    }
-    catch (err){
-        console.log("====== Error Log ======");
-        console.log(err);
-        console.log("====== End of Error Log ======")
-
-        return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -76,6 +80,7 @@ async function updateAssignmentById(updatedAssignment){
         const updating = await prisma.assigment.update({where,data})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully update Assignment with id: ${updating.id}`
         }
     }
@@ -85,8 +90,9 @@ async function updateAssignmentById(updatedAssignment){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -99,6 +105,7 @@ async function deleteAssignmentById(id){
         await prisma.assigment.delete({where:{id}})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully delete Assignment with id: ${id}`
         }
     }
@@ -108,8 +115,9 @@ async function deleteAssignmentById(id){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {

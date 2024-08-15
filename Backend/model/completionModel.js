@@ -12,7 +12,7 @@ async function createNewCompletion(newCompletion) {
 
         return {
             operation: true,
-            status: 200,
+            status: 201,
             message: `Successfully created new Completion with id: ${completion.id}`,
         };
     } catch (err) {

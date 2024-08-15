@@ -31,8 +31,9 @@ const getPostById = async (id) => {
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
 }
@@ -95,8 +96,9 @@ const getPostsByCourseId = async (courseId) => {
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
 };
@@ -138,6 +140,7 @@ const deletePostById = async (id) => {
 
 module.exports = {
     createPost,
+    getPostById,
     getPostsByCourseId,
     deletePostById,
 };

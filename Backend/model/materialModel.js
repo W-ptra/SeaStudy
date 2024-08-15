@@ -14,6 +14,7 @@ async function createNewMaterial(newMaterial){
         const material = await prisma.material.create({ data });
         return {
             operation:  true,
+            status:     201,
             message:    `Successfully created new Material with id: ${material.id}`
         }
     }
@@ -23,8 +24,9 @@ async function createNewMaterial(newMaterial){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -48,6 +50,7 @@ async function getAllMaterialByTopicId(topicId){
         createCache(cacheKey,allMaterial);
         return {
             operation:  true,
+            status:     200,
             data:       allMaterial
         }
     }
@@ -57,8 +60,9 @@ async function getAllMaterialByTopicId(topicId){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -82,6 +86,7 @@ async function getMaterialById(id){
         createCache(cacheKey,material);
         return {
             operation:  true,
+            status:     200,
             data:       material
         }
     }
@@ -91,8 +96,9 @@ async function getMaterialById(id){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -112,6 +118,7 @@ async function updateMaterialById(updatedMaterial){
         const updating = await prisma.material.update({where,data})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully updated Material with id: ${updating.id}`
         }
     }
@@ -121,8 +128,9 @@ async function updateMaterialById(updatedMaterial){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -135,6 +143,7 @@ async function deleteMaterialById(id){
         await prisma.material.delete({where:{id}})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully delete Material with id: ${id}`
         }
     }
@@ -144,8 +153,9 @@ async function deleteMaterialById(id){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {

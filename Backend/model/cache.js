@@ -1,28 +1,44 @@
 const redis = require("redis");
-require("dotenv").config()
+require("dotenv").config();
 
 const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT
 });
-redisClient.on('error',(err)=>{console.log(`redis error: ${err}`)});
 
-async function getCache(key){
-    await redisClient.connect();
-    const cacheData = await redisClient.get(key);
-    await redisClient.disconnect()
-    if(cacheData){
-        const cacheDataJson = JSON.parse(cacheData);
-        return cacheDataJson;
+redisClient.on('error', (err) => {
+    console.log(`Redis error: ${err}`);
+});
+
+redisClient.connect().catch(console.error);
+
+async function getCache(key) {
+    try {
+        const cacheData = await redisClient.get(key);
+        if (cacheData) {
+            return JSON.parse(cacheData);
+        }
+        return null;
+    } catch (err) {
+        console.error(`Error getting cache for key ${key}:`, err);
+        return null;
     }
-    return null
 }
 
-async function createCache(key,cache){
-    await redisClient.connect();
-    const cacheDataString = JSON.stringify(cache);
-    await redisClient.setEx(key,300,cacheDataString)
-    await redisClient.disconnect()
+async function createCache(key, cache) {
+    try {
+        const cacheDataString = JSON.stringify(cache);
+        await redisClient.setEx(key, 300, cacheDataString);
+    } catch (err) {
+        console.error(`Error creating cache for key ${key}:`, err);
+    }
 }
 
-module.exports = {getCache,createCache}
+process.on('SIGINT', () => {
+    redisClient.disconnect().then(() => {
+        console.log('Redis client disconnected');
+        process.exit(0);
+    });
+});
+
+module.exports = { getCache, createCache };

@@ -14,6 +14,7 @@ async function createNewSubmission(newSubmission){
         const topic = await prisma.submission.create({ data });
         return {
             operation:  true,
+            status:     201,
             message:    `Successfully created new Submission with id: ${topic.id}`
         }
     }
@@ -23,8 +24,9 @@ async function createNewSubmission(newSubmission){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -33,7 +35,7 @@ async function createNewSubmission(newSubmission){
 }
 
 async function getAllSubmissionByAssignmentId(assignmentId){
-    const cache = `get all submission by assignment id ${assignmentId}`;
+    const cacheKey = `get all submission by assignment id ${assignmentId}`;
     try{
         const cache = await getCache(cacheKey);
         if(cache !== null)
@@ -55,6 +57,7 @@ async function getAllSubmissionByAssignmentId(assignmentId){
         createCache(cacheKey,allAssigment);
         return {
             operation:  true,
+            status:     200,
             data:       allAssigment
         }
     }
@@ -64,8 +67,9 @@ async function getAllSubmissionByAssignmentId(assignmentId){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -95,6 +99,7 @@ async function getSubmissionByUserId(userId){
         createCache(cacheKey,allSubmission);
         return {
             operation:  true,
+            status:     200,
             data:       allSubmission
         }
     }
@@ -104,8 +109,9 @@ async function getSubmissionByUserId(userId){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -129,6 +135,7 @@ async function getSubmissionById(id){
         createCache(cacheKey,submission);
         return {
             operation:  true,
+            status:     200,
             data:       submission
         }
     }
@@ -138,8 +145,9 @@ async function getSubmissionById(id){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {
@@ -156,12 +164,13 @@ async function updateSubmissionById(updatedSubmission){
             isGraded:        updatedSubmission.isGraded,
             content:         updatedSubmission.content,
             assignmentId:    updatedSubmission.assignmentId,
-            userId:    updatedSubmission.userId
+            userId:          updatedSubmission.userId
         }
         
         const updating = await prisma.submission.update({where,data})
         return {
             operation:  true,
+            status:     200,
             message:    `Successfully update Submission with id: ${updating.id}`
         }
     }
@@ -171,8 +180,9 @@ async function updateSubmissionById(updatedSubmission){
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
     finally {

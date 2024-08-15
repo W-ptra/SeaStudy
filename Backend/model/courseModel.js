@@ -132,8 +132,9 @@ async function getEnrolledCourses(id) {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -342,8 +343,9 @@ async function updateCourse(updatedCourse) {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();
@@ -362,9 +364,6 @@ async function deleteCourse(courseId) {
             operation: true,
             status: 200,
             message: `Sucessfully deleted Course with id: ${course.id}`,
-            data: course,
-            message: `Successfully created new Course with id: ${course.id}`,
-            data: course,
         };
     } catch (err) {
         console.log("====== Error Log ======");
@@ -372,8 +371,9 @@ async function deleteCourse(courseId) {
         console.log("====== End of Error Log ======")
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     } finally {
         await prisma.$disconnect();

@@ -50,9 +50,9 @@ const createReview = async (data) => {
 
         return {
             operation: true,
-            status: 200,
-            message: "Review created successfully",
-            data: review,
+            status:     201,
+            message:    "Review created successfully",
+            data:       review,
         };
     } catch (err) {
         console.log("====== Error Log ======");
@@ -60,9 +60,9 @@ const createReview = async (data) => {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            status: 500,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
 };
@@ -96,8 +96,9 @@ const getReviewsByCourseId = async (id) => {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
 };
@@ -165,8 +166,9 @@ const deleteReviewById = async (id) => {
         console.log("====== End of Error Log ======");
 
         return {
-            operation: false,
-            message: "Internal Server Error",
+            operation:  false,
+            status:     500,
+            message:    "Internal Server Error",
         };
     }
 };

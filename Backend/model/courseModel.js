@@ -13,7 +13,11 @@ async function getAllCourses() {
                 data:       cache
             }
         
-        const courses = await prisma.course.findMany();
+            const courses = await prisma.course.findMany({
+                orderBy: {
+                    views: 'desc'
+                }
+            });
         
         const coursesWithBigIntAsString = courses.map((course) => {
             return {

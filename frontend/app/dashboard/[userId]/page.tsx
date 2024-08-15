@@ -25,7 +25,9 @@ import { BookCopy } from 'lucide-react';
 // Dummy Data Import
 import { course } from './data';
 
+// Import Utilities
 import { toast } from 'sonner';
+import CountUp from 'react-countup';
 
 const UserDashboard = () => {
   const pathname = usePathname()
@@ -38,6 +40,26 @@ const UserDashboard = () => {
 
   return (
     <div className='space-y-8'>
+
+      {/* User Data */}
+      <Card>
+        <CardHeader className='w-full flex'>
+          <div className='flex items-center justify-between'>
+            <div>
+              <h3 className='text-xl font-bold'>Username</h3>
+              <div className='text-muted-foreground'>
+                username@gmail.com
+              </div>
+            </div>
+            <div className='flex flex-col items-center w-[180px] '>
+              <p className='text-muted-foreground'>Balance</p>
+              <div className='text-muted-foreground text-2xl font-bold'>
+                Rp <CountUp end={250000} />
+              </div>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
 
       {/* Header */}
       <div className='w-full flex items-center justify-between'>

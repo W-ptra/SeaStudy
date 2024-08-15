@@ -21,8 +21,8 @@ async function coursePurchasedNotification(instructor,student,course){
     const email = {
         from:       `noreply@wisnuputra.xyz`,
         to:         `${instructor.email}`,
-        subject:    `Good News! A student just purchase your course`,
-        Headers:    `Good News! A student just purchase your course`,
+        subject:    `Good News! A student just purchased your course.`,
+        Headers:    `Good News! A student just purchased your course.`,
         text
     }
 

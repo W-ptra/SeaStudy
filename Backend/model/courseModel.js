@@ -58,6 +58,9 @@ async function getCourseById(courseId) {
                 message: `Course with id: ${courseId} not found`,
             };
         }
+
+        const result = await increaseViewCount(course.id);
+        console.log("Increased view count " + result.operation);
             
         const courseWithBigIntAsString = {
             ...course,
@@ -284,7 +287,7 @@ async function increaseViewCount(courseId) {
                 id: courseId,
             },
             data: {
-                viewCount: {
+                views: {
                     increment: 1,
                 },
             },
@@ -328,8 +331,6 @@ async function updateCourse(updatedCourse) {
             },
             data,
         });
-
-        await increaseViewCount(course.id);
 
         return {
             operation: true,

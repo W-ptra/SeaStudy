@@ -1,19 +1,23 @@
-const { getCache,createCache } = require("./cache");
+//const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function getAllCourses() {
-    const cacheKey = `get all course`
+    //const cacheKey = `get all course`
     try {
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        //const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
         
-        const courses = await prisma.course.findMany();
+            const courses = await prisma.course.findMany({
+                orderBy: {
+                    views: 'desc'
+                }
+            });
         
         const coursesWithBigIntAsString = courses.map((course) => {
             return {
@@ -21,7 +25,7 @@ async function getAllCourses() {
                 price: course.price.toString(),
             };
         });
-        createCache(cacheKey,coursesWithBigIntAsString);
+        //createCache(cacheKey,coursesWithBigIntAsString);
         return {
             operation:  true,
             status:     200,
@@ -87,15 +91,15 @@ async function getCourseById(courseId) {
 }
 
 async function getEnrolledCourses(id) {
-    const cacheKey = `get enrolled courses by id ${id}`
+    //const cacheKey = `get enrolled courses by id ${id}`
     try {
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const enrollments = await prisma.enrollment.findMany({
             where: {
@@ -123,7 +127,7 @@ async function getEnrolledCourses(id) {
                 price: course.price.toString(),
             };
         });
-        createNewCourse(cacheKey,coursesWithBigIntAsString);
+        //createNewCourse(cacheKey,coursesWithBigIntAsString);
         return {
             operation: true,
             status: 200,
@@ -145,15 +149,15 @@ async function getEnrolledCourses(id) {
 }
 
 async function getCreatedCourses(id) {   
-    const cacheKey = `get created courses by id ${id}` 
+    //const cacheKey = `get created courses by id ${id}` 
     try {
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const courses = await prisma.course.findMany({
             where: {
@@ -167,7 +171,7 @@ async function getCreatedCourses(id) {
                 price: course.price.toString(),
             };
         });
-        createNewCourse(cacheKey,coursesWithBigIntAsString);
+        //createNewCourse(cacheKey,coursesWithBigIntAsString);
         return {
             operation: true,
             status: 200,

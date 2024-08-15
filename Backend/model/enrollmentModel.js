@@ -1,23 +1,23 @@
-const { getCache,createCache } = require("./cache");
+//const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const { getCourseById } = require("./courseModel");
 const { getUserById } = require("./userModel");
 const prisma = new PrismaClient();
 
 async function getEnrollmentsByUserId(userId,courseId){
-    const cacheKey = `get enrollments by user id ${userId} and course id ${courseId}`;
+    //const cacheKey = `get enrollments by user id ${userId} and course id ${courseId}`;
     try {
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        //const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = {userId,courseId}
         const enrollments = await prisma.enrollment.findMany({ where });
-        createCache(cacheKey,enrollments);
+        //createCache(cacheKey,enrollments);
         return {
             operation: true,
             status: 200,
@@ -35,15 +35,15 @@ async function getEnrollmentsByUserId(userId,courseId){
 }
 
 async function getEnrollmentsByCourseId(courseId) {
-    const cacheKey = `get enrollment by course id ${courseId}`;
+    //const cacheKey = `get enrollment by course id ${courseId}`;
     try {
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const enrollments = await prisma.enrollment.findMany({
             where: {
@@ -56,7 +56,7 @@ async function getEnrollmentsByCourseId(courseId) {
             courseId: enroll.courseId,
         }));
         //console.log(enrollmentData);
-        createCache(cacheKey,enrollmentData);
+        //createCache(cacheKey,enrollmentData);
         return {
             operation: true,
             status: 200,

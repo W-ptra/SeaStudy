@@ -1,4 +1,4 @@
-const { getCache,createCache } = require("./cache");
+//const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
@@ -33,15 +33,15 @@ async function createNewTopic(newTopic){
 }
 
 async function getAllTopicByCourseId(courseId){
-    const cacheKey = `get all topic by course id ${courseId}`;
+    //const cacheKey = `get all topic by course id ${courseId}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = { courseId }
         const select = { 
@@ -52,7 +52,7 @@ async function getAllTopicByCourseId(courseId){
 
         const allTopic = await prisma.topic.findMany({where,select})
 
-        createCache(cacheKey,allTopic);
+        //createCache(cacheKey,allTopic);
         return {
             operation:  true,
             status:     200,
@@ -76,20 +76,20 @@ async function getAllTopicByCourseId(courseId){
 }
 
 async function getTopicByIdNonJoin(id){
-    const cacheKey = `get topic by id non join ${id}`;
+    //const cacheKey = `get topic by id non join ${id}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = { id };
         const topic = await prisma.topic.findUnique({where});
 
-        createCache(cacheKey,topic);
+        //createCache(cacheKey,topic);
         return {
             operation:  true,
             status:     200,
@@ -113,15 +113,15 @@ async function getTopicByIdNonJoin(id){
 }
 
 async function getTopicById(id){
-    const cacheKey = `get topic by id ${id}`;
+    //const cacheKey = `get topic by id ${id}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = { id };
         const include = {
@@ -151,7 +151,7 @@ async function getTopicById(id){
 
         const topic = await prisma.topic.findUnique({where,select})
 
-        createCache(cacheKey,topic);
+        //createCache(cacheKey,topic);
         return {
             operation:  true,
             status:     200,
@@ -175,20 +175,20 @@ async function getTopicById(id){
 }
 
 async function getTopicsByCourseId(courseId){
-    const cacheKey = `get topic by course id ${courseId}`;
+    //const cacheKey = `get topic by course id ${courseId}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = { courseId }
         const topic = await prisma.topic.findMany({where})
 
-        createCache(cacheKey,topic);
+        //createCache(cacheKey,topic);
         return {
             operation:  true,
             data:       topic

@@ -1,4 +1,4 @@
-const { getCache,createCache } = require("./cache");
+//const { getCache,createCache } = require("./cache");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
 
@@ -35,15 +35,15 @@ async function createNewSubmission(newSubmission){
 }
 
 async function getAllSubmissionByAssignmentId(assignmentId){
-    const cacheKey = `get all submission by assignment id ${assignmentId}`;
+    //const cacheKey = `get all submission by assignment id ${assignmentId}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            };
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     };
 
         const where = { assignmentId };
         const select = {
@@ -54,7 +54,7 @@ async function getAllSubmissionByAssignmentId(assignmentId){
         };
         const allAssigment = await prisma.submission.findMany({where,select});
 
-        createCache(cacheKey,allAssigment);
+        //createCache(cacheKey,allAssigment);
         return {
             operation:  true,
             status:     200,
@@ -78,15 +78,15 @@ async function getAllSubmissionByAssignmentId(assignmentId){
 }
 
 async function getSubmissionByUserId(userId){
-    const cacheKey = `get submission by user id ${userId}`;
+    //const cacheKey = `get submission by user id ${userId}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = { userId }
         const select = {
@@ -96,7 +96,7 @@ async function getSubmissionByUserId(userId){
             content: true
         }
         const allSubmission = await prisma.submission.findMany({where,select})
-        createCache(cacheKey,allSubmission);
+        //createCache(cacheKey,allSubmission);
         return {
             operation:  true,
             status:     200,
@@ -120,19 +120,19 @@ async function getSubmissionByUserId(userId){
 }
 
 async function getSubmissionById(id){
-    const cacheKey = `get submission by id ${id}`;
+    //const cacheKey = `get submission by id ${id}`;
     try{
-        const cache = await getCache(cacheKey);
-        if(cache !== null)
-            return{
-                operation:  true,
-                status:     200,
-                data:       cache
-            }
+        // const cache = await getCache(cacheKey);
+        // if(cache !== null)
+        //     return{
+        //         operation:  true,
+        //         status:     200,
+        //         data:       cache
+        //     }
 
         const where = { id }
         const submission = await prisma.submission.findUnique({where})
-        createCache(cacheKey,submission);
+        //createCache(cacheKey,submission);
         return {
             operation:  true,
             status:     200,

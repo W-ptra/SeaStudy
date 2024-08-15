@@ -41,7 +41,7 @@ const Navbar = () => {
         </h1>
 
         {/* Navigation */}
-        <nav className='flex items-center justify-center gap-x-4'>
+        <nav className='hidden md:flex items-center justify-center gap-x-4'>
           <Link href="/">
             Home
           </Link>

@@ -50,7 +50,6 @@ const CreateCourse = () => {
       description: "",
       category: "",
       level: 'Easy',
-      price: 0,
     }
   })
 

@@ -21,7 +21,7 @@ export const CourseSchema = z.object({
   description: z.string(),
   category: z.string(),
   level: z.enum(['Easy', 'Medium', 'Hard']),
-  price: z.number(),
+  price: z.coerce.number(),
 })
 export type CourseSchemaType = z.infer<typeof CourseSchema>
 

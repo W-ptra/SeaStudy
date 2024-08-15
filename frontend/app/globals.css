@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -66,4 +68,77 @@
   body {
     @apply bg-background text-foreground;
   }
+  .wrapper {
+    @apply w-full mx-auto max-w-7xl p-4
+  }
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/public/satoshi/Satoshi-BlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
 }

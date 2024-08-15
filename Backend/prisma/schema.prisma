@@ -12,3 +12,166 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum userRole {
+  User
+  Instructor
+}
+
+enum courseLevel {
+  easy
+  medium
+  hard
+}
+
+enum materialType {
+  document
+  video
+  ppt
+}
+
+enum category {
+  programming
+  design
+  business
+  marketing
+  music
+  cooking
+  photography
+  health
+  fitness
+  lifestyle
+  personalDevelopment
+  academics
+  language
+  testPrep
+  teaching
+  other
+}
+
+model Users {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String
+  password   String
+  role       userRole     @default(User)
+  credit     BigInt       @default(0)
+  course     Course[]
+  enrollment Enrollment[]
+  review     Review[]
+  post       Post[]
+  completion Completion[]
+  submission Submission[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Course {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  category    category
+  level       courseLevel
+  price       BigInt
+  avgRating   Float        @default(0)
+  views       Int          @default(0)
+  creator     Users        @relation(fields: [userId], references: [id])
+  userId      Int
+  enrollment  Enrollment[]
+  review      Review[]
+  post        Post[]
+  topic       Topic[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  user      Users    @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  userId    Int
+  courseId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  comment   String
+  rating    Int
+  user      Users    @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  userId    Int
+  courseId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  message   String
+  user      Users    @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  userId    Int
+  courseId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Topic {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  course      Course       @relation(fields: [courseId], references: [id])
+  courseId    Int
+  material    Material[]
+  completion  Completion[]
+  assignment  Assigment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Material {
+  id        Int          @id @default(autoincrement())
+  name      String
+  type      materialType
+  link      String
+  topic     Topic        @relation(fields: [topicId], references: [id])
+  topicId   Int
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Completion {
+  id        Int      @id @default(autoincrement())
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  user      Users    @relation(fields: [userId], references: [id])
+  topicId   Int
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Assigment {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  topic       Topic        @relation(fields: [topicId], references: [id])
+  topicId     Int
+  submission  Submission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Submission {
+  id           Int       @id @default(autoincrement())
+  score        Float     @default(0)
+  isGraded     Boolean
+  content      String
+  assignment   Assigment @relation(fields: [assignmentId], references: [id])
+  user         Users     @relation(fields: [userId], references: [id])
+  assignmentId Int
+  userId       Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}

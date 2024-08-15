@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Icon Import
 import { LogIn } from 'lucide-react';
@@ -34,6 +35,7 @@ import { SignInSchema, SignInSchemaType } from '@/lib/schemas';
 import { toast } from 'sonner';
 
 const SignInPage = () => {
+  const router = useRouter()
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -42,9 +44,27 @@ const SignInPage = () => {
     }
   })
 
-  function onSubmit(values: SignInSchemaType) {
-    console.log(values)
-    toast("Signed In Successfully")
+  async function onSubmit(values: SignInSchemaType) {
+    try {
+      const response = await fetch('api/auth/login', {
+         method: 'POST',
+         headers: {
+          'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(values),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        toast.success("Signed In Successfully")
+        router.push(`/dashboard/${data}`)
+      } else {
+        toast.error("Failed to sign in")
+      }
+    } catch (error) {
+      toast.error("An error occured during sing-in")
+    }
   }
 
   return (

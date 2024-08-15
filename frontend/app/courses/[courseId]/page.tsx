@@ -18,6 +18,9 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 
+// Icons Import
+import { Star } from 'lucide-react';
+
 // Button Import
 import { Button } from '@/components/ui/button';
 
@@ -69,6 +72,28 @@ const CourseDetail = () => {
                   </Button>
                 </Link>
               </CardFooter>
+            </Card>
+          )
+        })}
+      </div>
+
+      {/* Header */}
+      <div className='w-full flex items-start justify-between'>
+        <h3 className='text-3xl font-bold'>Rating</h3>
+      </div>
+
+      {/* Rating */}
+      <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        {data?.reviews.map((item, index) => {
+          return (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle>{item.reviewer}</CardTitle>
+                <CardDescription>{item.comment}</CardDescription>
+              </CardHeader>
+              <CardContent className='flex items-center gap-x-2 font-semibold'>
+                {item.rating} <Star className='h-4 w-4' />
+              </CardContent>
             </Card>
           )
         })}

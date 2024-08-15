@@ -1,12 +1,9 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'
 import { cn, getLastPathSegment } from '@/lib/utils';
-
-// Dummy Data Import
-import { course } from '../data';
 
 // Card Import
 import { 
@@ -23,37 +20,66 @@ import { Star } from 'lucide-react';
 
 // Button Import
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { CourseDetailDataType } from '@/lib/schemas';
 
 const CourseDetail = () => {
+  const [courseDetail, setCourseDetail] = useState<CourseDetailDataType>()
+
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
-  const data = course.find(item => item.name === lastPathname)
-  // @ts-ignore
-  const { name, description, category, level } = data
+  const courseId = parseInt(lastPathname)
+
+  useEffect(() => {
+    async function getCourseDetail(courseId: number) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course/${courseId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type' : 'application/json'
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          console.log(data)
+          setCourseDetail(data)
+        } else {
+          toast.error('Failed to fetch course detail')
+        }
+      } catch (error: any) {
+        toast.error('Error fetching course detail:', error)
+      } 
+    }
+
+    getCourseDetail(courseId)
+  }, [])
 
   return (
     <div className='space-y-8'>
 
       {/* Header */}
+
       <div className='w-full flex items-start justify-between'>
         <div className='space-y-2'>
-          <h3 className='text-3xl font-bold'>{name}</h3>
-          <p className='text-black/75'>{description}</p>
+          <h3 className='text-3xl font-bold'>{courseDetail?.course.name}</h3>
+          <p className='text-black/75'>{courseDetail?.course.description}</p>
           <div className='flex gap-x-4 items-center'>
             <p className={cn(
               'rounded-full bg-gray-50 border py-1 px-4',
-              level === 'Easy' && 'bg-green-50 border border-green-300',
-              level === 'Medium' && 'bg-orange-50 border border-orange-300',
-              level === 'Hard' && 'bg-red-50 border border-red-300'  
-            )}>{level}</p>
-            <p className='rounded-full bg-gray-100 border py-1 px-4'>{category}</p>
+              courseDetail?.course.level === 'easy' && 'bg-green-50 border border-green-300',
+              courseDetail?.course.level === 'medium' && 'bg-orange-50 border border-orange-300',
+              courseDetail?.course.level === 'hard' && 'bg-red-50 border border-red-300'  
+            )}>{courseDetail?.course.level}</p>
+            <p className='rounded-full bg-gray-100 border py-1 px-4'>{courseDetail?.course.category}</p>
+            Rating : {courseDetail?.course.avgRating}
           </div>
         </div>
       </div>
 
       {/* Topics */}
-      <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {data?.topics.map((item, index) => {
+      {/* <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        {courseDetail?.course.topics.map((item, index) => {
           return (
             <Card key={index} className='flex flex-col justify-between'>
               <div>
@@ -75,7 +101,7 @@ const CourseDetail = () => {
             </Card>
           )
         })}
-      </div>
+      </div> */}
 
       {/* Header */}
       <div className='w-full flex items-start justify-between'>
@@ -83,7 +109,7 @@ const CourseDetail = () => {
       </div>
 
       {/* Rating */}
-      <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+      {/* <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {data?.reviews.map((item, index) => {
           return (
             <Card key={index}>
@@ -97,7 +123,7 @@ const CourseDetail = () => {
             </Card>
           )
         })}
-      </div>
+      </div> */}
 
     </div>
   )

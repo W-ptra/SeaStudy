@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -30,7 +32,7 @@ const CoursesPage = () => {
   useEffect(() => {
     async function getAllCourses() {
       try {
-        const response = await fetch('/api/course/', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -47,6 +49,8 @@ const CoursesPage = () => {
         toast.error('Error fetching courses:', error)
       }
     }
+
+    getAllCourses()
   }, [])
 
   return (
@@ -66,7 +70,7 @@ const CoursesPage = () => {
             <Card key={index} className='flex flex-col justify-between'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
+                  <CardTitle>{item.name}</CardTitle>
                   <CardDescription>{item.description}</CardDescription>
                 </CardHeader>
                 <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
@@ -81,7 +85,7 @@ const CoursesPage = () => {
               </div>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
                 <p>$ {item.price}</p>
-                <Link href={`/courses/${item.courseId}`}>
+                <Link href={`/courses/${item.id}`}>
                   <Button className='bg-blue-500 hover:bg-blue-400 flex gap-2 hover:gap-4 transition-all'>
                     Enroll This Course <BookPlus className='w-5 h-5' />
                   </Button>

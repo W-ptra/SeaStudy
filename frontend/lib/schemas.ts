@@ -60,12 +60,31 @@ export enum category {
 }
 
 export type CourseDataType = {
-  courseId: number
-  title: string
+  id: number
+  name: string
   description: string
   category: category
   level: courseLevel
   price: number
   rating: number
   instructorName: string
+}
+
+export type CourseDetailDataType = {
+  course: {
+    id: number
+    name: string
+    description: string
+    category: category
+    level: courseLevel
+    price: number
+    avgRating: number
+    userId: number // instrcutor id
+    createdAt: string
+    updateAt: string
+    views: number
+  }
+  topic: {
+    
+  }
 }

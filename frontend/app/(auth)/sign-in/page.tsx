@@ -68,7 +68,7 @@ const SignInPage = () => {
   }
 
   return (
-    <Card className='bg-white/20 border-white shadow-custom'>
+    <Card className='bg-white/20 border-white shadow-custom my-[150px]'>
       <CardHeader className='text-center'>
         <CardTitle className='text-white'>Sign In</CardTitle>
         <CardDescription className='max-w-[500px] text-white/70'>Welcome back! Continue your learning journey with SeaStudy. Access your courses, participate in forums, and keep growing.</CardDescription>

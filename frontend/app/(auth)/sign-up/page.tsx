@@ -21,6 +21,15 @@ import { SignUpSchema, SignUpSchemaType } from '@/lib/schemas'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+// Select Import
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 // Card Import
 import {
   Card,
@@ -49,7 +58,7 @@ const SignUpPage = () => {
   }
 
   return (
-    <Card className='bg-white/20 border-white shadow-custom'>
+    <Card className='my-[125px] bg-white/20 border-white shadow-custom'>
       <CardHeader className='text-center'>
         <CardTitle className='text-white'>Sign Up</CardTitle>
         <CardDescription className='max-w-[500px] text-white/70'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
@@ -60,6 +69,19 @@ const SignUpPage = () => {
             <div className='space-y-2'>
               <FormField 
                 control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white'>Name</FormLabel>
+                    <FormControl>
+                      <Input type='text' placeholder='Name' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField 
+                control={form.control}
                 name='email'
                 render={({ field }) => (
                   <FormItem>
@@ -68,6 +90,33 @@ const SignUpPage = () => {
                       <Input type='email' placeholder='Email' {...field} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField 
+                control={form.control}
+                name='role'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white'>Role</FormLabel>
+                    <FormControl>
+                      <Select 
+                        onValueChange={(value) => {
+                          field.onChange(value)
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className='focus-visible:ring-transparent'>
+                            <SelectValue placeholder='Select Role' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value='User'>User</SelectItem>
+                          <SelectItem value='Instructor'>Instructor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
                   </FormItem>
                 )}
               />

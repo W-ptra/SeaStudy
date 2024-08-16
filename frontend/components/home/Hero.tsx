@@ -1,13 +1,20 @@
 import React from 'react'
+import Link from 'next/link';
+
+// Component Import
 import { Button } from '../ui/button'
+
+// Icon Import
 import { Sparkles } from 'lucide-react';
+
+// Image Import
 import Book from '@/public/images/home/Book1.svg'
 import Image from 'next/image';
-import Link from 'next/link';
+import Gradient from '@/public/images/home/Gradient3.svg'
 
 const Hero = () => {
   return (
-    <div className='md:mt-[100px] wrapper flex md:flex-row items-center gap-y-16 md:gap-y-8 h-full md:h-[550px] justify-between py-28 flex-col-reverse md:py-0'>
+    <div className='relative md:mt-[100px] wrapper flex md:flex-row items-center gap-y-16 md:gap-y-8 h-full md:h-[550px] justify-between py-28 flex-col-reverse md:py-0'>
       <div className='flex flex-col text-center items-center md:items-start md:text-start max-w-[650px] text-white gap-y-12'>
         <div className='space-y-4'>
           <h1 className='text-5xl font-extrabold'>Unlock Your Potential with Sea Study – Learn Anytime, Anywhere!</h1>
@@ -23,6 +30,12 @@ const Hero = () => {
         src={Book}
         alt='Book 3D'
         className='h-[300px] w-[300px] md:h-[400px] md:w-[400px]'
+      />
+
+      <Image 
+        src={Gradient}
+        alt='Gradient'
+        className='absolute -z-20 left-0 translate-x-[-550px] translate-y-20 opacity-75'
       />
     </div>
   )

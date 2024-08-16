@@ -1,6 +1,6 @@
 const {isAuthorized} = require("../middleware/auth")
 const {getUserById} = require("../service/user");
-const { getEnrolledCourses, getCreatedCourses } = require("../service/course");
+const { getEnrolledCourses, getCreatedCourses } = require("../service/user");
 const express = require("express");
 const router = express.Router();
 

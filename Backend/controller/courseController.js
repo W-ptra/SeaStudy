@@ -53,7 +53,7 @@ router.get("/:courseId", async (req, res) => {
 
     return res
         .status(respond.status)
-        .json({ course: respond.course, topics: respond.topics });
+        .json({ course: respond.course, topics: respond.topics, instructor: respond.instructor });
 });
 
 // Instructor role operations

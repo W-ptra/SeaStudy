@@ -42,6 +42,7 @@ const UserDashboard = () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user/course/`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -61,6 +62,7 @@ const UserDashboard = () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -121,9 +123,9 @@ const UserDashboard = () => {
 
       {/* Courses */}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {courses.map((item, index) => {
+        {courses && courses.map((item, index) => {
           return (
-            <Card key={index} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between'>
               <div>
                 <CardHeader>
                   <CardTitle>{item.name}</CardTitle>

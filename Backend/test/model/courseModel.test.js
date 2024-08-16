@@ -26,7 +26,7 @@ test("Test get all course",async ()=>{
 })
 
 test("Test get course by id",async ()=>{
-    const id = 10;
+    const id = 1;
     const result = await courseModel.getCourseById(id);
 
     expect(result.operation).toBe(true);
@@ -55,7 +55,7 @@ test("Test get all course by category, level, minRating, and maxRating",async ()
     const filter = {
         category:   "other",
         level:      "easy",
-        minRating:  1,
+        minRating:  0,
         maxRating:  5
     }
 
@@ -68,7 +68,7 @@ test("Test get all course by category, level, minRating, and maxRating",async ()
 
 test("Test update course",async ()=>{
     const course = {
-        id:             17,
+        id:             1,
         name:           "test update course",
         description:    "test update description",
         price:          3000,
@@ -85,7 +85,7 @@ test("Test update course",async ()=>{
 })
 
 test("Test delete course",async ()=>{
-    const id = 20;
+    const id = 3;
 
     const result = await courseModel.deleteCourse(id);
 

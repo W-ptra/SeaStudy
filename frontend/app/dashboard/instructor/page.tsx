@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 // Component Import
@@ -7,7 +7,6 @@ import CreateCourse from '@/components/dashboard/CreateCourse'
 // Card Import
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -18,11 +17,13 @@ import {
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-// Dummy Data Import
-import { course } from './data'
-import { BookPlus } from 'lucide-react'
+import { CourseDataType } from '@/lib/schemas'
+import { toast } from 'sonner'
 
 const InstructorDashboard = () => {
+
+  const [courses, setCourses] = useState<CourseDataType[]>([])
+
   const truncateDescription = (text: string, maxWords: number) => {
     const words = text.split(' ');
     if (words.length > maxWords) {
@@ -30,6 +31,30 @@ const InstructorDashboard = () => {
     }
     return text;
   };
+
+  useEffect(() => {
+    async function getCreatedCourses(){
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user/course/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setCourses(data.courses)
+        } else {
+          toast.error('Failed to fetch courses')
+        }
+      } catch (error: any) {
+        toast.error('Error fetching courses:', error)
+      }
+    }
+
+    getCreatedCourses()
+  }, [])
 
   return (
     <div className='space-y-8'>
@@ -42,7 +67,7 @@ const InstructorDashboard = () => {
 
       {/* Courses */}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {course.map((item, index) => {
+        {courses.map((item, index) => {
           return (
             <Card key={index} className='flex flex-col justify-between bg-white/20 border-2 border-white shadow-custom'>
               <div>

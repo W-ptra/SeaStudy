@@ -70,13 +70,32 @@ const CreateCourse = () => {
       name: "",
       description: "",
       category: "",
-      level: 'Easy',
+      level: 'easy',
     }
   })
 
-  function onSubmit(values: CourseSchemaType) {
-    console.log(values)
-    toast("Course Created Successfully")
+  async function onSubmit(values: CourseSchemaType) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course`, {
+         method: 'POST',
+         credentials: 'include',
+         headers: {
+          'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(values),
+      })
+
+      const data = await response.json()
+      console.log(data);
+      
+      if (response.ok) {
+        toast("Course Created Successfully");
+      } else {
+        toast.error("Failed to create course");
+      }
+    } catch (error) {
+      toast.error("An error occured")
+    }
   }
 
   return (
@@ -167,9 +186,9 @@ const CreateCourse = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value='Easy'>Easy</SelectItem>
-                          <SelectItem value='Medium'>Medium</SelectItem>
-                          <SelectItem value='Hard'>Hard</SelectItem>
+                          <SelectItem value='easy'>Easy</SelectItem>
+                          <SelectItem value='medium'>Medium</SelectItem>
+                          <SelectItem value='hard'>Hard</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className='font-satoshi'>
+      <body className='font-satoshi relative w-full h-full'>
         <Navbar />
         {children}
         <Toaster />

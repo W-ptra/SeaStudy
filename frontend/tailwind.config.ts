@@ -76,7 +76,7 @@ const config = {
         satoshi: ['Satoshi', 'sans-serif'],
       },
       boxShadow: {
-        'custom': '8px 8px 0px 0px rgba(0, 0, 0, 1)',
+        'custom': '4px 4px 24px 2px rgba(255, 255, 255, 0.5)',
       }
     },
   },

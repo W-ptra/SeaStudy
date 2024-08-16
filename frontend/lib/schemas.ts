@@ -59,26 +59,60 @@ export enum category {
   other = 'other',
 }
 
-export type CourseDetailDataType = {
-  course: {
-    id: number
-    name: string
-    description: string
-    category: category
-    level: courseLevel
-    price: number
-    avgRating: number
-    userId: number // instrcutor id
-    createdAt: string
-    updateAt: string
-    views: number
-  }
-  topic: {
+// export type CourseDetailDataType = {
+//   course: {
+//     id: number
+//     name: string
+//     description: string
+//     category: category
+//     level: courseLevel
+//     price: number
+//     avgRating: number
+//     userId: number // instrcutor id
+//     createdAt: string
+//     updateAt: string
+//     views: number
+//   }
+//   topic: {
     
-  }
+//   }
+// }
+
+// Data Type
+
+// Assignment
+export type AssignmentDataType = {
+  id: number
+  name: string
+  description: string
 }
 
-// Response data type
+// Material
+export type MaterialDataType = {
+  id: number
+  name: string
+  type: string
+  link: string
+}
+
+// Submission
+export type SubmissionDataType = {
+  id: number
+  score: number
+  isGraded: boolean
+  content: string
+}
+
+// Review
+export type ReviewDataType = {
+  id: number
+  comment: string
+  rating: number
+  userId: number
+  courseId: number
+  createdAt: string
+  updatedAt: string
+}
 
 // GET /api/course/
 export type CourseDataType = {
@@ -91,6 +125,15 @@ export type CourseDataType = {
   avgRating: number
   views: number
   userId: number
+  createdAt: string
+  updatedAt: string
+}
+// GET /api/topic/
+export type TopicDataType = {
+  id: number
+  title: string
+  description: string
+  courseId: number
   createdAt: string
   updatedAt: string
 }

@@ -1,12 +1,16 @@
 import React, { ReactNode } from 'react'
 
+// Snowfall Import
+import SnowfallComponent from '@/components/Snowfall'
+
 const AuthLayout = ({
   children
 }:{
   children: ReactNode
 }) => {
   return (
-    <div className='mt-[100px] wrapper flex items-center justify-center h-[64vh]'>
+    <div className='wrapper flex items-center justify-center h-screen'>
+      <SnowfallComponent />
       {children}
     </div>
   )

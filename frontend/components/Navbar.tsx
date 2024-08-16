@@ -35,7 +35,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className='fixed top-4 left-0 w-full p-4'>
+    <div className='fixed top-2 left-0 w-full px-4'>
       <header className='wrapper flex items-center justify-between text-white z-20 rounded-full border-2 border-white backdrop-blur-sm bg-white/20 shadow-custom'>
         {/* App Logo */}
         <h1 className='text-xl font-bold flex items-center gap-x-4 '>
@@ -66,7 +66,7 @@ const Navbar = () => {
           <SheetTrigger className='block md:hidden'>
             <Menu className='w-8 h-8' />
           </SheetTrigger>
-          <SheetContent className='bg-gradient-to-b from-purple-400 to-blue-400 shadow-custom flex flex-col h-full items-center justify-center text-white'>
+          <SheetContent className='bg-gradient-to-b from-purple-400 to-blue-400 shadow-custom flex flex-col h-full items-center justify-center text-white text-xl space-y-8'>
             <Link href="/">
               Home
             </Link>
@@ -75,6 +75,11 @@ const Navbar = () => {
             </Link>
             <Link href="/courses">
               Courses
+            </Link>
+            <Link href="/sign-in">
+              <Button className='w-[120px] bg-white text-black items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
+                Sign In <LogIn className='w-5 h-5' />
+              </Button>
             </Link>
           </SheetContent>
         </Sheet>

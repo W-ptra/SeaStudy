@@ -49,10 +49,10 @@ const SignUpPage = () => {
   }
 
   return (
-    <Card>
+    <Card className='bg-white/20 border-white shadow-custom'>
       <CardHeader className='text-center'>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription className='max-w-[500px]'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
+        <CardTitle className='text-white'>Sign Up</CardTitle>
+        <CardDescription className='max-w-[500px] text-white/70'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -63,7 +63,7 @@ const SignUpPage = () => {
                 name='email'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className='text-white'>Email</FormLabel>
                     <FormControl>
                       <Input type='email' placeholder='Email' {...field} />
                     </FormControl>
@@ -76,7 +76,7 @@ const SignUpPage = () => {
                 name='password'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className='text-white'>Password</FormLabel>
                     <FormControl>
                       <Input type='password' placeholder='Password' {...field} />
                     </FormControl>
@@ -89,7 +89,7 @@ const SignUpPage = () => {
                 name='passwordConfirm'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel className='text-white'>Confirm Password</FormLabel>
                     <FormControl>
                       <Input type='password' placeholder='Confirm Password' {...field} />
                     </FormControl>
@@ -98,11 +98,11 @@ const SignUpPage = () => {
                 )}
               />
               <div />
-              <Link href="/sign-in" className='text-sm underline'>
+              <Link href="/sign-in" className='text-sm underline text-white'>
                 Already have an account?
               </Link>
             </div>
-            <Button type='submit' className='w-full flex items-center gap-x-2 hover:gap-x-4 transition-all'>
+            <Button type='submit' className='w-full hover:bg-white flex items-center gap-x-2 hover:gap-x-4 transition-all bg-white text-black shadow-custom'>
               Sign Up <LogIn className='w-5 h-5' />
             </Button>
           </form>

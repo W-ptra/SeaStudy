@@ -123,7 +123,7 @@ const UserDashboard = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {courses.map((item, index) => {
           return (
-            <Card key={index} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between'>
               <div>
                 <CardHeader>
                   <CardTitle>{item.name}</CardTitle>

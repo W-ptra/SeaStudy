@@ -10,7 +10,6 @@ import { BookPlus } from 'lucide-react';
 // Card Import
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -79,7 +78,7 @@ const CoursesPage = () => {
               <div>
                 <CardHeader>
                   <CardTitle className='text-white'>{item.name}</CardTitle>
-                  <CardDescription className='text-white/70'>{truncateDescription(item.description, 50)}</CardDescription>
+                  <CardDescription className='text-white/70'>{truncateDescription(item.description, 30)}</CardDescription>
                 </CardHeader>
               </div>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
@@ -92,7 +91,7 @@ const CoursesPage = () => {
                   )}>{item.level}</p>
                   <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom max-w-[100px] md:max-w-none text-center md:text-start'>{item.category}</p>
                 </div>
-                <p className='text-white font-bold text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
+                <p className='text-white font-medium text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
                 <Link href={`/courses/${item.id}`}>
                   <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
                     Enroll This Course <BookPlus className='w-5 h-5' />

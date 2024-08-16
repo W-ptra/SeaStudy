@@ -82,7 +82,7 @@ const CreateCourse = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create Course</Button>
+        <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full'>Create Course</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

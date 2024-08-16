@@ -20,14 +20,23 @@ import Link from 'next/link'
 
 // Dummy Data Import
 import { course } from './data'
+import { BookPlus } from 'lucide-react'
 
 const InstructorDashboard = () => {
+  const truncateDescription = (text: string, maxWords: number) => {
+    const words = text.split(' ');
+    if (words.length > maxWords) {
+      return words.slice(0, maxWords).join(' ') + '...';
+    }
+    return text;
+  };
+
   return (
     <div className='space-y-8'>
 
       {/* Header */}
       <div className='w-full flex items-center justify-between'>
-        <h3 className='text-3xl font-bold'>My Course</h3>
+        <h3 className='text-3xl font-bold text-white'>My Course</h3>
         <CreateCourse />
       </div>
 
@@ -35,26 +44,26 @@ const InstructorDashboard = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {course.map((item, index) => {
           return (
-            <Card key={index} className='flex flex-col justify-between'>
+            <Card key={index} className='flex flex-col justify-between bg-white/20 border-2 border-white shadow-custom'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.name}</CardTitle>
-                  <CardDescription>{item.description}</CardDescription>
+                  <CardTitle className='text-white'>{item.name}</CardTitle>
+                  <CardDescription className='text-white/70'>{truncateDescription(item.description, 30)}</CardDescription>
                 </CardHeader>
-                <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                  <p className={cn(
-                    'rounded-full bg-gray-50 border py-1 px-4',
-                    item.level === 'Easy' && 'bg-green-50 border border-green-300',
-                    item.level === 'Medium' && 'bg-orange-50 border border-orange-300',
-                    item.level === 'Hard' && 'bg-red-50 border border-red-300'  
-                  )}>{item.level}</p>
-                  <p className='rounded-full bg-gray-100 border py-1 px-4'>{item.category}</p>
-                </CardContent>
               </div>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
-                <p>$ {item.price}</p>
-                <Link href={`/dashboard/instructor/${item.name}`}>
-                  <Button size={'sm'} variant={'secondary'}>
+                <div className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
+                  <p className={cn(
+                    'rounded-full text-white font-medium py-1 px-4 max-w-[100px] md:max-w-none text-center md:text-start',
+                    item.level === "easy"  && 'bg-green-400',
+                    item.level === "medium" && 'bg-orange-400',
+                    item.level === 'hard' && 'bg-red-400'  
+                  )}>{item.level}</p>
+                  <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom max-w-[200px] md:max-w-none text-center md:text-start'>{item.category}</p>
+                </div>
+                <p className='text-white font-medium text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
+                <Link href={`/courses/${item.name}`}>
+                  <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
                     Manage Course
                   </Button>
                 </Link>

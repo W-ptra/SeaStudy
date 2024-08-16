@@ -28,7 +28,7 @@ router.post("/login", async (req, res) => {
         return res.status(respond.status).json({ message: respond.message });
 
     const token = createJSONToken(respond);
-    res.cookie("token", token, { httpOnly: true, secure: true });
+    res.cookie("authToken", token, { httpOnly: true, secure: true });
     return res
         .status(respond.status)
         .json({ message: respond.message });

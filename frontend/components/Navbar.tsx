@@ -10,6 +10,10 @@ import { Button } from './ui/button';
 // Icon Import
 import { LogIn } from 'lucide-react';
 import { GraduationCap } from 'lucide-react';
+import { Menu } from 'lucide-react';
+
+// Sheet Import
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -57,6 +61,23 @@ const Navbar = () => {
             Sign In <LogIn className='w-5 h-5' />
           </Button>
         </Link>
+
+        <Sheet>
+          <SheetTrigger className='block md:hidden'>
+            <Menu className='w-8 h-8' />
+          </SheetTrigger>
+          <SheetContent className='bg-gradient-to-b from-purple-400 to-blue-400 shadow-custom flex flex-col h-full items-center justify-center text-white'>
+            <Link href="/">
+              Home
+            </Link>
+            <Link href="/dashboard">
+              Dashboard
+            </Link>
+            <Link href="/courses">
+              Courses
+            </Link>
+          </SheetContent>
+        </Sheet>
       </header>
     </div>
   )

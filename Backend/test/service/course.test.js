@@ -18,6 +18,7 @@ describe('Course API Tests', () => {
     test('getCourseDetails should return course details for valid courseId', async () => {
         const courseId = 1;
         const result = await getCourseDetails(courseId);
+        console.log(result);
         expect(result.status).toBe(200);
     });
 
@@ -70,7 +71,7 @@ describe('Course API Tests', () => {
     test('postCourse should create a new course for valid input', async () => {
         const course = { userId: 1, name: 'New Course' };
         const result = await postCourse(course);
-        expect(result).toBeDefined();
+        expect(result.status).toBe(201);
     });
 
     test('postCourse should return error for missing userId', async () => {
@@ -110,7 +111,7 @@ describe('Course API Tests', () => {
     test('deleteCourse should delete course for valid courseId', async () => {
         const courseId = 1;
         const result = await deleteCourse(courseId);
-        expect(result).toBeDefined();
+        expect(result.status).toBe(200);
     });
 
     test('deleteCourse should return error for missing courseId', async () => {

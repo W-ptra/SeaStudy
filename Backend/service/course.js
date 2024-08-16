@@ -7,6 +7,7 @@ const {
     updateCourse
 } = require("../model/courseModel");
 const { getTopicsByCourseId } = require("../model/topicModel");
+// const CourseFactory = require('../factories/CourseFactory');
 
 async function getCourses() {
     return getAllCourses();
@@ -60,6 +61,7 @@ async function getFilteredCourses(filter) {
 }
 
 async function postCourse(course) {
+    // const courseFactory = new CourseFactory();
     if (course.userId == null)
         return { status: 400, operation: false, message: "userId is required" };
 

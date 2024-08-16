@@ -78,6 +78,7 @@ const UserDashboard = () => {
     }
 
     getEnrolledCourses()
+    getUserData()
   }, [])
 
   function handleDeleteCourse() {

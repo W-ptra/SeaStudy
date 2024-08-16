@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <div className='fixed top-2 left-0 w-full px-4'>
-      <header className='wrapper flex items-center justify-between text-white z-20 rounded-full border-2 border-white backdrop-blur-sm bg-white/20 shadow-custom'>
+      <header className='wrapper flex items-center justify-between text-white z-50 rounded-full border-2 border-white backdrop-blur-sm bg-white/20 shadow-custom'>
         {/* App Logo */}
         <h1 className='text-xl font-bold flex items-center gap-x-4 '>
           <GraduationCap className='w-8 h-8' /> SeaStudy

@@ -3,7 +3,7 @@ import "./globals.css";
 
 // Components Import
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SnowfallComponent from '@/components/Snowfall'
 import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {

@@ -21,6 +21,15 @@ import { SignUpSchema, SignUpSchemaType } from '@/lib/schemas'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+// Select Import
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 // Card Import
 import {
   Card,
@@ -49,10 +58,10 @@ const SignUpPage = () => {
   }
 
   return (
-    <Card>
+    <Card className='my-[125px] bg-white/20 border-white shadow-custom'>
       <CardHeader className='text-center'>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription className='max-w-[500px]'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
+        <CardTitle className='text-white'>Sign Up</CardTitle>
+        <CardDescription className='max-w-[500px] text-white/70'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -60,10 +69,23 @@ const SignUpPage = () => {
             <div className='space-y-2'>
               <FormField 
                 control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white'>Name</FormLabel>
+                    <FormControl>
+                      <Input type='text' placeholder='Name' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField 
+                control={form.control}
                 name='email'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className='text-white'>Email</FormLabel>
                     <FormControl>
                       <Input type='email' placeholder='Email' {...field} />
                     </FormControl>
@@ -73,10 +95,37 @@ const SignUpPage = () => {
               />
               <FormField 
                 control={form.control}
+                name='role'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-white'>Role</FormLabel>
+                    <FormControl>
+                      <Select 
+                        onValueChange={(value) => {
+                          field.onChange(value)
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className='focus-visible:ring-transparent'>
+                            <SelectValue placeholder='Select Role' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value='User'>User</SelectItem>
+                          <SelectItem value='Instructor'>Instructor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField 
+                control={form.control}
                 name='password'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className='text-white'>Password</FormLabel>
                     <FormControl>
                       <Input type='password' placeholder='Password' {...field} />
                     </FormControl>
@@ -89,7 +138,7 @@ const SignUpPage = () => {
                 name='passwordConfirm'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel className='text-white'>Confirm Password</FormLabel>
                     <FormControl>
                       <Input type='password' placeholder='Confirm Password' {...field} />
                     </FormControl>
@@ -98,11 +147,11 @@ const SignUpPage = () => {
                 )}
               />
               <div />
-              <Link href="/sign-in" className='text-sm underline'>
+              <Link href="/sign-in" className='text-sm underline text-white'>
                 Already have an account?
               </Link>
             </div>
-            <Button type='submit' className='w-full flex items-center gap-x-2 hover:gap-x-4 transition-all'>
+            <Button type='submit' className='w-full hover:bg-white flex items-center gap-x-2 hover:gap-x-4 transition-all bg-white text-black shadow-custom'>
               Sign Up <LogIn className='w-5 h-5' />
             </Button>
           </form>

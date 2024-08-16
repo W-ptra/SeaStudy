@@ -48,7 +48,7 @@ const CreateTopic = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create Topic</Button>
+        <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full'>Create Topic</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

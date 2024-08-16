@@ -4,11 +4,11 @@ const {
     createNewCourse,
     deleteCourse: deleteCourseDB,
     filterCourses,
-    updateCourse,
-    getEnrolledCourses : getEnrolledCoursesDB,
-    getCreatedCourses : getCreatedCoursesDB,
+    updateCourse
 } = require("../model/courseModel");
 const { getTopicsByCourseId } = require("../model/topicModel");
+const { getUserById } = require("../model/userModel");
+// const CourseFactory = require('../factories/CourseFactory');
 
 async function getCourses() {
     return getAllCourses();
@@ -24,8 +24,9 @@ async function getCourseDetails(courseId) {
 
     const course = await getCourseById(courseId);
     const topics = await getTopicsByCourseId(courseId);
-
-    const operation = course.operation && topics.operation;
+    const instructor = await getUserById(course.data.userId);
+    
+    const operation = course.operation && topics.operation && instructor.operation;
 
     if (operation)
         return {
@@ -33,6 +34,7 @@ async function getCourseDetails(courseId) {
             status: 200,
             course: course.data,
             topics: topics.data,
+            instructor: instructor.data
         };
 
     return {
@@ -40,28 +42,6 @@ async function getCourseDetails(courseId) {
         status: 400,
         message: course.message || topics.message,
     };
-}
-
-async function getEnrolledCourses(userId) {
-    if (isNaN(userId))
-        return {
-            operation: false,
-            status: 400,
-            message: "Invalid userId",
-        };
-    
-    return getEnrolledCoursesDB(userId);
-}
-
-async function getCreatedCourses(userId) {
-    if (isNaN(userId))
-        return {
-            operation: false,
-            status: 400,
-            message: "Invalid userId",
-        };
-
-    return getCreatedCoursesDB(userId);
 }
 
 async function getFilteredCourses(filter) {
@@ -84,6 +64,7 @@ async function getFilteredCourses(filter) {
 }
 
 async function postCourse(course) {
+    // const courseFactory = new CourseFactory();
     if (course.userId == null)
         return { status: 400, operation: false, message: "userId is required" };
 
@@ -125,6 +106,4 @@ module.exports = {
     getCourses,
     getCourseDetails,
     getFilteredCourses,
-    getEnrolledCourses,    
-    getCreatedCourses,
 };

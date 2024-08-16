@@ -1,16 +1,34 @@
 const {} = require("../model/courseModel");
-const {getEnrollmentsByUserId} = require("../model/enrollmentModel");
+const {
+    getEnrolledCourses: getEnrolledCoursesDB,
+    getCreatedCourses: getCreatedCoursesDB,
+} = require("../model/courseModel");
 const userModel = require("../model/userModel");
 
-async function getUserById(id){
+async function getUserById(id) {
     return await userModel.getUserById(id);
 }
 
-// async function getCourseByUserId(id,role){
+async function getEnrolledCourses(userId) {
+    if (isNaN(userId))
+        return {
+            operation: false,
+            status: 400,
+            message: "Invalid userId",
+        };
 
-//     // instructor get semua course yg udh di bikin
+    return getEnrolledCoursesDB(userId);
+}
 
-//     // user get semua course yang udh di beli
-// }
+async function getCreatedCourses(userId) {
+    if (isNaN(userId))
+        return {
+            operation: false,
+            status: 400,
+            message: "Invalid userId",
+        };
 
-module.exports = {getUserById}
+    return getCreatedCoursesDB(userId);
+}
+
+module.exports = { getUserById, getEnrolledCourses, getCreatedCourses };

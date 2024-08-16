@@ -79,10 +79,17 @@ async function getUserById(id){
         }
         const user = await prisma.users.findUnique({where,select})
 
+        // Custom serializer for BigInt
+        const serializeBigInt = (obj) => {
+            return JSON.parse(JSON.stringify(obj, (key, value) =>
+                typeof value === 'bigint' ? value.toString() : value
+            ));
+        };
+
         return {
             operation:  true,
             status:     200,
-            data:       user
+            data:       serializeBigInt(user)
         }
     }
     catch (err){

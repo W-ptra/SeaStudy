@@ -50,7 +50,9 @@ const UserDashboard = () => {
 
         if (response.ok) {
           const data = await response.json()
-          setCourses(data.courses)
+          console.log(data);
+          
+          setCourses(data)
         } else {
           toast.error('Failed to fetch courses')
         }
@@ -92,7 +94,7 @@ const UserDashboard = () => {
     <div className='space-y-8'>
 
       {/* User Data */}
-      <Card>
+      <Card className='bg-white/20 border-2 border-white'>
         <CardHeader className='w-full flex'>
           <div className='flex items-center justify-between'>
             <div>
@@ -113,7 +115,7 @@ const UserDashboard = () => {
 
       {/* Header */}
       <div className='w-full flex items-center justify-between'>
-        <h3 className='text-3xl font-bold'>My Courses</h3>
+        <h3 className='text-3xl font-bold text-white'>My Courses</h3>
         <Link href="/">
           <Button className='w-[150px] bg-blue-500 hover:bg-blue-400 flex items-center gap-2 hover:gap-4 transition-all justify-center'>
             Buy Courses <BookCopy className='h-5 w-5' />

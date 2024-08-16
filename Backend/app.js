@@ -22,7 +22,7 @@ const app = express();
 
 app.use(express.static('./public'));
 app.use(cors({
-    origin: '*',
+    origin: '*', // bisa diubah sesuai domain frontend
     credentials: true, 
   }));
   

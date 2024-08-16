@@ -8,8 +8,15 @@ export const SignInSchema = z.object({
 export type SignInSchemaType = z.infer<typeof SignInSchema>
 
 // Sign Up
+enum userRole {
+  User = 'User',
+  Instructor = 'Instructor'
+}
+
 export const SignUpSchema = z.object({
+  name: z.string(),
   email: z.string(),
+  role: z.enum(['User', 'Instructor']),
   password: z.string(),
   passwordConfirm: z.string(),
 })

@@ -60,7 +60,7 @@ const SignInPage = () => {
       
       if (response.ok) {
         toast.success("Signed In Successfully")
-        router.push(`/dashboard/${data}`)
+        router.push(`/dashboard/${data.id}`)
       } else {
         toast.error("Failed to sign in")
       }
@@ -70,10 +70,10 @@ const SignInPage = () => {
   }
 
   return (
-    <Card>
+    <Card className='bg-white/20 border-white shadow-custom my-[150px]'>
       <CardHeader className='text-center'>
-        <CardTitle>Sign In</CardTitle>
-        <CardDescription className='max-w-[500px]'>Welcome back! Continue your learning journey with SeaStudy. Access your courses, participate in forums, and keep growing.</CardDescription>
+        <CardTitle className='text-white'>Sign In</CardTitle>
+        <CardDescription className='max-w-[500px] text-white/70'>Welcome back! Continue your learning journey with SeaStudy. Access your courses, participate in forums, and keep growing.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -84,9 +84,9 @@ const SignInPage = () => {
                 name='email'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className='text-white'>Email</FormLabel>
                     <FormControl>
-                      <Input type='email' placeholder='Email' {...field} />
+                      <Input type='email' placeholder='Email' className='focus-visible:ring-transparent' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,20 +97,20 @@ const SignInPage = () => {
                 name='password'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className='text-white'>Password</FormLabel>
                     <FormControl>
-                      <Input type='password' placeholder='Password' {...field} />
+                      <Input type='password' placeholder='Password' className='focus-visible:ring-transparent' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div />
-              <Link href="/sign-up" className='text-sm underline'>
+              <Link href="/sign-up" className='text-sm underline text-white'>
                 Don't have an account?
               </Link>
             </div>
-            <Button type='submit' className='w-full flex items-center gap-x-2 hover:gap-x-4 transition-all'>
+            <Button type='submit' className='w-full hover:bg-white flex items-center gap-x-2 hover:gap-x-4 transition-all bg-white text-black shadow-custom'>
               Sign In <LogIn className='w-5 h-5' />
             </Button>
           </form>

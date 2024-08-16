@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -19,7 +21,6 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 // Dummy Data Import
-import { course } from './data'
 import { CourseDataType } from '@/lib/schemas'
 import { toast } from 'sonner'
 
@@ -28,10 +29,32 @@ const InstructorDashboard = () => {
   const [courses, setCourses] = useState<CourseDataType[]>([])
 
   useEffect(() => {
+    // async function getUserData() {
+    //   try {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user`, {
+    //       method: 'GET',
+    //       credentials: 'include',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //     })
+
+    //     if (response.ok) {
+    //       const data = await response.json()
+    //       setUserData(data.data)
+    //     } else {
+    //       toast.error('Failed to fetch user data')
+    //     }
+    //   } catch (error: any) {
+    //     toast.error('Error fetching user:', error)
+    //   }
+    // }
+
     async function getCreatedCourses(){
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user/course/`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -39,7 +62,7 @@ const InstructorDashboard = () => {
 
         if (response.ok) {
           const data = await response.json()
-          setCourses(data.courses)
+          setCourses(data)
         } else {
           toast.error('Failed to fetch courses')
         }
@@ -47,6 +70,8 @@ const InstructorDashboard = () => {
         toast.error('Error fetching courses:', error)
       }
     }
+
+    getCreatedCourses();
   }, [])
 
   return (
@@ -60,7 +85,7 @@ const InstructorDashboard = () => {
 
       {/* Courses */}
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {courses.map((item, index) => {
+        {courses && courses.map((item, index) => {
           return (
             <Card key={item.id} className='flex flex-col justify-between'>
               <div>

@@ -50,7 +50,9 @@ const UserDashboard = () => {
 
         if (response.ok) {
           const data = await response.json()
-          setCourses(data.courses)
+          console.log(data);
+          
+          setCourses(data)
         } else {
           toast.error('Failed to fetch courses')
         }

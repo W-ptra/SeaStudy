@@ -60,7 +60,7 @@ const SignInPage = () => {
       
       if (response.ok) {
         toast.success("Signed In Successfully")
-        router.push(`/dashboard/${data}`)
+        router.push(`/dashboard/${data.id}`)
       } else {
         toast.error("Failed to sign in")
       }

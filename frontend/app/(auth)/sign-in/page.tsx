@@ -48,6 +48,7 @@ const SignInPage = () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/auth/login`, {
          method: 'POST',
+         credentials: 'include',
          headers: {
           'Content-Type': 'application/json'
          },
@@ -55,6 +56,7 @@ const SignInPage = () => {
       })
 
       const data = await response.json()
+      console.log(data);
       
       if (response.ok) {
         toast.success("Signed In Successfully")

@@ -21,7 +21,11 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.static('./public'));
-app.use(cors({ origin: "*" }));
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true, 
+  }));
+  
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(bodyParser.json());

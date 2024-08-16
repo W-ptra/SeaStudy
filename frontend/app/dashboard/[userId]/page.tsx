@@ -28,13 +28,14 @@ import { course } from './data';
 // Import Utilities
 import { toast } from 'sonner';
 import CountUp from 'react-countup';
-import { CourseDataType } from '@/lib/schemas';
+import { CourseDataType, UserDataType } from '@/lib/schemas';
 
 const UserDashboard = () => {
   const pathname = usePathname()
   const lastPathname = getLastPathSegment(pathname)
 
   const [courses, setCourses] = useState<CourseDataType[]>([])
+  const [userData, setUserData] = useState<UserDataType>()
 
   useEffect(() => {
     async function getEnrolledCourses() {
@@ -56,6 +57,25 @@ const UserDashboard = () => {
         toast.error('Error fetching courses:', error)
       }
     }
+    async function getUserData() {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setUserData(data.data)
+        } else {
+          toast.error('Failed to fetch user data')
+        }
+      } catch (error: any) {
+        toast.error('Error fetching user:', error)
+      }
+    }
 
     getEnrolledCourses()
   }, [])
@@ -73,15 +93,15 @@ const UserDashboard = () => {
         <CardHeader className='w-full flex'>
           <div className='flex items-center justify-between'>
             <div>
-              <h3 className='text-xl font-bold'>Username</h3>
+              <h3 className='text-xl font-bold'>{userData?.name}</h3>
               <div className='text-muted-foreground'>
-                username@gmail.com
+                {userData?.email}
               </div>
             </div>
             <div className='flex flex-col items-center w-[180px] '>
               <p className='text-muted-foreground'>Balance</p>
               <div className='text-muted-foreground text-2xl font-bold'>
-                Rp <CountUp end={250000} />
+                Rp <CountUp end={userData?.credit} />
               </div>
             </div>
           </div>
@@ -121,7 +141,7 @@ const UserDashboard = () => {
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
                 <p>$ {item.price}</p>
                 <div className='flex items-center gap-x-4'>
-                  <Link href={`/dashboard/${lastPathname}/${item.name}`}>
+                  <Link href={`/dashboard/${lastPathname}/${item.id}`}>
                     <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
                       Course Detail
                     </Button>

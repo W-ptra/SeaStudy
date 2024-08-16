@@ -1,9 +1,9 @@
-import { popularCourses } from '@/lib/constants'
-import React from 'react'
+// import React from 'react'
 import { Star } from 'lucide-react';
 import { Button } from '../ui/button';
+import { CourseDataType } from '@/lib/schemas';
 
-const PopularCourses = () => {
+const PopularCourses = ({popularCourses}:{popularCourses: CourseDataType[]}) => {
   return (
     <div className='wrapper space-y-8'>
       <h3 className='text-3xl font-bold text-center'>Our Most Popular Courses</h3>
@@ -11,12 +11,13 @@ const PopularCourses = () => {
         {popularCourses.map((item, index) => {
           return (
             <PopularCoursesCard
-              key={index} 
-              courseName={item.courseName}
-              instructor={item.instructor}
-              rating={item.rating}
+              key={item.id} 
+              courseName={item.name}
+              // instructor={item.instructorName}
+              instructor=""
+              rating={item.avgRating}
               description={item.description}
-              ctaButton={item.ctaButton}
+              ctaButton="View Course"
             />
           )
         })}

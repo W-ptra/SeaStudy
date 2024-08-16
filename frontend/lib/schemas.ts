@@ -59,17 +59,6 @@ export enum category {
   other = 'other',
 }
 
-export type CourseDataType = {
-  id: number
-  name: string
-  description: string
-  category: category
-  level: courseLevel
-  price: number
-  rating: number
-  instructorName: string
-}
-
 export type CourseDetailDataType = {
   course: {
     id: number
@@ -88,3 +77,29 @@ export type CourseDetailDataType = {
     
   }
 }
+
+// Response data type
+
+// GET /api/course/
+export type CourseDataType = {
+  id: number
+  name: string
+  description: string
+  category: category
+  level: courseLevel
+  price: number
+  avgRating: number
+  views: number
+  userId: number
+  createdAt: string
+  updatedAt: string
+}
+// GET /api/user
+export type UserDataType = {
+  id: number
+  email: string
+  name: string
+  role: string
+  credit: number
+}
+

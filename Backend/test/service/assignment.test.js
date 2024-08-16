@@ -4,7 +4,7 @@ test("Test create new assignment",async ()=>{
     const assigment = {
         name:          "test assignment",
         description:   "test description",
-        topicId:       6
+        topicId:       1
     }
 
     const result = await assignmentService.createNewAssignment(assigment);

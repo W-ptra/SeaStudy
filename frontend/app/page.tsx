@@ -5,11 +5,14 @@ import Hero from "@/components/home/Hero";
 import PopularCoursesCard from "@/components/home/PopularCourses";
 import PopularCourses from "@/components/home/PopularCourses";
 import Testimonials from "@/components/home/Testimonials";
+import SnowfallComponent from "@/components/Snowfall";
 import { Button } from "@/components/ui/button";
 import { CourseDataType } from "@/lib/schemas";
 import { Star } from "lucide-react";
 import React, { useEffect, useState } from 'react'
 import { toast } from "sonner";
+
+// Snowfall Import
 
 export default function Home() {
   const [courses, setCourses] = useState<CourseDataType[]>([])
@@ -40,11 +43,10 @@ export default function Home() {
   }, [])
   return (
     <main className="space-y-8 md:space-y-16 lg:space-y-24">
+      <SnowfallComponent />
       <Hero />
       <Features />
-      <PopularCourses 
-        popularCourses={courses}
-      />
+      <PopularCourses popularCourses={courses} />
       <Testimonials />
       <CTA />
     </main>

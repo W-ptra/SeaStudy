@@ -42,6 +42,27 @@ import { Textarea } from '../ui/textarea'
 // Toaster Import
 import { toast } from 'sonner'
 
+// Category
+const category = [
+  'programming',
+  'design',
+  'business',
+  'marketing',
+  'music',
+  'cooking',
+  'photography',
+  'health',
+  'fitness',
+  'lifestyle',
+  'personal development',
+  'academics',
+  'language',
+  'test prep',
+  'teaching',
+  'other',
+];
+
+
 const CreateCourse = () => {
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(CourseSchema),
@@ -61,7 +82,7 @@ const CreateCourse = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create Course</Button>
+        <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full'>Create Course</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -116,8 +137,11 @@ const CreateCourse = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value='Category 1'>Category 1</SelectItem>
-                          <SelectItem value='Category 2'>Category 2</SelectItem>
+                          {category.map((item, index) => {
+                            return (
+                              <SelectItem key={index} value={item}>{item}</SelectItem>
+                            )
+                          })}
                         </SelectContent>
                       </Select>
                     </FormControl>

@@ -7,6 +7,7 @@ const {
     updateCourse
 } = require("../model/courseModel");
 const { getTopicsByCourseId } = require("../model/topicModel");
+const { getUserById } = require("../model/userModel");
 // const CourseFactory = require('../factories/CourseFactory');
 
 async function getCourses() {
@@ -23,8 +24,9 @@ async function getCourseDetails(courseId) {
 
     const course = await getCourseById(courseId);
     const topics = await getTopicsByCourseId(courseId);
-
-    const operation = course.operation && topics.operation;
+    const instructor = await getUserById(course.data.userId);
+    
+    const operation = course.operation && topics.operation && instructor.operation;
 
     if (operation)
         return {
@@ -32,6 +34,7 @@ async function getCourseDetails(courseId) {
             status: 200,
             course: course.data,
             topics: topics.data,
+            instructor: instructor.data
         };
 
     return {

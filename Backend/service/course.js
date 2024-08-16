@@ -101,6 +101,4 @@ module.exports = {
     getCourses,
     getCourseDetails,
     getFilteredCourses,
-    getEnrolledCourses,    
-    getCreatedCourses,
 };

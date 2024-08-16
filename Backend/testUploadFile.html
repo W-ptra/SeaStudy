@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Image</title>
+</head>
+<body>
+  <h1>Upload Image</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="materials" id="fileInput" />
+    <button type="button" id="uploadButton">Upload</button>
+  </form>
+
+  <script>
+    document.getElementById('uploadButton').addEventListener('click', async function() {
+      const formData = new FormData();
+      const fileInput = document.getElementById('fileInput');
+
+      if (fileInput.files.length > 0) {
+        formData.append('materials', fileInput.files[0]);
+
+        try {
+          const response = await fetch('http://localhost:8001/api/material/upload', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            console.log('File uploaded successfully:', result);
+          } else {
+            console.log('Error uploading file:', result.message);
+          }
+        } catch (error) {
+          console.log('Network error:', error);
+        }
+      } else {
+        console.log('Please select a file to upload.');
+      }
+    });
+  </script>
+</body>
+</html>

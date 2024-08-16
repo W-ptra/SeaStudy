@@ -31,12 +31,10 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className={cn(
-     'fixed top-0 left-0 w-full bg-white z-20', isScrolled ? "border-b-2 border-black" : "border-none"
-    )}>
-      <header className='wrapper flex items-center justify-between'>
+    <div className='fixed top-4 left-0 w-full'>
+      <header className='wrapper flex items-center justify-between text-white z-20 rounded-full border-2 backdrop-blur-sm bg-white/25'>
         {/* App Logo */}
-        <h1 className='text-xl font-bold flex items-center gap-x-4'>
+        <h1 className='text-xl font-bold flex items-center gap-x-4 '>
           <GraduationCap className='w-8 h-8' /> SeaStudy
         </h1>
 
@@ -55,7 +53,7 @@ const Navbar = () => {
 
         {/* Sign In Button (IF THE USER HASN'T LOGGED IN) */}
         <Link href="/sign-in">
-          <Button className='w-[120px] hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all'>
+          <Button className='w-[120px] bg-white text-purple-600 hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
             Sign In <LogIn className='w-5 h-5' />
           </Button>
         </Link>

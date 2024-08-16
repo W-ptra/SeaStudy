@@ -2,12 +2,14 @@
 
 import React from 'react'
 import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
-import Image from 'next/image';
 import { featureItems } from '@/lib/constants';
+
+// Image Import
+import Image from 'next/image';
 
 const Features = () => {
   return (
-    <div className='wrapper space-y-8'>
+    <div className='relative wrapper space-y-8'>
       <h3 className='text-3xl font-bold text-center md:text-start text-white'>Why Choose SeaStudy?</h3>
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {featureItems.map(item => (

@@ -61,20 +61,18 @@ const CourseDetail = () => {
     <div className='space-y-8'>
 
       {/* Header */}
-
       <div className='w-full flex items-start justify-between'>
         <div className='space-y-2'>
-          <h3 className='text-3xl font-bold'>{courseDetail?.name}</h3>
-          <p className='text-black/75'>{courseDetail?.description}</p>
+          <h3 className='text-3xl font-bold text-white flex gap-x-4'>{courseDetail?.name} <span className='flex gap-x-2 items-center'>({courseDetail?.avgRating} <Star className='h-6 w-6' />)</span></h3>
+          <p className='text-white/75'>{courseDetail?.description}</p>
           <div className='flex gap-x-4 items-center'>
             <p className={cn(
-              'rounded-full bg-gray-50 border py-1 px-4',
-              courseDetail?.level === 'easy' && 'bg-green-50 border border-green-300',
-              courseDetail?.level === 'medium' && 'bg-orange-50 border border-orange-300',
-              courseDetail?.level === 'hard' && 'bg-red-50 border border-red-300'  
+              'rounded-full py-1 px-4 text-white',
+              courseDetail?.level === 'easy' && 'bg-green-400',
+              courseDetail?.level === 'medium' && 'bg-orange-400',
+              courseDetail?.level === 'hard' && 'bg-red-400'  
             )}>{courseDetail?.level}</p>
             <p className='rounded-full bg-gray-100 border py-1 px-4'>{courseDetail?.category}</p>
-            Rating : {courseDetail?.avgRating}
           </div>
         </div>
       </div>
@@ -83,19 +81,16 @@ const CourseDetail = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {topics.map((item, index) => {
           return (
-            <Card key={item.id} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between bg-white/20 border-2 shadow-custom'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
-                  <CardDescription>{item.description}</CardDescription>
+                  <CardTitle className='text-white'>{item.title}</CardTitle>
+                  <CardDescription className='text-white/70'>{item.description}</CardDescription>
                 </CardHeader>
-                {/* <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                  <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length > 0 ? item.materials.length : 0} Materials</p>
-                </CardContent> */}
               </div>
               <CardFooter>
                 <Link href={`/courses/${lastPathname}/${item.id}`}>
-                  <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
+                  <Button size={'sm'} className='bg-white hover:bg-white rounded-full shadow-custom text-black'>
                     See Materials
                   </Button>
                 </Link>
@@ -104,28 +99,6 @@ const CourseDetail = () => {
           )
         })}
       </div>
-
-      {/* Header */}
-      <div className='w-full flex items-start justify-between'>
-        <h3 className='text-3xl font-bold'>Rating</h3>
-      </div>
-
-      {/* Rating */}
-      {/* <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {data?.reviews.map((item, index) => {
-          return (
-            <Card key={index}>
-              <CardHeader>
-                <CardTitle>{item.reviewer}</CardTitle>
-                <CardDescription>{item.comment}</CardDescription>
-              </CardHeader>
-              <CardContent className='flex items-center gap-x-2 font-semibold'>
-                {item.rating} <Star className='h-4 w-4' />
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div> */}
 
     </div>
   )

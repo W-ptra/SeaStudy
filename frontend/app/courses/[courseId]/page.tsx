@@ -21,10 +21,11 @@ import { Star } from 'lucide-react';
 // Button Import
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { CourseDetailDataType } from '@/lib/schemas';
+import { CourseDataType, TopicDataType } from '@/lib/schemas';
 
 const CourseDetail = () => {
-  const [courseDetail, setCourseDetail] = useState<CourseDetailDataType>()
+  const [courseDetail, setCourseDetail] = useState<CourseDataType>()
+  const [topics, setTopics] = useState<TopicDataType[]>([])
 
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
@@ -43,7 +44,8 @@ const CourseDetail = () => {
         if (response.ok) {
           const data = await response.json()
           console.log(data)
-          setCourseDetail(data)
+          setCourseDetail(data.course)
+          setTopics(data.topics)
         } else {
           toast.error('Failed to fetch course detail')
         }
@@ -62,37 +64,37 @@ const CourseDetail = () => {
 
       <div className='w-full flex items-start justify-between'>
         <div className='space-y-2'>
-          <h3 className='text-3xl font-bold'>{courseDetail?.course.name}</h3>
-          <p className='text-black/75'>{courseDetail?.course.description}</p>
+          <h3 className='text-3xl font-bold'>{courseDetail?.name}</h3>
+          <p className='text-black/75'>{courseDetail?.description}</p>
           <div className='flex gap-x-4 items-center'>
             <p className={cn(
               'rounded-full bg-gray-50 border py-1 px-4',
-              courseDetail?.course.level === 'easy' && 'bg-green-50 border border-green-300',
-              courseDetail?.course.level === 'medium' && 'bg-orange-50 border border-orange-300',
-              courseDetail?.course.level === 'hard' && 'bg-red-50 border border-red-300'  
-            )}>{courseDetail?.course.level}</p>
-            <p className='rounded-full bg-gray-100 border py-1 px-4'>{courseDetail?.course.category}</p>
-            Rating : {courseDetail?.course.avgRating}
+              courseDetail?.level === 'easy' && 'bg-green-50 border border-green-300',
+              courseDetail?.level === 'medium' && 'bg-orange-50 border border-orange-300',
+              courseDetail?.level === 'hard' && 'bg-red-50 border border-red-300'  
+            )}>{courseDetail?.level}</p>
+            <p className='rounded-full bg-gray-100 border py-1 px-4'>{courseDetail?.category}</p>
+            Rating : {courseDetail?.avgRating}
           </div>
         </div>
       </div>
 
       {/* Topics */}
-      {/* <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {courseDetail?.course.topics.map((item, index) => {
+      <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        {topics.map((item, index) => {
           return (
-            <Card key={index} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between'>
               <div>
                 <CardHeader>
                   <CardTitle>{item.title}</CardTitle>
                   <CardDescription>{item.description}</CardDescription>
                 </CardHeader>
-                <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
+                {/* <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
                   <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length > 0 ? item.materials.length : 0} Materials</p>
-                </CardContent>
+                </CardContent> */}
               </div>
               <CardFooter>
-                <Link href={`/courses/${lastPathname}/${item.title}`}>
+                <Link href={`/courses/${lastPathname}/${item.id}`}>
                   <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
                     See Materials
                   </Button>
@@ -101,7 +103,7 @@ const CourseDetail = () => {
             </Card>
           )
         })}
-      </div> */}
+      </div>
 
       {/* Header */}
       <div className='w-full flex items-start justify-between'>

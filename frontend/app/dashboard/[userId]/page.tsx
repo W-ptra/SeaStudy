@@ -36,6 +36,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { truncateDescription } from '@/lib/utils';
 
 const UserDashboard = () => {
   const pathname = usePathname()
@@ -43,13 +44,6 @@ const UserDashboard = () => {
   const [courses, setCourses] = useState<CourseDataType[]>([])
   const [userData, setUserData] = useState<UserDataType>()
   const router = useRouter()
-
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("userId")
-  //   if (lastPathname !== userId) {
-  //     router.push(`/dashboard/${userId}`)
-  //   }
-  // }, [])
 
   useEffect(() => {
     async function getEnrolledCourses() {
@@ -220,7 +214,7 @@ const UserDashboard = () => {
               <div>
                 <CardHeader>
                   <CardTitle className='text-white'>{item.name}</CardTitle>
-                  <CardDescription className='text-white'>{item.description}</CardDescription>
+                  <CardDescription className='text-white'>{truncateDescription(item.description, 30)}</CardDescription>
                 </CardHeader>
                 <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
                   <p className={cn(

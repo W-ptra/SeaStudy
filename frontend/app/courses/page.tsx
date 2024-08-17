@@ -24,19 +24,16 @@ import { toast } from 'sonner';
 // Type Import
 import { CourseDataType } from '@/lib/schemas';
 
-// Alert Dialog Import
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+//  Dialog Import
 import { useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const CoursesPage = () => {
   const [session, setSession] = useState()
@@ -101,8 +98,6 @@ const CoursesPage = () => {
         })
       })
 
-      console.log(response)
-  
       if (response.ok) {
         setIsOpen(false)
         toast.success('Successfully enrolled the course')
@@ -112,6 +107,24 @@ const CoursesPage = () => {
       }
     } catch (error: any) {
       toast.error('   Error while enrolling the course', error) 
+    }
+  }
+
+  async function getReviewByCourseId(courseId: number) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/review/${courseId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+      console.log(data)
+      
+    } catch (error) {
+      
     }
   }
 
@@ -147,32 +160,38 @@ const CoursesPage = () => {
                   <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom max-w-[100px] md:max-w-none text-center md:text-start'>{item.category}</p>
                 </div>
                 <p className='text-white font-medium text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
-                {session && userRole === 'User' && (
-                  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-                    <AlertDialogTrigger asChild>
-                      <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
-                        Enroll This Course <BookPlus className='w-5 h-5' />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Enroll This Course for ${item.price}</AlertDialogTitle>
-                        <AlertDialogDescription>Do you want to buy this course for ${item.price}?</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>No</AlertDialogCancel>
-                        <AlertDialogAction 
-                          onClick={async () => {
-                            const courseId = item.id
-                            buyCourseHandler(courseId)
-                          }}
-                        >
-                          Sure!
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                )}
+                <div className='flex flex-col md:flex-row gap-4'>
+                  {session && userRole === 'User' && (
+                    <Button 
+                      className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all' 
+                      onClick={() => {
+                        console.log(item.id, item.price)
+                        const courseId = item.id
+                        console.log(item.id)
+                        buyCourseHandler(courseId)
+                      }}
+                    >
+                      Enroll This Course <BookPlus className='w-5 h-5' />
+                    </Button>
+                  )}
+                  <Dialog>
+                    <DialogTrigger 
+                      onClick={() => {
+                        getReviewByCourseId(item.id)
+                      }}
+                    >
+                      See Review
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>
+                          {item.name} Review
+                        </DialogTitle>
+                      </DialogHeader>
+
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </CardFooter>
             </Card>
           )

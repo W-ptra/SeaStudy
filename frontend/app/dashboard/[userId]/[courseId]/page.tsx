@@ -41,6 +41,7 @@ const CourseDetailPage = () => {
   const courseId = parseInt(lastPathname)
   const [courseDetail, setCourseDetail] = useState<CourseDataType>()
   const [topics, setTopics] = useState<TopicDataType[]>([])
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     async function getCourseDetail(courseId: number) {
@@ -68,6 +69,7 @@ const CourseDetailPage = () => {
   }, [])
 
   const reviewSchema = z.object({
+    courseId: z.number(),
     comment: z.string(),
     rating: z.number(),
   })
@@ -75,12 +77,36 @@ const CourseDetailPage = () => {
   const form = useForm<reviewSchemaType>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
+      courseId: courseId,
       comment: "",
     }
   })
 
   async function addReview(values: reviewSchemaType) {
     console.log(values)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/review`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          courseId: values.courseId,
+          rating: values.rating,
+          comment: values.comment
+        })
+      })
+
+      if (response.ok) {
+        toast.success('Successfully added a review')
+        setIsOpen(false)
+      } else {
+        toast.error('Failed to create a review')
+      }
+    } catch (error) {
+      toast.error('Error when creating review')
+    }
   }
 
   return (
@@ -101,7 +127,7 @@ const CourseDetailPage = () => {
             <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom'>{courseDetail?.category}</p>
           </div>
         </div>
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full flex items-center gap-x-2'> 
               Add Review <Star className='w-5 h-5' />

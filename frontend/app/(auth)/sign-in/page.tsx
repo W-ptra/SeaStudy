@@ -78,7 +78,12 @@ const SignInPage = () => {
         console.log(token)
 
         toast.success("Signed In Successfully")
-        router.push(`/dashboard/instructor`)
+
+        if (data.user.role === 'Instructor') {
+          router.push(`/dashboard/instructor`)
+        } else {
+          router.push(`/dashboard/${data.user.id}`)
+        }
       } else {
         toast.error("Failed to sign in")
       }

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Icon Import
 import { LogIn } from 'lucide-react';
@@ -43,9 +44,11 @@ import {
 import { toast } from 'sonner';
 
 const SignUpPage = () => {
+  const router = useRouter()
   const session = localStorage.getItem("token")
   const userId = localStorage.getItem("userId")
   const userRole = localStorage.getItem("userRole")
+
   if (session) {
     if (userRole === "Instructor") {
       router.push('/dashboard/instructor')
@@ -63,9 +66,29 @@ const SignUpPage = () => {
     }
   })
 
-  function onSubmit(values: SignUpSchemaType) {
-    console.log(values)
-    toast("Signed Up Successfully")
+  async function onSubmit(values: SignUpSchemaType) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/auth/register`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+
+      const data = await response.json()
+      console.log(data)
+
+      if (response.ok) {
+        toast.success("Signed Up Successfully")
+        router.push("/sign-in")
+      } else {
+        toast.error("Failed to sign in")
+      }
+    } catch (error) {
+      
+    }
   }
 
   return (

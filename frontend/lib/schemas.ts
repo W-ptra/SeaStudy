@@ -141,9 +141,11 @@ export type TopicDataType = {
   id: number
   title: string
   description: string
-  courseId: number
-  createdAt: string
-  updatedAt: string
+  courseId: number|null
+  createdAt: string|null
+  updatedAt: string|null
+  assignment: AssignmentDataType[]|null
+  material: MaterialDataType[]|null
 }
 // GET /api/user
 export type UserDataType = {

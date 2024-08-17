@@ -47,7 +47,7 @@ const Navbar = () => {
   }, [pathname])
 
   function logoutHandler() {
-    localStorage.setIteuserRolem('', "")
+    localStorage.setItem('userRole', "")
     localStorage.setItem('userId', "")
     localStorage.setItem('token', "")
     toast.success("Successfully Signed Out")

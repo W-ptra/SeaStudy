@@ -34,6 +34,7 @@ export type CourseSchemaType = z.infer<typeof CourseSchema>
 
 // Topic
 export const TopicSchema = z.object({
+  courseId: z.number(),
   title: z.string(),
   description: z.string()
 })

@@ -8,7 +8,7 @@ const PopularCourses = ({popularCourses}:{popularCourses: CourseDataType[]}) => 
     <div className='wrapper space-y-8'>
       <h3 className='text-3xl font-bold text-center text-white'>Our Most Popular Courses</h3>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {popularCourses.map((item, index) => {
+        {popularCourses.slice(0, 3).map((item, index) => {
           return (
             <PopularCoursesCard
               key={item.id} 
@@ -57,7 +57,7 @@ const PopularCoursesCard = ({
       <div className='space-y-2'>
         <p className='text-[18px] font-bold'>{courseName}</p>
         <p className='flex items-center gap-x-2'>{rating} <Star className='h-4 w-4' /></p>
-        <p className='text-sm text-white/70'>{truncatedDescription}</p>
+        <p className='text-sm'>{truncatedDescription}</p>
       </div>
       <div className='space-y-4'>
         <Button className='rounded-full bg-white shadow-custom text-black hover:bg-white' >

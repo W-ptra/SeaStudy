@@ -43,7 +43,7 @@ const FeatureCard = ({
         <CardItem
           as="p"
           translateZ="60"
-          className="text-white/70 text-sm max-w-sm mt-2 dark:text-neutral-300"
+          className="text-white text-sm max-w-sm mt-2 dark:text-neutral-300"
         >
           {description}
         </CardItem>

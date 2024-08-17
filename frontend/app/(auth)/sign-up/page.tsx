@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Icon Import
 import { LogIn } from 'lucide-react';
@@ -43,6 +44,19 @@ import {
 import { toast } from 'sonner';
 
 const SignUpPage = () => {
+  const router = useRouter()
+  const session = localStorage.getItem("token")
+  const userId = localStorage.getItem("userId")
+  const userRole = localStorage.getItem("userRole")
+
+  if (session) {
+    if (userRole === "Instructor") {
+      router.push('/dashboard/instructor')
+    } else {
+      router.push(`/dashboard/${userId}`)
+    }
+  }
+  
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -52,16 +66,35 @@ const SignUpPage = () => {
     }
   })
 
-  function onSubmit(values: SignUpSchemaType) {
-    console.log(values)
-    toast("Signed Up Successfully")
+  async function onSubmit(values: SignUpSchemaType) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/auth/register`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        toast.success("Signed Up Successfully")
+        router.push("/sign-in")
+      } else {
+        toast.error("Failed to sign in")
+      }
+    } catch (error) {
+      
+    }
   }
 
   return (
     <Card className='my-[125px] bg-white/20 border-white shadow-custom'>
       <CardHeader className='text-center'>
         <CardTitle className='text-white'>Sign Up</CardTitle>
-        <CardDescription className='max-w-[500px] text-white/70'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
+        <CardDescription className='max-w-[500px] text-white'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

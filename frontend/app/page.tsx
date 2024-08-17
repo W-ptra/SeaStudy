@@ -29,7 +29,6 @@ export default function Home() {
 
         if (response.ok) {
           const data = await response.json()
-          console.log(data)
           setCourses(data.courses.sort((a:CourseDataType, b:CourseDataType) => b.avgRating - a.avgRating).slice(0, 6))
         } else {
           toast.error('Failed to fetch courses')

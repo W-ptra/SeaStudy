@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 // Icon Import
 import { BookPlus } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 // Card Import
 import {
@@ -25,8 +26,37 @@ import { toast } from 'sonner';
 // Type Import
 import { CourseDataType } from '@/lib/schemas';
 
+//  Dialog Import
+import { useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 const CoursesPage = () => {
+  const [session, setSession] = useState()
+  const [userRole, setUserRole] = useState()
   const [courses, setCourses] = useState<CourseDataType[]>([])
+  const [userId, setUserId] = useState()
+  const router = useRouter()
+
+  type reviewType = {
+    comment: string
+    rating: number
+  }
+  const [reviews, setReviews] = useState<reviewType[]>([])
+
+  useEffect(() => {
+    // @ts-ignore
+    setSession(localStorage.getItem('token'))
+    // @ts-ignore
+    setUserRole(localStorage.getItem("userRole"))
+    // @ts-ignore
+    setUserId(localStorage.getItem("userId"))
+  }, [])
 
   useEffect(() => {
     async function getAllCourses() {
@@ -34,6 +64,7 @@ const CoursesPage = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course/`, {
           method: 'GET',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
             'Content-Type': 'application/json'
           },
         })
@@ -59,6 +90,48 @@ const CoursesPage = () => {
     }
     return text;
   };
+
+  async function buyCourseHandler(courseId: number) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/payment/course`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          courseId
+        })
+      })
+
+      if (response.ok) {
+        toast.success('Successfully enrolled the course')
+        router.push(`/dashboard/${userId}`)
+      } else {
+        toast.error('Failed to enroll the course') 
+      }
+    } catch (error: any) {
+      toast.error('   Error while enrolling the course', error) 
+    }
+  }
+
+  async function getReviewByCourseId(courseId: number) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/review/course/${courseId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+      console.log(data.reviews)
+      setReviews(data.reviews)
+    } catch (error: any) {
+      toast.error('Error get review by courseId: ', error)
+    }
+  }
 
   return (
     <div className='space-y-8 min-h-screen'>
@@ -92,11 +165,49 @@ const CoursesPage = () => {
                   <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom max-w-[100px] md:max-w-none text-center md:text-start'>{item.category}</p>
                 </div>
                 <p className='text-white font-medium text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
-                <Link href={`/courses/${item.id}`}>
-                  <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
-                    Enroll This Course <BookPlus className='w-5 h-5' />
-                  </Button>
-                </Link>
+                <div className='flex flex-col md:flex-row gap-4'>
+                  {session && userRole === 'User' && (
+                    <Button 
+                      className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all' 
+                      onClick={() => {
+                        console.log(item.id, item.price)
+                        const courseId = item.id
+                        console.log(item.id)
+                        buyCourseHandler(courseId)
+                      }}
+                    >
+                      Enroll This Course <BookPlus className='w-5 h-5' />
+                    </Button>
+                  )}
+                  <Dialog>
+                    <DialogTrigger 
+                      onClick={() => {
+                        getReviewByCourseId(item.id)
+                      }}
+                    >
+                      <Button variant={"outline"} className='rounded-full bg-white/20 border-2 border-white text-white hover:bg-white/40 hover:text-white'>
+                        See Review
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>
+                          {item.name} Review
+                        </DialogTitle>
+                      </DialogHeader>
+                      <ul className='flex flex-col gap-y-2'>
+                        {reviews.map((item, index) => {
+                          return (
+                            <li key={index} className='bg-white/20 border-2 py-2 px-4 rounded-md flex gap-x-4'>
+                                <p>{item.comment}</p>
+                                <p className='text-medium flex items-center gap-x-2'>{item.rating} <span><Star className='w-4 h-4' /></span></p>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </CardFooter>
             </Card>
           )

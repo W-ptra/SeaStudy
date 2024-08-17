@@ -50,6 +50,7 @@ const Navbar = () => {
     localStorage.setItem('userId', "")
     localStorage.setItem('token', "")
     toast.success("Successfully Signed Out")
+    location.reload()
     router.push("/")
   }
 

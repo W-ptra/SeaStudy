@@ -193,7 +193,7 @@ const CoursesPage = () => {
                           {item.name} Review
                         </DialogTitle>
                       </DialogHeader>
-                      <ul className='flex flex-col gap-y-4'>
+                      <ul className='flex flex-col gap-y-2'>
                         {reviews.map((item, index) => {
                           return (
                             <li key={index} className='bg-white/20 border-2 py-2 px-4 rounded-md flex gap-x-4'>

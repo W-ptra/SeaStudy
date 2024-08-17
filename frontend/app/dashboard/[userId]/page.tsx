@@ -131,6 +131,29 @@ const UserDashboard = () => {
     }
   }
 
+  async function handleDeleteEnrollment(courseId: number) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/enrollment/${courseId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+      })
+
+      console.log(response)
+
+      if (response.ok) {
+        toast.success('Course enrollment deleted successfully')
+        setCourses(prevCourses => prevCourses.filter(course => course.id !== courseId))
+      } else {
+        toast.error('Failed to delete course enrollment')
+      }
+    } catch (error) {
+      toast.error('Error deleting the course enrollment')
+    }
+  }
+
   return (
     <div className='space-y-8'>
 
@@ -227,12 +250,22 @@ const UserDashboard = () => {
                 </CardContent>
               </div>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
-                <div className='flex items-center gap-x-4'>
+                <div className='flex items-center w-full justify-between gap-x-4'>
+                  {/* TO COURSE DETAIL PAGE */}
                   <Link href={`/dashboard/${lastPathname}/${item.id}`}>
                     <Button size={'sm'} className='bg-white hover:bg-white shadow-custom rounded-full text-black'>
                       Course Detail
                     </Button>
                   </Link>
+                  {/* TO DELETE */}
+                  <Button 
+                    className='bg-red-100 border-2 border-red-300 hover:bg-red-300 text-black/70 rounded-full'
+                    onClick={() => {
+                      handleDeleteEnrollment(item.id)
+                    }}
+                  >
+                    Delete Course
+                  </Button>
                 </div>
               </CardFooter>
             </Card>

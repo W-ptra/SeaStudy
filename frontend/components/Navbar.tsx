@@ -33,6 +33,7 @@ const Navbar = () => {
       // @ts-ignore
       setSession(session)
 
+      console.log(session)
 
       if (role === 'Instructor') {
         setUserRole(role)
@@ -46,11 +47,10 @@ const Navbar = () => {
   }, [pathname])
 
   function logoutHandler() {
-    localStorage.setItem('userRole', "")
+    localStorage.setIteuserRolem('', "")
     localStorage.setItem('userId', "")
     localStorage.setItem('token', "")
     toast.success("Successfully Signed Out")
-    location.reload()
     router.push("/")
   }
 

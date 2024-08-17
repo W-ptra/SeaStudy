@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button'
 // Icons Import
 import { BookCopy } from 'lucide-react';
 import { Wallet } from 'lucide-react';
+import { UsersRound } from 'lucide-react';
 
 // Import Utilities
 import { toast } from 'sonner';
@@ -258,14 +259,20 @@ const UserDashboard = () => {
                     </Button>
                   </Link>
                   {/* TO DELETE */}
-                  <Button 
+                  {/* <Button 
                     className='bg-red-100 border-2 border-red-300 hover:bg-red-300 text-black/70 rounded-full'
                     onClick={() => {
                       handleDeleteEnrollment(item.id)
                     }}
                   >
                     Delete Course
-                  </Button>
+                  </Button> */}
+                  {/* Forum */}
+                  <Link href={`/forum/${item.id}`}>
+                    <Button className='bg-white/10 hover:bg-white/25 border-2 border-white shadow-custom rounded-full text-white flex gap-x-2 hover:gap-x-4 transition-all'>
+                      Go To Forum <UsersRound className='h-5 w-5' />
+                    </Button>
+                  </Link>
                 </div>
               </CardFooter>
             </Card>

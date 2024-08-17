@@ -86,8 +86,6 @@ const SignInPage = () => {
         localStorage.setItem("userId", data.user.id)
         localStorage.setItem("userRole", data.user.role)
 
-        const token = localStorage.getItem("token")
-
         toast.success("Signed In Successfully")
 
         if (data.user.role === 'Instructor') {

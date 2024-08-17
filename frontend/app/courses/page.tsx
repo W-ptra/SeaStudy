@@ -185,7 +185,9 @@ const CoursesPage = () => {
                         getReviewByCourseId(item.id)
                       }}
                     >
-                      See Review
+                      <Button variant={"outline"} className='rounded-full bg-white/20 border-2 border-white text-white hover:bg-white/40 hover:text-white'>
+                        See Review
+                      </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>

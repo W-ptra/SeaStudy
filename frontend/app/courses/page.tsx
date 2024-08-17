@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
 // Button Import
 import { Button } from '@/components/ui/button';
 
@@ -25,16 +24,35 @@ import { toast } from 'sonner';
 // Type Import
 import { CourseDataType } from '@/lib/schemas';
 
+// Alert Dialog Import
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useRouter } from 'next/navigation';
+
 const CoursesPage = () => {
   const [session, setSession] = useState()
   const [userRole, setUserRole] = useState()
   const [courses, setCourses] = useState<CourseDataType[]>([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [userId, setUserId] = useState()
+  const router = useRouter()
 
   useEffect(() => {
     // @ts-ignore
-    setSession( localStorage.getItem('token'))
+    setSession(localStorage.getItem('token'))
     // @ts-ignore
     setUserRole(localStorage.getItem("userRole"))
+    // @ts-ignore
+    setUserId(localStorage.getItem("userId"))
   }, [])
 
   useEffect(() => {
@@ -43,6 +61,7 @@ const CoursesPage = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course/`, {
           method: 'GET',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
             'Content-Type': 'application/json'
           },
         })
@@ -68,6 +87,33 @@ const CoursesPage = () => {
     }
     return text;
   };
+
+  async function buyCourseHandler(courseId: number) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/payment/course`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          courseId
+        })
+      })
+
+      console.log(response)
+  
+      if (response.ok) {
+        setIsOpen(false)
+        toast.success('Successfully enrolled the course')
+        router.push(`/dashboard/${userId}`)
+      } else {
+        toast.error('Failed to enroll the course') 
+      }
+    } catch (error: any) {
+      toast.error('   Error while enrolling the course', error) 
+    }
+  }
 
   return (
     <div className='space-y-8 min-h-screen'>
@@ -101,12 +147,31 @@ const CoursesPage = () => {
                   <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom max-w-[100px] md:max-w-none text-center md:text-start'>{item.category}</p>
                 </div>
                 <p className='text-white font-medium text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
-                {session && userRole !== 'Instructor' && (
-                  <Link href={`/courses/${item.id}`}>
-                    <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
-                      Enroll This Course <BookPlus className='w-5 h-5' />
-                    </Button>
-                  </Link>
+                {session && userRole === 'User' && (
+                  <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                    <AlertDialogTrigger asChild>
+                      <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
+                        Enroll This Course <BookPlus className='w-5 h-5' />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Enroll This Course for ${item.price}</AlertDialogTitle>
+                        <AlertDialogDescription>Do you want to buy this course for ${item.price}?</AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>No</AlertDialogCancel>
+                        <AlertDialogAction 
+                          onClick={async () => {
+                            const courseId = item.id
+                            buyCourseHandler(courseId)
+                          }}
+                        >
+                          Sure!
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 )}
               </CardFooter>
             </Card>

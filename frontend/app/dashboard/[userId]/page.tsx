@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getLastPathSegment } from '@/lib/utils';
 
 // Card Import
@@ -42,6 +42,14 @@ const UserDashboard = () => {
   const lastPathname = getLastPathSegment(pathname)
   const [courses, setCourses] = useState<CourseDataType[]>([])
   const [userData, setUserData] = useState<UserDataType>()
+  const router = useRouter()
+
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("userId")
+  //   if (lastPathname !== userId) {
+  //     router.push(`/dashboard/${userId}`)
+  //   }
+  // }, [])
 
   useEffect(() => {
     async function getEnrolledCourses() {
@@ -208,27 +216,27 @@ const UserDashboard = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {courses && courses.map((item, index) => {
           return (
-            <Card key={item.id} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between bg-white/20 border-2 border-white'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.name}</CardTitle>
-                  <CardDescription>{item.description}</CardDescription>
+                  <CardTitle className='text-white'>{item.name}</CardTitle>
+                  <CardDescription className='text-white'>{item.description}</CardDescription>
                 </CardHeader>
                 <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
                   <p className={cn(
-                    'rounded-full bg-gray-50 border py-1 px-4',
-                    item.level === 'easy' && 'bg-green-50 border border-green-300',
-                    item.level === 'medium' && 'bg-orange-50 border border-orange-300',
-                    item.level === 'hard' && 'bg-red-50 border border-red-300'  
+                    'rounded-full py-1 px-4',
+                    item.level === 'easy' && 'bg-green-400',
+                    item.level === 'medium' && 'bg-orange-400 border',
+                    item.level === 'hard' && 'bg-red-400 border'  
                   )}>{item.level}</p>
-                  <p className='rounded-full bg-gray-100 border py-1 px-4'>{item.category}</p>
+                  <p className='rounded-full bg-gray-100 shadow-custom border py-1 px-4'>{item.category}</p>
                 </CardContent>
               </div>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
                 <p>$ {item.price}</p>
                 <div className='flex items-center gap-x-4'>
                   <Link href={`/dashboard/${lastPathname}/${item.id}`}>
-                    <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
+                    <Button size={'sm'} className='bg-white shadow-custom rounded-full text-black'>
                       Course Detail
                     </Button>
                   </Link>

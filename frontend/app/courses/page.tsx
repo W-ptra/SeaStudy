@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 // Icon Import
 import { BookPlus } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 // Card Import
 import {
@@ -15,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 // Button Import
 import { Button } from '@/components/ui/button';
 
@@ -29,7 +31,6 @@ import { useRouter } from 'next/navigation';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -39,9 +40,14 @@ const CoursesPage = () => {
   const [session, setSession] = useState()
   const [userRole, setUserRole] = useState()
   const [courses, setCourses] = useState<CourseDataType[]>([])
-  const [isOpen, setIsOpen] = useState(false)
   const [userId, setUserId] = useState()
   const router = useRouter()
+
+  type reviewType = {
+    comment: string
+    rating: number
+  }
+  const [reviews, setReviews] = useState<reviewType[]>([])
 
   useEffect(() => {
     // @ts-ignore
@@ -99,7 +105,6 @@ const CoursesPage = () => {
       })
 
       if (response.ok) {
-        setIsOpen(false)
         toast.success('Successfully enrolled the course')
         router.push(`/dashboard/${userId}`)
       } else {
@@ -112,7 +117,7 @@ const CoursesPage = () => {
 
   async function getReviewByCourseId(courseId: number) {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/review/${courseId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/review/course/${courseId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -121,10 +126,10 @@ const CoursesPage = () => {
       })
 
       const data = await response.json()
-      console.log(data)
-      
-    } catch (error) {
-      
+      console.log(data.reviews)
+      setReviews(data.reviews)
+    } catch (error: any) {
+      toast.error('Error get review by courseId: ', error)
     }
   }
 
@@ -188,7 +193,16 @@ const CoursesPage = () => {
                           {item.name} Review
                         </DialogTitle>
                       </DialogHeader>
-
+                      <ul className='flex flex-col gap-y-4'>
+                        {reviews.map((item, index) => {
+                          return (
+                            <li key={index} className='bg-white/20 border-2 py-2 px-4 rounded-md flex gap-x-4'>
+                                <p>{item.comment}</p>
+                                <p className='text-medium flex items-center gap-x-2'>{item.rating} <span><Star className='w-4 h-4' /></span></p>
+                            </li>
+                          )
+                        })}
+                      </ul>
                     </DialogContent>
                   </Dialog>
                 </div>

@@ -36,6 +36,18 @@ import { toast } from 'sonner';
 
 const SignInPage = () => {
   const router = useRouter()
+  const session = localStorage.getItem("token")
+  const userId = localStorage.getItem("userId")
+  const userRole = localStorage.getItem("userRole")
+
+  if (session) {
+    if (userRole === "Instructor") {
+      router.push('/dashboard/instructor')
+    } else {
+      router.push(`/dashboard/${userId}`)
+    }
+  }
+
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {

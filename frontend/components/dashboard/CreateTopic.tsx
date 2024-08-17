@@ -119,7 +119,7 @@ const CreateTopic = () => {
                 )}
               />
             </div>
-            <Button type='submit' className='w-full rounded-full'>
+            <Button type='submit' className='w-full'>
               Create Topic
             </Button>
           </form>

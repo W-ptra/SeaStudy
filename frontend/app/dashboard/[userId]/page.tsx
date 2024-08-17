@@ -21,17 +21,25 @@ import { Button } from '@/components/ui/button'
 
 // Icons Import
 import { BookCopy } from 'lucide-react';
-
+import { Wallet } from 'lucide-react';
 
 // Import Utilities
 import { toast } from 'sonner';
 import CountUp from 'react-countup';
 import { CourseDataType, UserDataType } from '@/lib/schemas';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { DialogTitle } from '@radix-ui/react-dialog';
+
+// Form Import
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const UserDashboard = () => {
   const pathname = usePathname()
   const lastPathname = getLastPathSegment(pathname)
-
   const [courses, setCourses] = useState<CourseDataType[]>([])
   const [userData, setUserData] = useState<UserDataType>()
 
@@ -90,6 +98,39 @@ const UserDashboard = () => {
     toast("Course Deleted")
   }
 
+  const balanceSchema = z.object({
+    amount: z.number()
+  })
+  type balanceType = z.infer<typeof balanceSchema>
+
+  const form = useForm<balanceType>({
+    resolver: zodResolver(balanceSchema),
+  })
+
+  async function addCreditAmount(values: balanceType) {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/payment/topup`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          amount: values.amount.toString(),
+        })
+      })
+
+      if (response.ok) {
+        toast.success('Credit balance updated successfully')
+        location.reload()
+      } else {
+        toast.error('Error adding credit balance')
+      }
+    } catch (error:any) {
+      toast.error('An error occured when adding balance: ', error)
+    }
+  }
+
   return (
     <div className='space-y-8'>
 
@@ -98,15 +139,15 @@ const UserDashboard = () => {
         <CardHeader className='w-full flex'>
           <div className='flex items-center justify-between'>
             <div>
-              <h3 className='text-xl font-bold'>{userData?.name}</h3>
-              <div className='text-muted-foreground'>
+              <h3 className='text-2xl font-bold text-white'>{userData?.name}</h3>
+              <div className='text-white'>
                 {userData?.email}
               </div>
             </div>
             <div className='flex flex-col items-center w-[180px] '>
-              <p className='text-muted-foreground'>Balance</p>
-              <div className='text-muted-foreground text-2xl font-bold'>
-                Rp <CountUp end={userData?.credit} />
+              <p className='text-white'>Balance</p>
+              <div className='text-2xl font-bold text-white'>
+                $ <CountUp end={userData?.credit} />
               </div>
             </div>
           </div>
@@ -116,11 +157,53 @@ const UserDashboard = () => {
       {/* Header */}
       <div className='w-full flex items-center justify-between'>
         <h3 className='text-3xl font-bold text-white'>My Courses</h3>
-        <Link href="/">
-          <Button className='w-[150px] bg-blue-500 hover:bg-blue-400 flex items-center gap-2 hover:gap-4 transition-all justify-center'>
-            Buy Courses <BookCopy className='h-5 w-5' />
-          </Button>
-        </Link>
+        <div className='flex gap-x-4'>
+          <Link href="/courses">
+            <Button className='w-[175px] bg-white hover:bg-white text-black rounded-full shadow-custom flex items-center gap-2 hover:gap-4 transition-all justify-center'>
+              Buy Courses <BookCopy className='h-5 w-5' />
+            </Button>
+          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant={"outline"} className='w-[175px] gap-2 hover:gap-4 transition-all bg-white/20 hover:bg-white/40 border-2 text-white font-medium border-white rounded-full hover:text-white'>
+                TopUp Credit <Wallet className='h-5 w-5' />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Your Credit</DialogTitle>
+                <DialogDescription>Add your credit balance to enroll courses</DialogDescription>
+              </DialogHeader>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(addCreditAmount)} className='space-y-2'>
+                  <FormField 
+                    control={form.control}
+                    name='amount'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Amount
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder='Amount' 
+                            type='number' 
+                            {...field} 
+                            onChange={event => field.onChange(+event.target.value)}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type='submit' className='w-full'>
+                    Add Balance
+                  </Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Courses */}

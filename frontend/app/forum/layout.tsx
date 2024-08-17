@@ -1,3 +1,4 @@
+import SnowfallComponent from '@/components/Snowfall'
 import React, { ReactNode } from 'react'
 
 const ForumLayout = ({
@@ -6,7 +7,8 @@ const ForumLayout = ({
   children: ReactNode
 }) => {
   return (
-    <div className='wrapper mt-[100px]'>
+    <div className='wrapper mt-[100px] min-h-screen'>
+      <SnowfallComponent />
       {children}
     </div>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 
 // Dialog Import
 import {
@@ -64,6 +64,8 @@ const category = [
 
 
 const CreateCourse = () => {
+  const [IsOpen, setIsOpen] = useState(false)
+
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(CourseSchema),
     defaultValues: {
@@ -80,15 +82,17 @@ const CreateCourse = () => {
          method: 'POST',
          credentials: 'include',
          headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
           'Content-Type': 'application/json'
          },
          body: JSON.stringify(values),
       })
 
       const data = await response.json()
-      console.log(data);
       
       if (response.ok) {
+        setIsOpen(false)
+        location.reload()
         toast("Course Created Successfully");
       } else {
         toast.error("Failed to create course");
@@ -99,7 +103,7 @@ const CreateCourse = () => {
   }
 
   return (
-    <Dialog>
+    <Dialog open={IsOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full'>Create Course</Button>
       </DialogTrigger>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn, getLastPathSegment } from '@/lib/utils';
 
 // Components Input
@@ -11,13 +11,9 @@ import CreateTopic from '@/components/dashboard/CreateTopic';
 // Button Import
 import { Button } from '@/components/ui/button';
 
-// Dummy Data Import
-import { course } from '../data';
-
 // Card Import
 import { 
   Card, 
-  CardContent, 
   CardDescription, 
   CardFooter, 
   CardHeader, 
@@ -40,16 +36,31 @@ import { toast } from 'sonner';
 import { CourseDataType, TopicDataType } from '@/lib/schemas';
 
 const CourseDetailPage = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
   const courseId = parseInt(lastPathname)
-  // const data = course.find(item => item.name === lastPathname)
-  // @ts-ignore
-  // const { name, description, category, level } = data
+  const router = useRouter()
 
-  function handleDeleteCourse() {
-    console.log("Course Deleted")
-    toast("Course Deleted")
+  async function handleDeleteCourse() {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course/${courseId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type' : 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        toast.success('Successfully delete the course')
+        router.push('/dashboard/instructor/')
+      } else {
+      toast.error('Failed to delete the course')
+      }
+    } catch (error: any) {
+      toast.error('Error deleting the course:', error)
+    }
   }
 
   const [courseDetail, setCourseDetail] = useState<CourseDataType>()
@@ -61,15 +72,16 @@ const CourseDetailPage = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/course/${courseId}`, {
           method: 'GET',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
             'Content-Type' : 'application/json'
           }
         })
 
         if (response.ok) {
           const data = await response.json()
-          console.log(data)
           setCourseDetail(data.course)
           setTopics(data.topics)
+
         } else {
           toast.error('Failed to fetch course detail')
         }
@@ -87,23 +99,23 @@ const CourseDetailPage = () => {
       {/* Header */}
       <div className='w-full flex items-start justify-between'>
         <div className='space-y-2'>
-          <h3 className='text-3xl font-bold'>{courseDetail?.name}</h3>
-          <p className='text-black/75'>{courseDetail?.description}</p>
+          <h3 className='text-3xl font-bold text-white'>{courseDetail?.name}</h3>
+          <p className='text-white/75'>{courseDetail?.description}</p>
           <div className='flex gap-x-4 items-center'>
             <p className={cn(
-              'rounded-full bg-gray-50 border py-1 px-4',
-              courseDetail?.level === 'easy' && 'bg-green-50 border border-green-300',
-              courseDetail?.level === 'medium' && 'bg-orange-50 border border-orange-300',
-              courseDetail?.level === 'hard' && 'bg-red-50 border border-red-300'  
+              'rounded-full text-white py-1 px-4',
+              courseDetail?.level === 'easy' && 'bg-green-400',
+              courseDetail?.level === 'medium' && 'bg-orange-400',
+              courseDetail?.level === 'hard' && 'bg-red-400'  
             )}>{courseDetail?.level}</p>
             <p className='rounded-full bg-gray-100 border py-1 px-4'>{courseDetail?.category}</p>
           </div>
         </div>
         <div className='flex gap-x-4'>
           <CreateTopic />
-          <AlertDialog>
+          <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
-              <Button variant={'destructive'}>
+              <Button variant={'destructive'} className='rounded-full'>
                 Delete Course
               </Button>
             </AlertDialogTrigger>
@@ -117,7 +129,9 @@ const CourseDetailPage = () => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className='bg-red-500 hover:bg-red-400' onClick={handleDeleteCourse}>Continue</AlertDialogAction>
+                <AlertDialogAction className='bg-red-500 hover:bg-red-400' onClick={handleDeleteCourse}>
+                  Continue
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -128,19 +142,16 @@ const CourseDetailPage = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {topics.map((item, index) => {
           return (
-            <Card key={item.id} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between bg-white/20 border-white shadow-custom'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
-                  <CardDescription>{item.description}</CardDescription>
+                  <CardTitle className='text-white'>{item.title}</CardTitle>
+                  <CardDescription className='text-white/70'>{item.description}</CardDescription>
                 </CardHeader>
-                {/* <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                  <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length > 0 ? item.materials.length : 0} Materials</p>
-                </CardContent> */}
               </div>
               <CardFooter>
-                <Link href={`/dashboard/instructor/${lastPathname}/${item.title}`}>
-                  <Button size={'sm'} variant={'secondary'}>
+                <Link href={`/dashboard/instructor/${lastPathname}/${item.id}`}>
+                  <Button size={'sm'} variant={'secondary'} className='rounded-full shadow-custom w-[200px]'>
                     Manage Topic
                   </Button>
                 </Link>

@@ -36,6 +36,18 @@ import { toast } from 'sonner';
 
 const SignInPage = () => {
   const router = useRouter()
+  const session = localStorage.getItem("token")
+  const userId = localStorage.getItem("userId")
+  const userRole = localStorage.getItem("userRole")
+
+  if (session) {
+    if (userRole === "Instructor") {
+      router.push('/dashboard/instructor')
+    } else {
+      router.push(`/dashboard/${userId}`)
+    }
+  }
+
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -45,6 +57,17 @@ const SignInPage = () => {
   })
 
   async function onSubmit(values: SignInSchemaType) {
+    const session = localStorage.getItem("token")
+    const userId = localStorage.getItem("userId")
+    const userRole = localStorage.getItem("userRole")
+    if (session) {
+      if (userRole === "Instructor") {
+        router.push('/dashboard/instructor')
+      } else {
+        router.push(`/dashboard/${userId}`)
+      }
+    }
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/auth/login`, {
          method: 'POST',
@@ -56,11 +79,20 @@ const SignInPage = () => {
       })
 
       const data = await response.json()
-      console.log(data);
+
       
       if (response.ok) {
+        localStorage.setItem("token", data.session)
+        localStorage.setItem("userId", data.user.id)
+        localStorage.setItem("userRole", data.user.role)
+
         toast.success("Signed In Successfully")
-        router.push(`/dashboard/${data.id}`)
+
+        if (data.user.role === 'Instructor') {
+          router.push(`/dashboard/instructor`)
+        } else {
+          router.push(`/dashboard/${data.user.id}`)
+        }
       } else {
         toast.error("Failed to sign in")
       }
@@ -73,7 +105,7 @@ const SignInPage = () => {
     <Card className='bg-white/20 border-white shadow-custom my-[150px]'>
       <CardHeader className='text-center'>
         <CardTitle className='text-white'>Sign In</CardTitle>
-        <CardDescription className='max-w-[500px] text-white/70'>Welcome back! Continue your learning journey with SeaStudy. Access your courses, participate in forums, and keep growing.</CardDescription>
+        <CardDescription className='max-w-[500px] text-white'>Welcome back! Continue your learning journey with SeaStudy. Access your courses, participate in forums, and keep growing.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

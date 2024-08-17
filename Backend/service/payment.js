@@ -26,9 +26,9 @@ async function purchaseCourse(userId,courseId){
     //         operation:    false,
     //         message:        `User with with ${userId} already enrolled on course with id ${courseId}`
     //     }
-
+    
     const user = await getUserById(userId);
-    const coursePrice = course.data.price;
+    const coursePrice = parseInt(course.data.price);
     const userCredit = user.data.credit;
     
     if(userCredit < coursePrice)

@@ -23,8 +23,26 @@ async function getCourseDetails(courseId) {
         };
 
     const course = await getCourseById(courseId);
+    if(!course.operation)
+        return {
+            operation: false,
+            message: "course not found"
+        }
+
+
     const topics = await getTopicsByCourseId(courseId);
+    if(!topics.operation)
+        return {
+            operation: false,
+            message: "topic not found"
+        }
+
     const instructor = await getUserById(course.data.userId);
+    if(!instructor.operation)
+        return {
+            operation: false,
+            message: "instructor not found"
+        }
     
     const operation = course.operation && topics.operation && instructor.operation;
 

@@ -28,10 +28,10 @@ router.post("/login", async (req, res) => {
         return res.status(respond.status).json({ message: respond.message });
 
     const token = createJSONToken(respond);
-    res.cookie("token", token, { httpOnly: true, secure: true });
+    //res.cookie("token", token, { httpOnly: true, secure: true });
     return res
         .status(respond.status)
-        .json({ message: respond.message });
+        .json({ message: respond.message,session:token,user:respond.user });
 });
 
 router.get("/logout", (req, res) => {

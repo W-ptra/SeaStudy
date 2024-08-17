@@ -163,11 +163,9 @@ async function unenrollCourse(courseId, userId) {
 
         await prisma.enrollment.delete({
             where: {
-                userId_courseId: {
                     userId,
-                    courseId,
-                },
-            },
+                    courseId,   
+            }
         });
 
         return {

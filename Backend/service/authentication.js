@@ -16,6 +16,7 @@ async function register(newUser){
 async function login(email,password){
 
     const user = await getUserByEmail(email);
+    
     if(user.data == null)
         return { operation: false,status: 404, message:"user doesn't exist"};
 

@@ -21,11 +21,14 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.static('./public'));
+
 app.use(cors({
-    origin: process.env.CLIENT_URL, // bisa diubah sesuai domain frontend
+    origin: process.env.CLIENT_URL,
     credentials: true,
-  }));
-  
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(bodyParser.json());

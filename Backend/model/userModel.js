@@ -42,7 +42,6 @@ async function getUserByEmail(email){
             name:       true,
             password:   true,
             role:       true,
-            credit:     true,
         }
         const user = await prisma.users.findUnique({where,select});
         return {

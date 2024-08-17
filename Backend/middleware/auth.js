@@ -3,13 +3,14 @@ const { validateJSONToken } = require('../helper/jwt');
 require("dotenv").config();
 
 const authenticateJWT = (allowedRole) => async (req,res,next) => {
-    const token = req.cookies.token;
-
-    if (!token)
-        return res.status(401).json({message:"Token is required"});
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send('Token is required');
+    }
+    const authToken = authorization.split(' ')[1]
 
     try {
-        const decoded = await validateJSONToken(token);
+        const decoded = await validateJSONToken(authToken);
         
         if(decoded.role !== allowedRole){
             return res.status(403).json({ message: "Access denied" });
@@ -24,10 +25,15 @@ const authenticateJWT = (allowedRole) => async (req,res,next) => {
 }
 
 async function isAuthorized(req,res,next){
-    const token = req.cookies.token;
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send('Token is required');
+    }
     
+    const authToken = authorization.split(' ')[1]
+
     try {
-        const decoded = await validateJSONToken(token);
+        const decoded = await validateJSONToken(authToken);
         
         if(decoded.role !== "User" && decoded.role !== "Instructor")
             return res.status(403).json({ message: "Access denied" });

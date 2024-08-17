@@ -1,4 +1,4 @@
-# SEA Study: Your Gateway to Knowledge
+# SEA Study: Learn Anytime, Anywhere!
 Welcome to SEA Study, an all-in-one online learning platform designed to empower learners and educators alike. Whether you're diving into academics, mastering programming, exploring culinary arts, or discovering new passions, SEA Study is here to guide you on your learning journey.
 
 #### <i>Key Features:</i>

@@ -42,8 +42,8 @@ const UserDashboard = () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user/course/`, {
           method: 'GET',
-          credentials: 'include',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
           },
         })
@@ -64,8 +64,8 @@ const UserDashboard = () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user`, {
           method: 'GET',
-          credentials: 'include',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
           },
         })

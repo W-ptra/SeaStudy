@@ -175,20 +175,10 @@ async function getTopicById(id){
 }
 
 async function getTopicsByCourseId(courseId){
-    //const cacheKey = `get topic by course id ${courseId}`;
     try{
-        // const cache = await getCache(cacheKey);
-        // if(cache !== null)
-        //     return{
-        //         operation:  true,
-        //         status:     200,
-        //         data:       cache
-        //     }
-
         const where = { courseId }
         const topic = await prisma.topic.findMany({where})
 
-        //createCache(cacheKey,topic);
         return {
             operation:  true,
             data:       topic

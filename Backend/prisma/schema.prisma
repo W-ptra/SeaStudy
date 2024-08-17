@@ -75,7 +75,7 @@ model Course {
   price       BigInt
   avgRating   Float        @default(0)
   views       Int          @default(0)
-  creator     Users        @relation(fields: [userId], references: [id])
+  creator     Users        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   enrollment  Enrollment[]
   review      Review[]
@@ -87,8 +87,8 @@ model Course {
 
 model Enrollment {
   id        Int      @id @default(autoincrement())
-  user      Users    @relation(fields: [userId], references: [id])
-  course    Course   @relation(fields: [courseId], references: [id])
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userId    Int
   courseId  Int
   createdAt DateTime @default(now())
@@ -99,8 +99,8 @@ model Review {
   id        Int      @id @default(autoincrement())
   comment   String
   rating    Int
-  user      Users    @relation(fields: [userId], references: [id])
-  course    Course   @relation(fields: [courseId], references: [id])
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userId    Int
   courseId  Int
   createdAt DateTime @default(now())
@@ -110,8 +110,8 @@ model Review {
 model Post {
   id        Int      @id @default(autoincrement())
   message   String
-  user      Users    @relation(fields: [userId], references: [id])
-  course    Course   @relation(fields: [courseId], references: [id])
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userId    Int
   courseId  Int
   createdAt DateTime @default(now())
@@ -122,7 +122,7 @@ model Topic {
   id          Int          @id @default(autoincrement())
   title       String
   description String
-  course      Course       @relation(fields: [courseId], references: [id])
+  course      Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId    Int
   material    Material[]
   completion  Completion[]
@@ -156,7 +156,7 @@ model Assigment {
   id          Int          @id @default(autoincrement())
   name        String
   description String
-  topic       Topic        @relation(fields: [topicId], references: [id])
+  topic       Topic        @relation(fields: [topicId], references: [id], onDelete: Cascade)
   topicId     Int
   submission  Submission[]
   createdAt   DateTime     @default(now())

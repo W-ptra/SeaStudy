@@ -48,14 +48,14 @@ const SignInPage = () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/auth/login`, {
          method: 'POST',
-         credentials: 'include',
          headers: {
           'Content-Type': 'application/json'
          },
          body: JSON.stringify(values),
-      })
+      });
 
       const data = await response.json()
+      localStorage.setItem('token', data.session);
       console.log(data);
       
       if (response.ok) {

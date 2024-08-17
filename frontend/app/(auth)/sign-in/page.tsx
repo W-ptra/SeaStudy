@@ -56,11 +56,17 @@ const SignInPage = () => {
       })
 
       const data = await response.json()
-      console.log(data);
+      console.log(data)
       
       if (response.ok) {
+        localStorage.setItem("token", data.session)
+        localStorage.setItem("userId", data.user.id)
+
+        const token = localStorage.getItem("token")
+        console.log(token)
+
         toast.success("Signed In Successfully")
-        router.push(`/dashboard/${data.id}`)
+        router.push(`/dashboard/instructor`)
       } else {
         toast.error("Failed to sign in")
       }

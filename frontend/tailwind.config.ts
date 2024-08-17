@@ -72,6 +72,12 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        satoshi: ['Satoshi', 'sans-serif'],
+      },
+      boxShadow: {
+        'custom': '4px 4px 24px 2px rgba(255, 255, 255, 0.5)',
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

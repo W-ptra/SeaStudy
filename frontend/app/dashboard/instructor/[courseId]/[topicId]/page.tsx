@@ -106,7 +106,7 @@ const TopicDetailPage = () => {
         <div className='flex justify-center items-start w-[75%] h-[500px]'>
           {
             currentDisplayType === 'Material' && 
-            <div>
+            <div className='w-full h-full'>
               <h3>{currentMaterial?.name}</h3>
               <iframe src={currentMaterial?.link} title="PDF Viewer" className='w-full h-full' />
             </div>

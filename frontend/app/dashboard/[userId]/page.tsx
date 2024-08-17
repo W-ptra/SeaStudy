@@ -57,7 +57,6 @@ const UserDashboard = () => {
 
         if (response.ok) {
           const data = await response.json()
-          console.log(data);
           
           setCourses(data)
         } else {
@@ -94,7 +93,6 @@ const UserDashboard = () => {
   }, [])
 
   function handleDeleteCourse() {
-    console.log("Course Deleted")
     toast("Course Deleted")
   }
 

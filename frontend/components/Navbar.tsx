@@ -33,8 +33,6 @@ const Navbar = () => {
       // @ts-ignore
       setSession(session)
 
-      console.log(role)
-      console.log(session)
 
       if (role === 'Instructor') {
         setUserRole(role)

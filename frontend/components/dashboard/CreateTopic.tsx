@@ -50,7 +50,6 @@ const CreateTopic = () => {
   })
 
   async function onSubmit(values: TopicSchemaType) {
-    console.log(values)
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/topic/`, {
         method: 'POST',

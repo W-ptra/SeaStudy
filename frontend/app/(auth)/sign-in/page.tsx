@@ -79,7 +79,7 @@ const SignInPage = () => {
       })
 
       const data = await response.json()
-      console.log(data)
+
       
       if (response.ok) {
         localStorage.setItem("token", data.session)
@@ -87,7 +87,6 @@ const SignInPage = () => {
         localStorage.setItem("userRole", data.user.role)
 
         const token = localStorage.getItem("token")
-        console.log(token)
 
         toast.success("Signed In Successfully")
 

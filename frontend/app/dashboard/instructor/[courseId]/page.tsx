@@ -81,8 +81,7 @@ const CourseDetailPage = () => {
           const data = await response.json()
           setCourseDetail(data.course)
           setTopics(data.topics)
-          console.log(courseDetail)
-          console.log(topics)
+
         } else {
           toast.error('Failed to fetch course detail')
         }

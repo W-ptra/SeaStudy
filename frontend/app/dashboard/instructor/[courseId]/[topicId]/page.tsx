@@ -47,7 +47,6 @@ const TopicDetailPage = () => {
 
       if (response.ok) {
         const data = await response.json()
-        console.log(data.data)
       } else {
         toast.error('Error fetching materials')
       }
@@ -57,7 +56,7 @@ const TopicDetailPage = () => {
   }, [])
 
   function handleDeleteCourse() {
-    console.log("Course Deleted")
+
   }
 
   return (

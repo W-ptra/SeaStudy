@@ -45,7 +45,6 @@ const CourseDetailPage = () => {
 
         if (response.ok) {
           const data = await response.json()
-          console.log(data)
           setCourseDetail(data.course)
           setTopics(data.topics)
         } else {

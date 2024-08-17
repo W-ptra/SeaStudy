@@ -27,12 +27,14 @@ import { CourseDataType } from '@/lib/schemas';
 
 const CoursesPage = () => {
   const [session, setSession] = useState()
+  const [userRole, setUserRole] = useState()
   const [courses, setCourses] = useState<CourseDataType[]>([])
 
   useEffect(() => {
-    const ses = localStorage.getItem('token')
     // @ts-ignore
-    setSession(ses)
+    setSession( localStorage.getItem('token'))
+    // @ts-ignore
+    setUserRole(localStorage.getItem("userRole"))
   }, [])
 
   useEffect(() => {
@@ -99,7 +101,7 @@ const CoursesPage = () => {
                   <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom max-w-[100px] md:max-w-none text-center md:text-start'>{item.category}</p>
                 </div>
                 <p className='text-white font-medium text-xl px-4 py-1 rounded-full bg-white/20 border border-white'>$ {item.price}</p>
-                {session && (
+                {session && userRole !== 'Instructor' && (
                   <Link href={`/courses/${item.id}`}>
                     <Button className='bg-white hover:bg-white w-[200px] text-black rounded-full shadow-custom flex gap-2 hover:gap-4 transition-all'>
                       Enroll This Course <BookPlus className='w-5 h-5' />

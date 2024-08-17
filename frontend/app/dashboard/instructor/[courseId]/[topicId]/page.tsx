@@ -32,9 +32,6 @@ const TopicDetailPage = () => {
   const lastPathname = getLastPathSegment(pathname)
   const courseData = course.find(item => item.topics.some(topic => topic.title === lastPathname));
   const topicData = courseData?.topics.find(topic => topic.title === lastPathname);
-  
-  // @ts-ignore
-  const { title, description, assignment } = topicData;
 
   function handleDeleteCourse() {
     console.log("Course Deleted")

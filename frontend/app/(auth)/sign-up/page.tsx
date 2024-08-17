@@ -43,6 +43,17 @@ import {
 import { toast } from 'sonner';
 
 const SignUpPage = () => {
+  const session = localStorage.getItem("token")
+  const userId = localStorage.getItem("userId")
+  const userRole = localStorage.getItem("userRole")
+  if (session) {
+    if (userRole === "Instructor") {
+      router.push('/dashboard/instructor')
+    } else {
+      router.push(`/dashboard/${userId}`)
+    }
+  }
+  
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -61,7 +72,7 @@ const SignUpPage = () => {
     <Card className='my-[125px] bg-white/20 border-white shadow-custom'>
       <CardHeader className='text-center'>
         <CardTitle className='text-white'>Sign Up</CardTitle>
-        <CardDescription className='max-w-[500px] text-white/70'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
+        <CardDescription className='max-w-[500px] text-white'>Join SeaStudy and unlock a world of knowledge. Enroll in courses, engage in discussions, and become a part of our learning community today!</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

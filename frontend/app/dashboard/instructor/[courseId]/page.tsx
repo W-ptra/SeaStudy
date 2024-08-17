@@ -143,19 +143,16 @@ const CourseDetailPage = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {topics.map((item, index) => {
           return (
-            <Card key={item.id} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between bg-white/20 border-white shadow-custom'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
-                  <CardDescription>{item.description}</CardDescription>
+                  <CardTitle className='text-white'>{item.title}</CardTitle>
+                  <CardDescription className='text-white/70'>{item.description}</CardDescription>
                 </CardHeader>
-                {/* <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                  <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length > 0 ? item.materials.length : 0} Materials</p>
-                </CardContent> */}
               </div>
               <CardFooter>
-                <Link href={`/dashboard/instructor/${lastPathname}/${item.title}`}>
-                  <Button size={'sm'} variant={'secondary'}>
+                <Link href={`/dashboard/instructor/${lastPathname}/${item.id}`}>
+                  <Button size={'sm'} variant={'secondary'} className='rounded-full shadow-custom w-[200px]'>
                     Manage Topic
                   </Button>
                 </Link>

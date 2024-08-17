@@ -9,6 +9,7 @@ import { Button } from './ui/button';
 // Icon Import
 import { LogIn } from 'lucide-react';
 import { GraduationCap } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { Menu } from 'lucide-react';
 
 // Sheet Import
@@ -77,13 +78,13 @@ const Navbar = () => {
         {/* Sign In Button */}
         {!session ? (
           <Link href="/sign-in">
-            <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
+            <Button className='w-[140px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white'>
               Sign In <LogIn className='w-5 h-5' />
             </Button>
           </Link>
         ):(
-          <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold' onClick={logoutHandler}>
-            <LogIn className='w-5 h-5 rotate-180' /> Sign Out 
+          <Button className='w-[140px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white' onClick={logoutHandler}>
+            Sign Out <LogOut className='w-5 h-5' />
           </Button>
         )}
 
@@ -105,13 +106,13 @@ const Navbar = () => {
             </Link>
             {!session ? (
               <Link href="/sign-in">
-                <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
+                <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white'>
                   Sign In <LogIn className='w-5 h-5' />
                 </Button>
               </Link>
             ):(
-              <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold' onClick={logoutHandler}>
-                <LogIn className='w-5 h-5 rotate-180' /> Sign Out 
+              <Button className='w-[140px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white' onClick={logoutHandler}>
+                Sign Out <LogOut className='w-5 h-5' />
               </Button>
             )}
           </SheetContent>

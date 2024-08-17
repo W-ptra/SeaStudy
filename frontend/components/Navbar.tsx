@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 
 // Component Import
 import { Button } from './ui/button';
@@ -14,25 +13,43 @@ import { Menu } from 'lucide-react';
 
 // Sheet Import
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { usePathname, useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname()
+  const [userRole, setUserRole] = useState("")
+  const [userId, setUserId] = useState()
+  const [session, setSession] = useState()
+
+  const router = useRouter()
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
+    function getUserRoleAndId() {
+      const role = localStorage.getItem('userRole')
+      const studentId = localStorage.getItem('userId')
+      const session = localStorage.getItem('token')
+      // @ts-ignore
+      setSession(session)
+
+      if (role === 'Instructor') {
+        setUserRole(role)
       } else {
-        setIsScrolled(false);
+        // @ts-ignore
+        setUserId(studentId)
       }
-    };
+    }
 
-    window.addEventListener('scroll', handleScroll);
+    getUserRoleAndId()
+  }, [pathname])
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  function logoutHandler() {
+    localStorage.setItem('userRole', "")
+    localStorage.setItem('userId', "")
+    localStorage.setItem('token', "")
+    toast.success("Successfully Signed Out")
+    router.push("/")
+  }
 
   return (
     <div className='fixed top-2 left-0 w-full px-4'>
@@ -47,20 +64,28 @@ const Navbar = () => {
           <Link href="/">
             Home
           </Link>
-          <Link href="/dashboard">
-            Dashboard
-          </Link>
+          {session && (
+            <Link href={userRole === 'Instructor' ? '/dashboard/instructor' : `/dashboard/${userId}`}>
+              Dashboard
+            </Link>
+          )}
           <Link href="/courses">
             Courses
           </Link>
         </nav>
 
-        {/* Sign In Button (IF THE USER HASN'T LOGGED IN) */}
-        <Link href="/sign-in">
-          <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
-            Sign In <LogIn className='w-5 h-5' />
+        {/* Sign In Button */}
+        {!session ? (
+          <Link href="/sign-in">
+            <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
+              Sign In <LogIn className='w-5 h-5' />
+            </Button>
+          </Link>
+        ):(
+          <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold' onClick={logoutHandler}>
+            <LogIn className='w-5 h-5 rotate-180' /> Sign Out 
           </Button>
-        </Link>
+        )}
 
         <Sheet>
           <SheetTrigger className='block md:hidden'>
@@ -70,17 +95,25 @@ const Navbar = () => {
             <Link href="/">
               Home
             </Link>
-            <Link href="/dashboard">
-              Dashboard
-            </Link>
+            {session && (
+              <Link href={userRole === 'Instructor' ? '/dashboard/instructor' : `/dashboard/${userId}`}>
+                Dashboard
+              </Link>
+            )}
             <Link href="/courses">
               Courses
             </Link>
-            <Link href="/sign-in">
-              <Button className='w-[120px] bg-white text-black items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
-                Sign In <LogIn className='w-5 h-5' />
+            {!session ? (
+              <Link href="/sign-in">
+                <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold'>
+                  Sign In <LogIn className='w-5 h-5' />
+                </Button>
+              </Link>
+            ):(
+              <Button className='w-[120px] bg-white text-black hidden md:flex items-center justify-center rounded-full gap-2 hover:gap-4 transition-all hover:bg-white font-bold' onClick={logoutHandler}>
+                <LogIn className='w-5 h-5 rotate-180' /> Sign Out 
               </Button>
-            </Link>
+            )}
           </SheetContent>
         </Sheet>
       </header>

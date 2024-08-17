@@ -61,6 +61,7 @@ const SignInPage = () => {
       if (response.ok) {
         localStorage.setItem("token", data.session)
         localStorage.setItem("userId", data.user.id)
+        localStorage.setItem("userRole", data.user.role)
 
         const token = localStorage.getItem("token")
         console.log(token)

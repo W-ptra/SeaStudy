@@ -22,8 +22,6 @@ import { Button } from '@/components/ui/button'
 // Icons Import
 import { BookCopy } from 'lucide-react';
 
-// Dummy Data Import
-import { course } from './data';
 
 // Import Utilities
 import { toast } from 'sonner';
@@ -44,6 +42,7 @@ const UserDashboard = () => {
           method: 'GET',
           credentials: 'include',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
             'Content-Type': 'application/json'
           },
         })

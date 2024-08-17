@@ -29,7 +29,7 @@ const Hero = () => {
       <Image 
         src={Book}
         alt='Book 3D'
-        className='h-[300px] w-[300px] md:h-[400px] md:w-[400px]'
+        className='h-[300px] w-[300px] md:h-[400px] md:w-[400px] -z-20'
       />
 
       <Image 

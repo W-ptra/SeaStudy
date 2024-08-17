@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 
 // Dialog Import
 import {
@@ -32,6 +32,8 @@ import { Textarea } from '../ui/textarea'
 import { toast } from 'sonner'
 
 const CreateTopic = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
   const form = useForm<TopicSchemaType>({
     resolver: zodResolver(TopicSchema),
     defaultValues: {
@@ -46,7 +48,7 @@ const CreateTopic = () => {
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full'>Create Topic</Button>
       </DialogTrigger>

@@ -1,116 +1,126 @@
 "use client"
 
-import React, { useEffect } from 'react'
-import { usePathname } from 'next/navigation';
-
-// Dummy Data Import
-import { course } from '../../data';
-import { getLastPathSegment } from '@/lib/utils';
-
-// Components Import
+import CreateCourse from '@/components/dashboard/CreateCourse';
+import CreateMaterial from '@/components/dashboard/CreateMaterial';
 import { Button } from '@/components/ui/button';
-
-// Icons Import
-import { Trash } from 'lucide-react';
-import { PictureInPicture2 } from 'lucide-react';
-
-// Alert Dialog Import
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-
-// Toast Import
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { AssignmentDataType, MaterialDataType, TopicDataType } from '@/lib/schemas';
+import { getLastPathSegment } from '@/lib/utils';
+import { Link } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 
 const TopicDetailPage = () => {
-  const pathname = usePathname()
+
+  const [topicDetail, setTopicDetail] = useState<TopicDataType>()
+  const [materials, setMaterials] = useState<MaterialDataType[]>([])
+  const [assignments, setAssignments] = useState<AssignmentDataType[]>([])
+  const [currentDisplayType,setCurrentDisplayType] = useState('Material')
+  const [currentMaterial, setCurrentMaterial] = useState<MaterialDataType>()
+  const [currentAssignment, setCurrentAssignment] = useState<AssignmentDataType>()
+
+  const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
   const topicId = parseInt(lastPathname)
 
   useEffect(() => {
-    async function getAllTopicMaterials() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/topic/${topicId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem("token")}`,
-          'Content-Type' : 'application/json'
-        }
-      })
+    async function getTopicDetail(topicId: number) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/topic/${topicId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        console.log(response)
 
-      if (response.ok) {
-        const data = await response.json()
-      } else {
-        toast.error('Error fetching materials')
-      }
+        if (response.ok) {
+          const data = await response.json()
+          console.log(data)
+          setTopicDetail(data.data)
+          setMaterials(data.data.material)
+          setAssignments(data.data.assignment)
+          setCurrentDisplayType('Material')
+          setCurrentMaterial(data.data.material[0])
+        } else {
+          toast.error('Failed to fetch topic detail')
+        }
+      } catch (error: any) {
+        toast.error('Error fetching topic detail:', error)
+      } 
     }
 
-    getAllTopicMaterials()
+    getTopicDetail(topicId)
   }, [])
 
-  function handleDeleteCourse() {
-
-  }
-
   return (
-    <div className='space-y-8'> 
+    <div className='space-y-8'>
 
       {/* Header */}
-      {/* <div className='w-full flex items-start justify-between'>
+      <div className='w-full flex items-start justify-between'>
         <div className='space-y-2'>
-          <h3 className='text-3xl font-bold'>{title}</h3>
-          <p className='text-black/75'>{description}</p>
+          <h3 className='text-3xl font-bold text-white flex gap-x-4'>{topicDetail?.title}</h3>
+          <p className='text-white/75'>{topicDetail?.description}</p>
         </div>
-        <div className='flex gap-x-4'>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant={'destructive'}>
-                Delete Topic
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the topic
-                  and remove the data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className='bg-red-500 hover:bg-red-400' onClick={handleDeleteCourse}>Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      </div> */}
-
-      {/* Materials */}
-      {/* <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-8'>
-        <div className='border rounded-[6px] w-full min-h-[400px] px-6 py-4 space-y-4'>
-          <h5 className='text-xl font-semibold'>Materials</h5>
-          <div className='flex flex-col gap-y-2'>
-            {topicData?.materials.map((item, index) => (
-              <div key={index} className='border rounded-md px-4 py-2 flex items-center justify-between'>
-                <p>{item.name} - {item.materialType}</p>
-                <div className='flex gap-x-4'>
-                  <PictureInPicture2 className='h-5 w-5 text-black/75' /> <Trash className='h-5 w-5 text-black/75' />
-                </div>
-              </div>
-            ))}
+        <div className='flex justify-around'>
+          <div className='p-2'>
+            <CreateMaterial />
+          </div>
+          <div className='p-2'>
+            <CreateCourse />
           </div>
         </div>
-        <div className='border w-full rounded-[6px] min-h-[400px] px-6 py-4 space-y-4'>
-          <h5 className='text-xl font-semibold'>Assigment</h5>
+      </div>
+
+      {/* materials */}
+      <div className='flex justify-around w-full'>
+        {/* Somewhat navbar buat materials dan assignments */}
+        <div className='flex flex-col w-[20%]'>
+          {materials.map((item, index) => {
+            return (
+              <div key={item.id} className='flex justify-between bg-white/20 border-2 shadow-custom'
+              onClick={() => {
+                setCurrentDisplayType('Material')
+                setCurrentMaterial(item)
+              }}>
+                {item.name}
+              </div>
+            )
+          })}
+          {assignments.map((item, index) => {
+            return (
+              <div key={item.id} className='flex justify-between bg-white/20 border-2 shadow-custom'
+              onClick={() => {
+                setCurrentDisplayType('Assignment')
+                setCurrentAssignment(item)
+              }
+              }
+              >
+                [Assignment] {item.name}
+              </div>
+            )
+          })}
         </div>
-      </div> */}
+        <div className='flex justify-center items-start w-[75%] h-[500px]'>
+          {
+            currentDisplayType === 'Material' && 
+            <div>
+              <h3>{currentMaterial?.name}</h3>
+              <iframe src={currentMaterial?.link} title="PDF Viewer" className='w-full h-full' />
+            </div>
+          }
+          {
+            currentDisplayType === 'Assignment' &&
+            <div>
+              <h3>{currentAssignment?.name}</h3>
+              <p>{currentAssignment?.description}</p>
+              {/* Upload file submission */}
+            </div>
+          }
+        </div>
+      </div>
     </div>
   )
 }

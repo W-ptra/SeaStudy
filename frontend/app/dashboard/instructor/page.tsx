@@ -22,8 +22,11 @@ import Link from 'next/link'
 // Dummy Data Import
 import { CourseDataType } from '@/lib/schemas'
 import { toast } from 'sonner'
+import { Router } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const InstructorDashboard = () => {
+  const router = useRouter()
 
   const [courses, setCourses] = useState<CourseDataType[]>([])
 
@@ -36,26 +39,10 @@ const InstructorDashboard = () => {
   };
 
   useEffect(() => {
-    // async function getUserData() {
-    //   try {
-    //     const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/user`, {
-    //       method: 'GET',
-    //       credentials: 'include',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //     })
-
-    //     if (response.ok) {
-    //       const data = await response.json()
-    //       setUserData(data.data)
-    //     } else {
-    //       toast.error('Failed to fetch user data')
-    //     }
-    //   } catch (error: any) {
-    //     toast.error('Error fetching user:', error)
-    //   }
-    // }
+    const role = localStorage.getItem("userRole")
+    if(role !== 'Instructor'){
+      router.push('/')
+    }
 
     async function getCreatedCourses(){
       try {

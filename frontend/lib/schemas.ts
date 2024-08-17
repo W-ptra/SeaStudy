@@ -40,6 +40,14 @@ export const TopicSchema = z.object({
 })
 export type TopicSchemaType = z.infer<typeof TopicSchema>
 
+export const MaterialSchema = z.object({
+  name: z.string(),
+  type: z.string(),
+  link: z.string(),
+  topicId: z.number()
+})
+export type MaterialSchemaType = z.infer<typeof MaterialSchema>
+
 // Level Enum
 enum courseLevel {
   easy = 'easy',

@@ -119,7 +119,7 @@ const CourseDetailPage = () => {
           <p className='text-white'>{courseDetail?.description}</p>
           <div className='flex gap-x-4 items-center'>
             <p className={cn(
-              'rounded-full py-1 px-4',
+              'rounded-full py-1 px-4 text-white',
               courseDetail?.level === 'easy' && 'bg-green-400',
               courseDetail?.level === 'medium' && 'bg-orange-400',
               courseDetail?.level === 'hard' && 'bg-red-400'  
@@ -188,16 +188,16 @@ const CourseDetailPage = () => {
       <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {topics.map((item, index) => {
           return (
-            <Card key={item.id} className='flex flex-col justify-between'>
+            <Card key={item.id} className='flex flex-col justify-between bg-white/10 border-2 border-white'>
               <div>
                 <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
-                  <CardDescription>{item.description}</CardDescription>
+                  <CardTitle className='text-white'>{item.title}</CardTitle>
+                  <CardDescription className='text-white'>{item.description}</CardDescription>
                 </CardHeader>
               </div>
               <CardFooter>
                 <Link href={`/courses/${lastPathname}/${item.id}`}>
-                  <Button size={'sm'} className='bg-blue-500 hover:bg-blue-400'>
+                  <Button size={'sm'} className='bg-white rounded-full text-black shadow-custom hover:bg-white'>
                     See Materials
                   </Button>
                 </Link>

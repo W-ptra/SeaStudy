@@ -224,7 +224,7 @@ const UserDashboard = () => {
                 </CardHeader>
                 <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
                   <p className={cn(
-                    'rounded-full py-1 px-4',
+                    'rounded-full py-1 text-white px-4',
                     item.level === 'easy' && 'bg-green-400',
                     item.level === 'medium' && 'bg-orange-400 border',
                     item.level === 'hard' && 'bg-red-400 border'  
@@ -233,10 +233,9 @@ const UserDashboard = () => {
                 </CardContent>
               </div>
               <CardFooter className='w-full flex flex-col items-start gap-y-4'>
-                <p>$ {item.price}</p>
                 <div className='flex items-center gap-x-4'>
                   <Link href={`/dashboard/${lastPathname}/${item.id}`}>
-                    <Button size={'sm'} className='bg-white shadow-custom rounded-full text-black'>
+                    <Button size={'sm'} className='bg-white hover:bg-white shadow-custom rounded-full text-black'>
                       Course Detail
                     </Button>
                   </Link>

@@ -8,28 +8,37 @@ import { cn, getLastPathSegment } from '@/lib/utils';
 // Button Import
 import { Button } from '@/components/ui/button';
 
-// Dummy Data Import
-import { course } from '../data';
-
 // Card Import
 import { 
   Card, 
-  CardContent, 
   CardDescription, 
   CardFooter, 
   CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
-import { TopicDataType } from '@/lib/schemas';
+
+// Type Import
+import { CourseDataType, TopicDataType } from '@/lib/schemas';
+
+// Component Import
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
+
+// Icon  Import
+import { Star } from 'lucide-react';
+import { FaStar } from 'react-icons/fa';
+
+// Form Import
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const CourseDetailPage = () => {
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
   const courseId = parseInt(lastPathname)
-  // const data = course.find(item => item.name === lastPathname)
-  // @ts-ignore
-  // const { name, description, category, level } = data
   const [courseDetail, setCourseDetail] = useState<CourseDataType>()
   const [topics, setTopics] = useState<TopicDataType[]>([])
 
@@ -58,24 +67,95 @@ const CourseDetailPage = () => {
     getCourseDetail(courseId)
   }, [])
 
+  const reviewSchema = z.object({
+    comment: z.string(),
+    rating: z.number(),
+  })
+  type reviewSchemaType = z.infer<typeof reviewSchema>
+  const form = useForm<reviewSchemaType>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      comment: "",
+    }
+  })
+
+  async function addReview(values: reviewSchemaType) {
+    console.log(values)
+  }
+
   return (
     <div className='space-y-8'>
 
       {/* Header */}
       <div className='w-full flex items-start justify-between'>
         <div className='space-y-2'>
-          <h3 className='text-3xl font-bold'>{courseDetail.name}</h3>
-          <p className='text-black/75'>{courseDetail.description}</p>
+          <h3 className='text-3xl font-bold text-white'>{courseDetail?.name}</h3>
+          <p className='text-white'>{courseDetail?.description}</p>
           <div className='flex gap-x-4 items-center'>
             <p className={cn(
-              'rounded-full bg-gray-50 border py-1 px-4',
-              courseDetail.level === 'easy' && 'bg-green-50 border border-green-300',
-              courseDetail.level === 'medium' && 'bg-orange-50 border border-orange-300',
-              courseDetail.level === 'hard' && 'bg-red-50 border border-red-300'  
-            )}>{courseDetail.level}</p>
-            <p className='rounded-full bg-gray-100 border py-1 px-4'>{courseDetail.category}</p>
+              'rounded-full py-1 px-4',
+              courseDetail?.level === 'easy' && 'bg-green-400',
+              courseDetail?.level === 'medium' && 'bg-orange-400',
+              courseDetail?.level === 'hard' && 'bg-red-400'  
+            )}>{courseDetail?.level}</p>
+            <p className='rounded-full bg-gray-100 border py-1 px-4 shadow-custom'>{courseDetail?.category}</p>
           </div>
         </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className='bg-white hover:bg-white shadow-custom text-black rounded-full flex items-center gap-x-2'> 
+              Add Review <Star className='w-5 h-5' />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                Add Your Review to The Course 
+              </DialogTitle>
+            </DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(addReview)} className='space-y-2'>
+                <FormField 
+                  control={form.control}
+                  name="comment"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Comment</FormLabel>
+                      <FormControl>
+                        <Input type="text" placeholder="Comment" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField 
+                  control={form.control}
+                  name="rating"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-black/70'>Rating</FormLabel>
+                      <div className='flex flex-row items-center gap-x-3'>
+                        <input type="hidden" {...field} />
+                        {[...Array(5)].map((_, index) => (
+                          <FaStar
+                            key={index}
+                            className='w-8 h-8 cursor-pointer'
+                            onClick={() => field.onChange(index + 1)}
+                            color={index < field.value ? "#EBC58E" : "#1c1c1c"}
+                          />
+                        ))}
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <div className='py-4' />
+                <Button type="submit" className='w-full'>
+                  Submit Review
+                </Button>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Topics */}
@@ -88,9 +168,6 @@ const CourseDetailPage = () => {
                   <CardTitle>{item.title}</CardTitle>
                   <CardDescription>{item.description}</CardDescription>
                 </CardHeader>
-                {/* <CardContent className='flex w-full flex-col md:flex-row gap-y-4 justify-start gap-x-4'>
-                  <p className='rounded-full py-1 px-4 bg-blue-100 border border-blue-300'>{item.materials.length > 0 ? item.materials.length : 0} Materials</p>
-                </CardContent> */}
               </div>
               <CardFooter>
                 <Link href={`/dashboard/courses/${lastPathname}/${item.id}`}>

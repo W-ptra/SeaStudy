@@ -30,20 +30,50 @@ import { Textarea } from '../ui/textarea'
 
 // Toaster Import
 import { toast } from 'sonner'
+import { usePathname } from 'next/navigation'
+import { getLastPathSegment } from '@/lib/utils'
 
 const CreateTopic = () => {
+  const pathname = usePathname()
+  const lastPathname = getLastPathSegment(pathname)
+  const courseId = parseInt(lastPathname)
+
   const [isOpen, setIsOpen] = useState(false)
 
   const form = useForm<TopicSchemaType>({
     resolver: zodResolver(TopicSchema),
     defaultValues: {
+      courseId: courseId,
       title: "",
       description: "",
     }
   })
 
-  function onSubmit(values: TopicSchemaType) {
+  async function onSubmit(values: TopicSchemaType) {
     console.log(values)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/api/topic/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setIsOpen(false)
+        location.reload()
+        toast("Topic Created Successfully");
+      } else {
+        toast.error("Failed to create topic");
+      }
+    } catch (error) {
+      
+    }
     toast("Topic Created Successfully")
   }
 
@@ -89,7 +119,7 @@ const CreateTopic = () => {
                 )}
               />
             </div>
-            <Button type='submit' className='w-full'>
+            <Button type='submit' className='w-full rounded-full'>
               Create Topic
             </Button>
           </form>

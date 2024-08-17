@@ -36,6 +36,7 @@ import { toast } from 'sonner';
 import { CourseDataType, TopicDataType } from '@/lib/schemas';
 
 const CourseDetailPage = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname();
   const lastPathname = getLastPathSegment(pathname)
   const courseId = parseInt(lastPathname)
@@ -53,7 +54,7 @@ const CourseDetailPage = () => {
 
       if (response.ok) {
         toast.success('Successfully delete the course')
-        router.push('/dashboard/instructor')
+        router.push('/dashboard/instructor/')
       } else {
       toast.error('Failed to delete the course')
       }
@@ -80,6 +81,8 @@ const CourseDetailPage = () => {
           const data = await response.json()
           setCourseDetail(data.course)
           setTopics(data.topics)
+          console.log(courseDetail)
+          console.log(topics)
         } else {
           toast.error('Failed to fetch course detail')
         }
@@ -111,9 +114,9 @@ const CourseDetailPage = () => {
         </div>
         <div className='flex gap-x-4'>
           <CreateTopic />
-          <AlertDialog>
+          <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
-              <Button variant={'destructive'}>
+              <Button variant={'destructive'} className='rounded-full'>
                 Delete Course
               </Button>
             </AlertDialogTrigger>
@@ -127,10 +130,8 @@ const CourseDetailPage = () => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className='bg-red-500 hover:bg-red-400'>
-                  <Button onClick={handleDeleteCourse}>
-                    Continue
-                  </Button>
+                <AlertDialogAction className='bg-red-500 hover:bg-red-400' onClick={handleDeleteCourse}>
+                  Continue
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
